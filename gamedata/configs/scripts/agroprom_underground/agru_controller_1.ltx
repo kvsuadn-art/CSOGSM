@@ -1,0 +1,12 @@
+[logic]
+active = mob_home
+on_death = mob_death
+
+[mob_home]
+path_home = agru_controller_1_walk
+home_min_radius = 5
+home_max_radius = 10
+out_restr = agru_tushkano_restr
+
+[mob_death]
+on_info = %+agru_controller_death%

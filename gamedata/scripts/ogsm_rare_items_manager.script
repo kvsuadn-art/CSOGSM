@@ -1,0 +1,171 @@
+------------------------ Copyright 2010-2012 Minister, Kirgudu ------------------------
+-------------------------- Менеджер заказов редких предметов --------------------------
+
+
+local rare_manager = nil
+
+--Иконки NPCов (для новостей)
+local icon_by_name = {
+	["mar_csky_trader"] = "icon_stalker_nebo_1",
+	["esc_stalker_trader"] = "icon_stalker_neutral_2_4",
+	["gar_bandit_trader"] = "icon_stalker_bandit_3",
+	["val_freedom_trader"] = "icon_stalker_freedom_2_5",
+	["agr_duty_trader"] = "icon_stalker_dolg_2_2",
+	["agr_stalker_base_trader"] = "icon_stalker_neutral_2_3"
+}
+
+--Заголовки новостей от NPCов (для новостей)
+local news_title_text_by_name = {
+	["mar_csky_trader"] = "Суслов:",
+	["esc_stalker_trader"] = "Шилов:",
+	["gar_bandit_trader"] = "Зуб:",
+	["val_freedom_trader"] = "Ашот:",
+	["agr_duty_trader"] = "Митяй:",
+	["agr_stalker_base_trader"] = "Дрозд:"
+}
+
+--Текст новостей от NPCов (для новостей)
+local news_text_by_name = {
+	["mar_csky_trader"] = "Заказывали - сообщаю. В продаже появилось кое-что вкусненькое.",
+	["esc_stalker_trader"] = "В продажу поступили новые товары, заглядывай.",
+	["gar_bandit_trader"] = "Слышь, брателло. Я тут прибарахлился нехило, подваливай, перетрём о цене.",
+	["val_freedom_trader"] = "Дарагой, шота у Ашота новенькое есть. Прихади, пакупай!",
+	["agr_duty_trader"] = "Сообщаю: в арсенале Долга новые поступления.",
+	["agr_stalker_base_trader"] = "В продажу поступили новые товары, заглядывай."
+}
+
+class "RareItemsManager"
+function RareItemsManager:__init()
+	self.ini_file = ini_file("misc\\rare_items.ltx")
+
+	self.traders_list = {}
+	self.rare_items = {}
+
+	local n = self.ini_file:line_count("traders")
+	for i = 0, n-1 do
+		local result, value = self.ini_file:r_line("traders", i, "", "")
+		local nn = self.ini_file:line_count(value)
+
+		self.traders_list[value] = {} --содержит список всех NPCов (даже дохлых) и все их товары
+		self.rare_items[value] = {} --содержит список NPCов и их доступные к покупке товары
+
+		for ii = 0, nn-1 do
+			local result2, value2 = self.ini_file:r_line(value, ii, "", "")
+			table.insert(self.traders_list[value], value2)
+		end
+	end
+end
+
+--"Зарандомить" предметы сразу для всех
+function RareItemsManager:rnd_all()
+	local s_npc = nil
+	for k,v in pairs(self.traders_list) do
+		self:set_rare_items(k, v)
+		s_npc = alife():object(k)
+		if s_npc then ogsm.g_start_timer("rim", math.random(3), 0, 0, s_npc.id) end
+	end
+end
+
+--"Зарандомить" предметы для кого-то конкретного
+function RareItemsManager:rnd(who)
+	local s_npc = alife():object(who)
+	if s_npc and self.traders_list[who] and self.traders_list[who] ~= nil then
+		local npc = level.object_by_id(s_npc.id)
+		if npc and npc:is_talking() then --затычка, чтобы предметы не "рандомились" при разговоре с NPC
+			ogsm.g_start_timer("rim", 0, 0, 30, s_npc.id)
+			if has_alife_info(who.."_rareitems_news") then self:send_news(who, s_npc) end
+			return
+		end
+		self:set_rare_items(who, self.traders_list[who])
+		if has_alife_info(who.."_rareitems_news") then self:send_news(who, s_npc) end
+		ogsm.g_start_timer("rim", math.random(3), 0, 0, s_npc.id)
+	end
+end
+
+function RareItemsManager:set_rare_items(trader, items)
+	local items2 = deepcopy(items)
+	for i = 1, 3 do
+		if i > #items2 then return end
+		local idx = math.random(#items2)
+		self.rare_items[trader][i] = items2[idx]
+		table.remove(items2,idx)
+	end
+end
+
+function RareItemsManager:check_dead()
+	for k,v in pairs(self.traders_list) do
+		if is_dead(k) then self.rare_items[k] = nil end
+	end
+end
+
+--Отправка новостей
+function RareItemsManager:send_news(who, s_npc)
+	local npc_name = s_npc:name()
+	xr_sound.set_sound_play(db.actor:id(), "pda_tips")
+	db.actor:give_game_news(news_title_text_by_name[npc_name], news_text_by_name[npc_name], icon_by_name[npc_name], 0, 5000, 1)
+end
+
+function RareItemsManager:save(packet)
+	self:check_dead() --убираем из таблицы rare_items дохлых NPCов
+	local counter = 0
+	for k,v in pairs(self.rare_items) do
+		counter = counter + 1
+	end
+	packet:w_u8(counter)
+	for k,v in pairs(self.rare_items) do
+		packet:w_u16(alife():object(k).id)
+		local items_list = ""
+		for i = 1, #v do
+			items_list = items_list..","..v[i]
+		end
+		packet:w_stringZ(items_list)
+	end
+end
+
+function RareItemsManager:load(packet)
+	local counter = packet:r_u8()
+	for i = 1, counter do
+		local npc_id = packet:r_u16()
+		local npc = alife():object(npc_id)
+		if npc and npc ~= nil then
+			npc = npc:name()
+			local items_list = packet:r_stringZ()
+			local n = 1
+			for w in string.gmatch(items_list, "[^%,]+") do
+				self.rare_items[npc][n] = w
+				n = n + 1
+			end
+		end
+	end
+end
+
+-----
+
+function is_dead(npc_name)
+	local s_npc = alife():object(npc_name)
+	return not s_npc or s_npc==nil or (s_npc.alive and not s_npc:alive())
+end
+
+function get_inv_name(section)
+	return game.translate_string(system_ini():r_string(section, "inv_name"))
+end
+
+function get_cost(section, trader)
+	local multiplier = 1
+	if get_rim().ini_file:section_exist("multiplier_condition") and get_rim().ini_file:line_exist("multiplier_condition", trader) then
+		local condlist = xr_logic.parse_condlist(nil, "rare_items", "multiplier_condition", get_rim().ini_file:r_string("multiplier_condition", trader))
+		multiplier = xr_logic.pick_section_from_condlist(db.actor, db.actor, condlist)
+	end
+	return system_ini():r_s32(section, "cost") * multiplier
+end
+
+function get_rim()
+	if rare_manager == nil then
+		rare_manager = RareItemsManager()
+	end
+	return rare_manager
+end
+
+
+-------------------------- Менеджер заказов редких предметов --------------------------
+------------------------ Copyright 2010-2012 Minister, Kirgudu ------------------------

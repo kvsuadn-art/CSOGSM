@@ -1,0 +1,206 @@
+------------------------------ Copyright 2007-2010 DEXXX ------------------------------
+----------------------------- Модуль снятия брони с трупов ----------------------------
+
+
+local packet = net_packet()
+
+-- Вызывается из колбэка на смерть, считывает визуал и запускает таймер на спаун
+function main(npc)
+
+local otf
+local sect
+local t
+local vis1
+local vis
+
+local obj = alife():object(npc:id())
+
+if obj then 
+	t = get_stalker_visual(obj) 
+end
+
+if t ~= nil then
+	vis1 = ogsm.str_explode("\\", t)
+end
+
+if vis1 ~= nil then
+
+	vis = vis1[3]
+
+	-- Чистое Небо
+	if vis == "stalker_nebo_6_1" or
+	   vis == "stalker_nebo_6_2" or
+	   vis == "stalker_nebo_6_3" or
+	   vis == "stalker_nebo_6_4" or
+	   vis == "stalker_nebo_6_5" then sect = "cs_novice_outfit" end
+	if vis == "stalker_nebo_1" and has_alife_info("mar_tutorial_returned_got_on_feet") then sect = "cs_light_outfit" end
+	if vis == "stalker_nebo_5" and has_alife_info("mar_tutorial_returned_got_on_feet") then sect = "cs_light_extra_outfit" end
+	if vis == "stalker_nebo_3" and has_alife_info("mar_renegade_base_captured") then sect = "cs_standart_outfit" end
+	if vis == "stalker_nebo_2" and has_alife_info("esc_bring_habar_complete") then sect = "cs_heavy_outfit" end
+	if vis == "stalker_nebo_4" and has_alife_info("esc_bring_habar_complete") then sect = "cs_heavy_extra_outfit" end
+
+	-- Нейтралы
+	if vis == "stalker_neutral_1_1" or
+	   vis == "stalker_neutral_1_2" or
+	   vis == "stalker_neutral_1_3" or
+	   vis == "stalker_neutral_1_4" or
+	   vis == "stalker_neutral_1_5" then sect = "novice_outfit" end
+	if vis == "stalker_neutral_1_6" or
+	   vis == "stalker_neutral_1_7" or
+	   vis == "stalker_neutral_1_8" or
+	   vis == "stalker_neutral_1_9" or
+	   vis == "stalker_neutral_1_10" then sect = "novice_outfit_white" end
+	if vis == "stalker_neutral_2_1" or
+	   vis == "stalker_neutral_2_2" or 
+	   vis == "stalker_neutral_2_3" or 
+	   vis == "stalker_neutral_2_4" or
+	   vis == "stalker_neutral_2_5" or
+	   vis == "stalker_neutral_2_6" then sect = "stalker_outfit" end
+	if vis == "stalker_neutral_3" and has_alife_info("val_deliver_pda_complete") then sect = "stalker_heavy_outfit" end
+	if vis == "stalker_neutral_4" and has_alife_info("red_bridge_finished") then sect = "exo_outfit" end
+	if vis == "stalker_neutral_5" and has_alife_info("agru_leader_dolg_task_complete") then sect = "scientific_outfit" end
+
+	-- Диггеры
+	if vis == "stalker_digger_1_1" or
+	   vis == "stalker_digger_1_2" or
+	   vis == "stalker_digger_1_3" or
+	   vis == "stalker_digger_1_4" or
+	   vis == "stalker_digger_1_5" then sect = "digger_novice_outfit" end
+
+	-- Бандиты
+	if vis == "stalker_bandit_1" or
+	   vis == "stalker_bandit_1_1" or
+	   vis == "stalker_bandit_1_2" or
+	   vis == "stalker_bandit_1_3" or
+	   vis == "stalker_bandit_1_4" then sect = "bandit_outfit" end
+	if vis == "stalker_bandit_3" or
+	   vis == "stalker_bandit_3_1" or
+	   vis == "stalker_bandit_3_2" then sect = "bandit_veteran_outfit" end 
+	if vis == "stalker_bandit_4" or
+	   vis == "stalker_bandit_4_1" or
+	   vis == "stalker_bandit_4_2" then sect = "bandit_master_outfit" end
+	if (vis == "stalker_bandit_2" or
+	   vis == "stalker_bandit_2_1" or
+	   vis == "stalker_bandit_2_2" or
+	   vis == "stalker_bandit_2_3") and has_alife_info("esc_bring_habar_complete") then sect = "bandit_heavy_outfit" end
+
+	-- Свобода
+	if vis == "stalker_freedom_1_1" or
+	   vis == "stalker_freedom_1_2" or 
+	   vis == "stalker_freedom_1_3" or 
+	   vis == "stalker_freedom_1_4" or
+	   vis == "stalker_freedom_1_5" or
+	   vis == "stalker_freedom_1_6" then sect = "svoboda_light_outfit" end
+	if vis == "stalker_freedom_2_1" or
+	   vis == "stalker_freedom_2_2" or 
+	   vis == "stalker_freedom_2_3" or 
+	   vis == "stalker_freedom_2_4" or
+	   vis == "stalker_freedom_2_5" or
+	   vis == "stalker_freedom_2_6" then sect = "svoboda_light2_outfit" end
+	if (vis == "stalker_freedom_3" or
+	   vis == "stalker_freedom_3_1") and has_alife_info("val_deliver_pda_complete") then sect = "svoboda_heavy_outfit" end
+	if vis == "stalker_freedom_5" and has_alife_info("agru_leader_dolg_task_complete") then sect = "svoboda_scientific_outfit" end
+	if vis == "stalker_freedom_4" and has_alife_info("red_bridge_finished") then sect = "svoboda_exo_outfit" end
+
+	-- Долг
+	if vis == "stalker_dolg_2_1" or
+	   vis == "stalker_dolg_2_2" or 
+	   vis == "stalker_dolg_2_3" or
+	   vis == "stalker_dolg_2_4" or
+	   vis == "stalker_dolg_2_5" or
+	   vis == "stalker_dolg_2_6" then sect = "dolg_outfit" end
+	if vis == "stalker_dolg_1" and has_alife_info("agru_leader_dolg_task_complete") then sect = "dolg_scientific_outfit" end
+	if vis == "stalker_dolg_3_2" and has_alife_info("agru_leader_dolg_task_complete") then sect = "dolg_heavy_extra_outfit" end
+	if vis == "stalker_dolg_3_1" and has_alife_info("agru_leader_dolg_task_complete") then sect = "dolg_heavy_outfit" end
+	if vis == "stalker_dolg_4" and has_alife_info("red_bridge_finished") then sect = "dolg_exo_outfit" end
+
+	-- Наёмники
+	if vis == "stalker_merc_2" or
+	   vis == "stalker_merc_2_1" or
+	   vis == "stalker_merc_2_2" or
+	   vis == "stalker_merc_2_3" then sect = "killer_outfit" end
+	if vis == "stalker_merc_1" and has_alife_info("agru_leader_dolg_task_complete") then sect = "killer_scientific_outfit" end
+	if vis == "stalker_merc_3" and has_alife_info("agru_leader_dolg_task_complete") then sect = "killer_heavy_outfit" end
+	if vis == "stalker_merc_4" and has_alife_info("red_bridge_finished") then sect = "killer_exo_outfit" end
+
+	-- Монолит
+	if vis == "stalker_monolith_2_1" or
+	   vis == "stalker_monolith_2_2" or 
+	   vis == "stalker_monolith_2_3" or
+	   vis == "stalker_monolith_2_4" or
+	   vis == "stalker_monolith_2_5" or
+	   vis == "stalker_monolith_2_6" then sect = "monolith_outfit" end
+	if vis == "stalker_monolith_3" then sect = "monolith_heavy_outfit" end
+	if vis == "stalker_monolith_1" then sect = "monolith_scientific_outfit" end
+	if vis == "stalker_monolith_4" then sect = "monolith_exo_outfit" end
+
+	-- Армия
+	if vis == "stalker_soldier_1_1" or
+	   vis == "stalker_soldier_1_2" or
+	   vis == "stalker_soldier_1_3" then sect = "soldier_outfit_grey" end
+	if vis == "stalker_soldier_5_1" or
+	   vis == "stalker_soldier_5_2" or 
+	   vis == "stalker_soldier_5_3" or
+	   vis == "stalker_soldier_5_4" or
+	   vis == "stalker_soldier_5_5" then sect = "soldier_outfit_brown" end
+	if (vis == "stalker_soldier_2" or
+	   vis == "stalker_soldier_3") and has_alife_info("val_deliver_pda_complete") then sect = "specops_outfit" end
+	if vis == "stalker_soldier_4_2" and has_alife_info("agru_leader_dolg_task_complete") then sect = "military_outfit" end
+	if vis == "stalker_soldier_4_1" and has_alife_info("red_bridge_finished") then sect = "military_extra_outfit" end
+
+	-- Учёные
+	if vis == "ecolog_red" and has_alife_info("yan_go_to_red_forest_cut6") then sect = "red_ecolog_outfit" end
+	if vis == "ecolog_green" and has_alife_info("yan_go_to_red_forest_cut6") then sect = "green_ecolog_outfit" end
+
+end
+
+if sect ~= nil then 
+	if math.random(100) <= 30 then
+		otf = alife():create(sect, npc:position(), npc:level_vertex_id(), npc:game_vertex_id(), npc:id())
+	end
+	if otf ~= nil then 
+		ogsm.start_timer("otf", 1, otf.id) 
+	end
+end
+
+end
+
+
+-- Получение визуала сталкера
+function get_stalker_visual(pobj)
+
+packet:w_begin(0)
+packet:r_seek(2)
+
+pobj:STATE_Write(packet)
+
+-- Свойства cse_trader
+local money = packet:r_s32()
+local specific_character = packet:r_stringZ()
+local trader_flags = packet:r_s32()
+local character_profile = packet:r_stringZ()
+local community_index = packet:r_s32()
+local rank = packet:r_s32()
+local reputation = packet:r_s32()
+local character_name = packet:r_stringZ()
+
+-- Свойства cse_alife_object
+local game_vertex_id = packet:r_u16()
+local distance = packet:r_float()
+local direct_control = packet:r_s32()
+local level_vertex_id = packet:r_s32()
+local object_flags = packet:r_s32()
+local custom_data = packet:r_stringZ()
+local story_id = packet:r_s32()
+local spawn_story_id = packet:r_s32()
+
+-- Свойства cse_visual
+local visual_name = packet:r_stringZ()
+
+return visual_name
+
+end
+
+
+----------------------------- Модуль снятия брони с трупов ----------------------------
+------------------------------ Copyright 2007-2010 DEXXX ------------------------------

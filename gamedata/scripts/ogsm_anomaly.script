@@ -1,0 +1,107 @@
+------------------------------ Copyright 2007-2010 DEXXX ------------------------------
+--------------------------- ќпределение попадани€ в аномалию --------------------------
+
+
+local packet = net_packet()
+local list_obj_id = {}
+local list_obj_coords = {}
+local time1 = time_global()
+local a = 0
+local b = ""
+
+
+-- ѕолучаем список всех аномалий на уровне
+function get_anom()
+	if has_alife_info("tramplin_info") and 
+	   has_alife_info("voronka_info") and 
+	   has_alife_info("karusel_info") and 
+	   has_alife_info("electra_info") and 
+	   has_alife_info("zharka_info") and 
+	   has_alife_info("studen_info") and 
+	   has_alife_info("pukh_info") and 
+	   has_alife_info("teleport_info") and 
+	   has_alife_info("tuman_info") and 
+	   has_alife_info("psyzone_info") and 
+	   has_alife_info("radioactive_info") and 
+	   has_alife_info("razlom_info") and 
+	   has_alife_info("simbiont_info") then
+		return
+	end
+
+	local obj
+	for i=1,65535 do
+		obj = alife():object(i)
+		if obj and ( string.find(obj:name(), "zone_field_") or 
+			     string.find(obj:name(), "zone_mine_") or 
+			     string.find(obj:name(), "zone_burning_fuzz") or 
+			     string.find(obj:name(), "zone_buzz") or
+			     obj:name() == "esc_teleport_1" or
+			     obj:name() == "esc_teleport_2" or
+			     obj:name() == "esc_teleport_3" or
+			     obj:name() == "red_teleport_restr_1" or
+			     obj:name() == "red_teleport_restr_2") then
+			list_obj_id[i] = i
+		end
+	end
+end
+
+
+-- ќпредел€ем близость актора к аномалии
+function actor_update()
+	local obj
+	if db.actor:alive() then
+		if a == 0 then
+			for k,v in pairs(list_obj_id) do
+				obj = level.object_by_id(v)
+				if obj then
+					table.insert(list_obj_coords, {name = obj:name(), pos = obj:position()})
+				end
+			end
+			a = 1
+		else
+			if time_global() <= time1 then return else time1 = time1 + 1000 end
+			for k,v in pairs(list_obj_coords) do
+				b = list_obj_coords[k]["name"]
+				if db.actor:position():distance_to(list_obj_coords[k]["pos"]) < 15 then
+					if (string.find(b, "mar_zone_field_thermal_weak") or string.find(b, "val_zone_field_thermal_average")) and not has_alife_info("razlom_info") then
+						db.actor:give_info_portion("razlom_info")
+					end
+				end
+				if db.actor:position():distance_to(list_obj_coords[k]["pos"]) < 10 then
+					if (string.find(b, "field_acidic") or string.find(b, "mine_acidic")) and not has_alife_info("tuman_info") then
+						db.actor:give_info_portion("tuman_info")
+					elseif string.find(b, "red_zone_field_psychic_average") and not has_alife_info("simbiont_info") then
+						db.actor:give_info_portion("simbiont_info")
+					elseif string.find(b, "field_psychic") and not has_alife_info("psyzone_info") then
+						db.actor:give_info_portion("psyzone_info")
+					elseif string.find(b, "field_radioactive") and not has_alife_info("radioactive_info") then
+						db.actor:give_info_portion("radioactive_info")
+					end
+				end
+				if db.actor:position():distance_to(list_obj_coords[k]["pos"]) < 2.5 then
+					if string.find(b, "mine_gravitational_weak") and not has_alife_info("tramplin_info") then
+						db.actor:give_info_portion("tramplin_info")
+					elseif string.find(b, "mine_gravitational_average") and not has_alife_info("voronka_info") then
+						db.actor:give_info_portion("voronka_info")
+					elseif string.find(b, "mine_gravitational_strong") and not has_alife_info("karusel_info") then
+						db.actor:give_info_portion("karusel_info")
+					elseif string.find(b, "mine_thermal") and not has_alife_info("zharka_info") then
+						db.actor:give_info_portion("zharka_info")
+					elseif string.find(b, "mine_electric") and not has_alife_info("electra_info") then
+						db.actor:give_info_portion("electra_info")
+					elseif string.find(b, "zone_buzz") and not has_alife_info("studen_info") then
+						db.actor:give_info_portion("studen_info")
+					elseif string.find(b, "burning_fuzz") and not has_alife_info("pukh_info") then
+						db.actor:give_info_portion("pukh_info")
+					elseif string.find(b, "teleport") and not has_alife_info("teleport_info") then
+						db.actor:give_info_portion("teleport_info")
+					end
+				end
+			end
+		end
+	end
+end
+
+
+--------------------------- ќпределение попадани€ в аномалию --------------------------
+------------------------------ Copyright 2007-2010 DEXXX ------------------------------

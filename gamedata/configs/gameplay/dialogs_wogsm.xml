@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<game_dialogs>
+    <dialog id="wogsm_give_glock">
+	<precondition>ogsm_bring_items.wogsm_check_glock</precondition>
+        <phrase_list>
+            <phrase id="0">
+                <text>wogsm_give_glock_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>wogsm_give_glock_1</text>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>wogsm_give_glock_3</text>
+            </phrase>
+            <phrase id="2">
+                <text>wogsm_give_glock_2</text>
+                <action>ogsm_bring_items.wogsm_give_glock</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+	
+    <dialog id="wogsm_give_bizon">
+	<precondition>ogsm_bring_items.wogsm_check_bizon</precondition>
+        <phrase_list>
+            <phrase id="0">
+                <text>wogsm_give_bizon_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>wogsm_give_bizon_1</text>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>wogsm_give_bizon_3</text>
+            </phrase>
+            <phrase id="2">
+                <text>wogsm_give_bizon_2</text>
+                <action>ogsm_bring_items.wogsm_give_bizon</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+	
+    <dialog id="wogsm_give_vepr">
+	<precondition>ogsm_bring_items.wogsm_check_vepr</precondition>
+        <phrase_list>
+            <phrase id="0">
+                <text>wogsm_give_vepr_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>wogsm_give_vepr_1</text>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>wogsm_give_vepr_3</text>
+            </phrase>
+            <phrase id="2">
+                <text>wogsm_give_vepr_2</text>
+                <action>ogsm_bring_items.wogsm_give_vepr</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+	
+    <dialog id="wogsm_give_sr25">
+	<precondition>ogsm_bring_items.wogsm_check_sr25</precondition>
+        <phrase_list>
+            <phrase id="0">
+                <text>wogsm_give_sr25_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>wogsm_give_sr25_1</text>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>wogsm_give_sr25_3</text>
+            </phrase>
+            <phrase id="2">
+                <text>wogsm_give_sr25_2</text>
+                <action>ogsm_bring_items.wogsm_give_sr25</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+	
+    <dialog id="wogsm_faction_parts">
+	<precondition>ogsm_bring_items.wogsm_has_faction_parts</precondition>
+        <phrase_list>
+            <phrase id="0">
+                <text>wogsm_faction_parts_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>wogsm_faction_parts_1</text>
+				<action>ogsm_bring_items.wogsm_give_faction_parts</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+</game_dialogs>

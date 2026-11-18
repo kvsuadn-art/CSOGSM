@@ -1,0 +1,376 @@
+------------------------- Copyright 2007-2011 DEXXX, Alex Ros -------------------------
+---------------------- Функции управления уникальными предметами ----------------------
+
+
+-- Массив координат для спавна
+local coords = {
+	-- Болота
+	{vector():set(299.953430,0.920961,403.877838), 332504, 88},
+	{vector():set(-160.362518,0.731151,80.010071), 64387, 72},
+	{vector():set(-228.197876,0.026894,369.070740), 28928, 80},
+	{vector():set(108.070709,4.200342,344.157715), 199586, 84},
+	{vector():set(97.160706,10.566160,528.666626), 193181, 229},
+	{vector():set(530.593994,11.328271,250.901474), 500103, 126},
+	{vector():set(-65.459953,0.828036,-31.107330), 104786, 20},
+	{vector():set(192.545776,5.892680,113.284691), 253402, 124},
+	-- Кордон
+	{vector():set(355.074890,17.865698,251.908295), 620323, 507},
+	{vector():set(-212.666901,27.792530,340.927856), 77351, 477},
+	{vector():set(143.385132,6.294361,341.143158), 474820, 657},
+	{vector():set(160.218719,14.460480,198.454559), 491765, 519},
+	{vector():set(-118.257263,-28.492680,-264.201050), 139765, 491},
+	{vector():set(-229.159729,-31.950064,-246.163300), 27184, 626},
+	{vector():set(-131.393387,5.755749,212.956787), 124241, 514},
+	{vector():set(-76.645966,9.604424,126.867920), 198980, 510},
+	{vector():set(0.849264,-0.077000,190.104065), 302694, 533},
+	{vector():set(260.231384,2.602376,333.034912), 565024, 729},
+	{vector():set(187.039429,10.512044,135.144760), 513537, 516},
+	{vector():set(165.645599,-7.639073,20.374184), 496526, 689},
+	-- Свалка
+	{vector():set(-194.688751,4.154451,210.313354), 26477, 406},
+	{vector():set(227.269958,-3.367711,-20.507463), 337447, 277},
+	{vector():set(-161.887482,-1.917768,133.569046), 48973, 315},
+	{vector():set(-67.294525,22.241379,-94.179199), 163391, 263},
+	{vector():set(134.497665,16.141811,24.716635), 218413, 397},
+	{vector():set(77.683441,-3.100640,-281.117157), 233781, 260},
+	{vector():set(57.043221,-2.142543,-242.412842), 216100, 450},
+	{vector():set(125.218643,0.085083,-123.008514), 270839, 447},
+	{vector():set(139.784866,3.570471,-57.111359), 282110, 253},
+	{vector():set(70.472755,16.665884,18.328178), 218413, 397},
+	{vector():set(167.575394,0.616078,202.596039), 302593, 287},
+	{vector():set(-29.254890,19.316395,113.595680), 143657, 290},
+	-- Темная Долина
+	{vector():set(118.538368,3.407457,-500.195068), 287174, 841},
+	{vector():set(127.206673,4.242645,-443.814209), 296418, 840},
+	{vector():set(-113.610718,6.375462,-112.180481), 44885, 924},
+	{vector():set(178.104141,4.843267,-319.755890), 349705, 839},
+	{vector():set(-36.720699,2.619675,90.552193), 129833, 831},
+	{vector():set(-79.547478,-0.078242,60.964294), 80496, 830},
+	{vector():set(123.862961,-0.376968,95.418457), 293627, 833},
+	{vector():set(-7.798831,5.613304,-108.048378), 178873, 849},
+	{vector():set(42.768539,0.381266,-82.698502), 208228, 934},
+	{vector():set(19.991072,1.021548,-84.139854), 208226, 934},
+	{vector():set(48.663353,1.021641,-48.824390), 214435, 744},
+	{vector():set(48.662930,4.541215,-37.491428), 214452, 744},
+	{vector():set(129.473251,0.150954,-19.409735), 298896, 745},
+	{vector():set(92.067146,3.885956,-77.583878), 259905, 836},
+	{vector():set(110.507912,3.954935,-285.293365), 279309, 763},
+	{vector():set(153.621735,14.788640,-256.597992), 324680, 800},
+	{vector():set(95.327026,-2.692697,-398.023193), 262624, 768},
+	{vector():set(190.414627,5.167361,-128.538879), 359312, 960},
+	-- Агропром
+	{vector():set(6.592504,15.316924,149.938477), 157092, 1121},
+	{vector():set(-113.024094,8.676572,133.800446), 68359, 1081},
+	{vector():set(-98.129105,-0.094704,-224.579559), 77541, 1103},
+	{vector():set(36.042679,6.821398,-168.758484), 182141, 1140},
+	{vector():set(262.321716,22.239296,-182.823807), 365568, 1145},
+	{vector():set(275.476624,22.839056,-98.049820), 371457, 1193},
+	{vector():set(5.437461,1.866170,-54.215805), 155015, 1085},
+	{vector():set(-13.343618,17.427870,196.602463), 139824, 1189},
+	{vector():set(184.305771,8.085838,52.406334), 306152, 1115},
+	{vector():set(43.096558,9.256178,-35.040058), 188528, 1204},
+	{vector():set(3.725669,7.441158,112.088272), 158322, 1121},
+	-- Янтарь
+	{vector():set(-55.725590,-12.016216,-258.067108), 38658, 1228},
+	{vector():set(-123.014183,26.662643,-355.441895), 10402, 1227},
+	{vector():set(-61.138550,1.243229,-148.255692), 36722, 1250},
+	{vector():set(31.729321,-1.349815,-71.341614), 74578, 1245},
+	{vector():set(174.972885,2.224498,89.738930), 141038, 1244},
+	{vector():set(69.870247,0.473782,-197.735931), 93948, 1234},
+	{vector():set(-89.070663,-3.372884,-206.206055), 29418, 1311},
+	{vector():set(-95.372589,-11.575161,-273.890656), 26418, 1225},
+	{vector():set(88.273186,0.102560,35.406059), 102328, 1243},
+	-- Рыжий Лес
+	{vector():set(230.182724,-1.591029,40.384689), 130025, 1050},
+	{vector():set(188.051880,1.417462,97.468185), 122844, 996},
+	{vector():set(259.168396,1.496782,-24.358925), 154520, 995},
+	{vector():set(20.006298,4.739876,-152.624283), 77155, 984},
+	{vector():set(-16.011286,0.771681,22.747992), 52554, 1033},
+	{vector():set(-91.907349,-0.817695,-201.448868), 11994, 1013},
+	{vector():set(-8.957288,2.713363,-324.572266), 58801, 1016},
+	{vector():set(150.275406,2.992400,-49.665436), 105769, 1055},
+	{vector():set(84.215263,5.537785,-265.431030), 97896, 998},
+	{vector():set(49.067841,-0.764199,-256.115601), 89195, 1005},
+	{vector():set(180.761749,1.715514,-213.422073), 119488, 1052},
+	-- Военные Склады
+	{vector():set(-272.739746,-16.869291,-19.908501), 62015, 1454},
+	{vector():set(-46.372086,-18.636663,349.580383), 248669, 1345},
+	{vector():set(122.979408,-11.447178,160.469284), 377866, 1368},
+	{vector():set(-187.376236,1.265639,438.070190), 127553, 1466},
+	{vector():set(83.672142,-9.251865,370.422821), 356447, 1417},
+	{vector():set(49.159931,-8.297716,405.759338), 330041, 1433},
+	{vector():set(106.406250,-1.757263,337.402893), 371485, 1481},
+	{vector():set(-19.244190,8.930922,72.065475), 272137, 1456},
+	{vector():set(-65.496017,-13.060302,56.052814), 232074, 1398},
+	{vector():set(-77.707764,-11.324912,38.641445), 222338, 1503},
+	{vector():set(81.056160,-12.568636,60.984230), 353972, 1394},
+	{vector():set(14.835235,-6.826424,-11.380480), 303074, 1422},
+	{vector():set(-95.659454,-12.634545,-41.262939), 206077, 1501},
+	{vector():set(-202.509064,-21.905161,214.256332), 115810, 1408},
+	{vector():set(-231.945313,-21.774946,202.542435), 93777, 1408},
+	{vector():set(-337.322937,-23.067369,251.670288), 15203, 1482},
+	{vector():set(-297.457642,-22.202660,293.259399), 43395, 1389},
+	{vector():set(15.772114,-7.252053,406.763489), 304197, 1384},
+	{vector():set(-25.686983,-8.671912,411.974731), 266114, 1330}
+}
+
+
+-- Массив предметов с характеристиками
+local items = {
+	-- Флешки
+	{"flash_scientific_ac_sect", 3250},
+	{"flash_scientific_eg_sect", 3250},
+	{"flash_scientific_aceg_sect", 5750},
+	{"flash_exoskeleton_f2_sect", 6375},
+	{"flash_exoskeleton_h2_sect", 6375},
+	{"flash_exoskeleton_f2h2_sect", 6500},
+	{"flash_exoskeleton_ac2_sect", 6500},
+	{"flash_exoskeleton_bd2_sect", 6500},
+	{"flash_shotguns_ac_sect", 2250},
+	{"flash_shotguns_bd_sect", 2250},
+	{"flash_sniperrifles_ab_sect", 3250},
+	{"flash_sniperrifles_cd_sect", 3250},
+	{"flash_sniperrifles_abcd_sect", 4375},
+	{"flash_silentrifles_ab_sect", 3750},
+	{"flash_silentrifles_cd_sect", 3750},
+	{"flash_groza_ac_sect", 3000},
+	{"flash_groza_eg_sect", 3000},
+	{"flash_groza_aceg_sect", 3000},
+	{"flash_fn2000_ac_sect", 3500},
+	{"flash_fn2000_bd_sect", 3500},
+	{"flash_fn2000_2ac_sect", 5250},
+	{"flash_fn2000_2bd_sect", 5250},
+	{"flash_pkm_ab_sect", 5000},
+	{"flash_pkm_cd_sect", 5000},
+	{"flash_pkm_abcd_sect", 6500},
+	-- Секретные документы
+	{"doc_1", 3000},
+	{"doc_2", 3000},
+	{"doc_3", 3300},
+	{"doc_4", 3000},
+	{"doc_5", 3000},
+	{"doc_6", 3000},
+	{"doc_7", 3000},
+	{"doc_8", 3000},
+	{"doc_9", 3000},
+	{"doc_10", 3000},
+	{"doc_11", 3000},
+	{"doc_12", 3000},
+	{"doc_13", 3000},
+	{"doc_14", 3000},
+	{"doc_15", 3000}
+}
+
+
+-- Массив, хранящий случайные координаты по количеству предметов
+local used = {}
+
+
+-- Актор
+local actor = db.actor
+
+
+-- Просмотр координат
+function test_spawn()
+	for k,v in pairs(coords) do
+		local item = alife():create("yad", v[1], v[2], v[3])
+		level.map_add_object_spot_ser(item.id, "green_location", k)
+	end
+end
+
+-- Cпавн трупов со вставкой предметов
+function startup_spawn()
+	for k,v in pairs(items) do
+		local num = math.random(table.getn(coords))
+		while table.getn(used) < table.getn(coords) and used[num]~=nil do
+			num = math.random(table.getn(coords))
+		end
+		local body = ogsm_packet.spawn_stalker("neutral_bodies", coords[num][1], coords[num][2], coords[num][3], "dead", "empty")
+		if body and v[1] ~= "doc_15" then
+			used[num] = body.id
+			local item = alife():create(v[1], body.position, body.m_level_vertex_id, body.m_game_vertex_id, body.id)
+			if ogsm.dbgset then level.map_add_object_spot_ser(body.id, "green_location", v[1]) end
+		end
+	end
+end
+
+
+-- Проверка наличия предметов в инвентори
+function check_items(str)
+	for k,v in pairs(items) do
+		if str and string.find(v[1], str) and actor:object(v[1]) ~= nil then
+			return true
+		end
+	end
+	return false
+end
+
+
+-- Обмен предметов на деньги
+function relocate_items(str, fs, ss)
+	for k,v in pairs(items) do
+		if str and string.find(v[1], str) and actor:object(v[1]) ~= nil then
+			dialogs.relocate_item_section_from_actor(fs, ss, v[1])
+			dialogs.relocate_money(fs, v[2], "in")
+			if str == "flash_" then bring_flash_to_meh(fs, k) end
+		end
+	end
+end
+
+
+-- Проверка наличия предметов у актора
+function check_flashes()
+	return check_items("flash_")
+end
+function check_documents()
+	return check_items("doc_")
+end
+
+-- WOGSM --
+
+-- Unique weapons
+-- Actor has required items
+
+function wogsm_has_item(section)
+	if (actor:object(section) ~= nil) then
+		return true
+	else
+		return false
+	end
+end
+
+function wogsm_check_glock()
+	return wogsm_has_item("wpn_glock")
+end
+function wogsm_check_bizon()
+	return wogsm_has_item("wpn_bizon")
+end
+function wogsm_check_vepr()
+	return wogsm_has_item("wpn_vepr")
+end
+function wogsm_check_sr25()
+	return wogsm_has_item("wpn_sr25")
+end
+
+-- Actor gives items out and gets reward
+
+function wogsm_give_glock(first_speaker, second_speaker)
+	dialogs.relocate_item_section_from_actor(first_speaker, second_speaker, "wpn_glock")
+	dialogs.relocate_money(first_speaker, 6000, "in")
+end
+
+function wogsm_give_bizon(first_speaker, second_speaker)
+	dialogs.relocate_item_section_from_actor(first_speaker, second_speaker, "wpn_bizon")
+	dialogs.relocate_money(first_speaker, 10000, "in")
+end
+
+function wogsm_give_vepr(first_speaker, second_speaker)
+	dialogs.relocate_item_section_from_actor(first_speaker, second_speaker, "wpn_vepr")
+	dialogs.relocate_money(first_speaker, 15000, "in")
+end
+
+function wogsm_give_sr25(first_speaker, second_speaker)
+	dialogs.relocate_item_section_from_actor(first_speaker, second_speaker, "wpn_sr25")
+	dialogs.relocate_money(first_speaker, 20000, "in")
+end
+
+-- Faction parts
+local faction_parts =
+					{
+						"faction_part_cs",
+						"faction_part_stalker",
+						"faction_part_bandit",
+						"faction_part_duty",
+						"faction_part_freedom",
+						"faction_part_merc",
+						"faction_part_sci",
+						"faction_part_army",
+						"faction_part_monolith"
+					}
+					
+local faction_part_counts = {
+						["faction_part_cs"] = 0,
+						["faction_part_stalker"] = 0,
+						["faction_part_bandit"] = 0,
+						["faction_part_duty"] = 0,
+						["faction_part_freedom"] = 0,
+						["faction_part_merc"] = 0,
+						["faction_part_sci"] = 0,
+						["faction_part_army"] = 0,
+						["faction_part_monolith"] = 0
+							}
+							
+local faction_part_sum = 0
+
+function wogsm_check_faction_parts()
+	for k,v in pairs(faction_parts) do
+		if actor:object(v) ~= nil then
+			return true
+		end
+	end
+	return false
+end
+
+function wogsm_sum_faction_parts(actor, item)
+	for k,v in pairs(faction_parts) do
+		if item:section() == v then
+			faction_part_counts[v] = faction_part_counts[v] + 1
+		end
+	end
+end
+
+function wogsm_give_faction_parts(first_speaker, second_speaker)	
+	db.actor:iterate_inventory(wogsm_sum_faction_parts, db.actor)
+	
+	for k,v in pairs(faction_parts) do
+		faction_part_sum = faction_part_sum + faction_part_counts[v] * 75
+		if (faction_part_counts[v] > 0) then
+			dialogs.relocate_item_section_from_actor(first_speaker, second_speaker, v, "all")
+			faction_part_counts[v] = 0
+		end
+	end
+	
+	dialogs.relocate_money(first_speaker, faction_part_sum, "in")
+	faction_part_sum = 0
+end
+
+function wogsm_has_faction_parts()
+	return wogsm_check_faction_parts()
+end
+
+-- WOGSM --
+
+-- Передача предмета заказчику и обратная выдача инфо с наградой
+function relocate_flashes(first_speaker, second_speaker)
+	relocate_items("flash_", first_speaker, second_speaker)
+end
+function relocate_documents(first_speaker, second_speaker)
+	relocate_items("doc_", first_speaker, second_speaker)
+end
+
+
+-- Связка механиков с флешками и инфо
+function bring_flash_to_meh(meh, num)
+	local obj_name = meh:name()
+	local info = ""
+	if obj_name == "mar_csky_tech" then info = "marsh"
+	elseif obj_name == "esc_stalker_mechanic" then info = "escape"
+	elseif obj_name == "gar_bandit_fixer" then info = "garbage"
+	elseif obj_name == "val_freedom_fixer" then info = "darkvalley"
+	elseif obj_name == "agr_duty_mechanic" then info = "agroprom" end
+	db.actor:give_info_portion(info.."_"..items[num][1])
+end
+
+
+-- Проверка наличия и передача водки для Прозрачного
+function actor_has_vodka_for_garbage_fixer(first_speaker, second_speaker)
+	return first_speaker:object("vodka") ~= nil
+end
+
+function give_vodka_to_garbage_fixer(first_speaker, second_speaker)
+	dialogs.relocate_item_section_from_actor(first_speaker, second_speaker, "vodka", 1)
+end
+
+
+---------------------- Функции управления уникальными предметами ----------------------
+------------------------- Copyright 2007-2011 DEXXX, Alex Ros -------------------------

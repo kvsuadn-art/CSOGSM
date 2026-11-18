@@ -1,0 +1,77 @@
+[list_treasure_agroprom_underground]
+agru_treasure_1
+agru_treasure_2
+agru_treasure_4
+agru_treasure_5
+agru_quest_treasure_1
+agru_quest_treasure_2
+agru_quest_treasure_3
+agru_quest_treasure_4
+
+[agru_treasure_1] ; часть трубы в комнате управления насосной станции
+target = agru_treasure_1
+name = st_agru_treasure_1
+description = st_agru_treasure_1_descr
+items = grenade_rgd5, 3
+community = stalker, dolg
+condlist = {=actor_on_level(agroprom:agroprom_underground)} true, false
+
+[agru_treasure_2] ; рюкзак в аномалии в резервуаре
+target = agru_treasure_2
+name = st_agru_treasure_2
+description = st_agru_treasure_2_descr
+items = mutant_snork_leg, 4, mutant_krovosos_jaw, 2
+community = stalker, dolg
+condlist = {=actor_on_level(agroprom:agroprom_underground)} true, false
+
+[agru_treasure_4] ; рюкзак у трупа в туннеле
+target = agru_treasure_4
+name = st_agru_treasure_4
+description = st_agru_treasure_4_descr
+items = ammo_5.56x45_ap, 300, wpn_sig550, 1
+community = stalker, dolg
+condlist = {=actor_on_level(agroprom:agroprom_underground)} true, false
+
+[agru_treasure_5] ; рюкзак в аномалии под лестницей
+target = agru_treasure_5
+name = st_agru_treasure_5
+description = st_agru_treasure_5_descr
+items = medkit_army, 2, bandage, 4, tea, 4
+community = stalker, dolg
+condlist = {=actor_on_level(agroprom:agroprom_underground)} true, false
+
+[agru_quest_treasure_1]
+target = agru_q1_n
+name = st_agru_q1_n
+description = st_agru_q1_n_descr
+items = detector_advanced, 1
+condlist = {=check_npc_name(agr_zooman)} true, false
+treasure_cost = 800
+say_item_name = false
+
+[agru_quest_treasure_2]
+target = agru_q2_n
+name = st_agru_q2_n
+description = st_agru_q2_n_descr
+items = wpn_colt1911, 1, ammo_11.43x23_hydro, 200
+condlist = {=check_npc_name(agr_holeman)} true, false
+treasure_cost = 1400
+say_item_name = false
+
+[agru_quest_treasure_3]
+target = agru_q3_t_a
+name = st_agru_q3_t_a
+description = st_agru_q3_t_a_descr
+items = ammo_9x19_pbp, 150, wpn_groza, 1, ammo_9x39_ap, 240, ammo_vog-25, 4, conserva, 2, hand_radio, 1
+condlist = {=check_npc_name(agr_stalker_secret_trader)} true, false
+treasure_cost = 1800
+say_item_name = false
+
+[agru_quest_treasure_4]
+target = agru_q4_n
+name = st_agru_q4_n
+description = st_agru_q4_n_descr
+items = af_dummy_battery, 1
+condlist = {=check_npc_name(agr_duty_trader)} true, false
+treasure_cost = 2600
+say_item_name = false

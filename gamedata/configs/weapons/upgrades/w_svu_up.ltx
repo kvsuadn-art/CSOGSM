@@ -1,0 +1,228 @@
+; Накладка на приклад. Обычная резиновая накладка. Позволяет точно подогнать длину приклада под рост стрелка и частично компенсировать отдачу.
+[up_sect_a_svu]
+cost		      		= 2500
+value					= -15
+cam_dispersion          = -0.345
+cam_dispersion_inc      = -0.345
+cam_step_angle_horz     = -0.09
+zoom_cam_dispersion         = -0.24
+zoom_cam_dispersion_inc     = -0.24
+zoom_cam_step_angle_horz    = -0.06
+
+; Модификация газового поршня. Установка компенсатора газового поршня позволяет уменьшить отдачу.
+[up_sect_b_svu]
+cost		      		= 2500
+value					= -15
+cam_dispersion          = -0.345
+cam_dispersion_inc      = -0.345
+cam_step_angle_horz     = -0.09
+zoom_cam_dispersion         = -0.24
+zoom_cam_dispersion_inc     = -0.24
+zoom_cam_step_angle_horz    = -0.06
+
+; Замена стандартного приклада на более лёгкий аналог. Особая конструкция приклада позволяет существенно уменьшить отдачу.
+[up_sect_c_svu]
+cost		      		= 2500
+value					= -15
+cam_dispersion          = -0.345
+cam_dispersion_inc      = -0.345
+cam_step_angle_horz     = -0.09
+zoom_cam_dispersion         = -0.24
+zoom_cam_dispersion_inc     = -0.24
+zoom_cam_step_angle_horz    = -0.06
+
+; Мягкий спуск. Плавный спусковой механизм позволяет повысить точность боя.
+[up_sect_d_svu]
+cost		      		= 2500
+value					= +10
+fire_dispersion_base    = -0.015
+
+; Магнитный ускоритель. Увеличение скорости полёта пули при помощи переменного магнитного поля.
+[up_sect_ab_svu]
+cost		      		= 5000
+value					= +20
+bullet_speed			= 160
+
+; Полимерные детали. Использование полимерных деталей существенно снижает массу оружия.
+[up_sect_cd_svu]
+cost		      		= 5000
+value					= -20
+inv_weight				= -0.72
+control_inertion_factor	= -0.30
+
+; Электронная стабилизация. Автоматическая корректировка импульса пули. Значительно повышает точность стрельбы.
+[up_sect_abcd_svu]
+cost		      		= 7500
+value					= +30
+fire_dispersion_base	= -0.045
+
+
+
+[up_a_svu]
+scheme_index            = 0, 0
+known                   = 1
+effects                 = up_gr_ab_svu
+section                 = up_sect_a_svu
+property                = prop_recoil
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = on_weapon_upgrade_something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_butt_recoil
+description             = st_upg_butt_recoil_descr
+icon                    = ui_wp_upgrade_43
+
+
+[up_b_svu]
+scheme_index            = 0, 1
+known                   = 1
+effects                 = up_gr_ab_svu
+section                 = up_sect_b_svu
+property                = prop_recoil
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_porsh_recoil
+description             = st_upg_porsh_recoil_descr
+icon                    = ui_wp_upgrade_42
+
+
+[up_c_svu]
+scheme_index            = 0, 2
+known                   = 1
+effects                 = up_gr_cd_svu
+section                 = up_sect_c_svu
+property                = prop_recoil
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_butt_recoil2
+description             = st_upg_butt_recoil2_descr
+icon                    = ui_wp_upgrade_43
+
+
+[up_d_svu]
+scheme_index            = 0, 3
+known                   = 1
+effects                 = up_gr_cd_svu
+section                 = up_sect_d_svu
+property                = prop_dispersion
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_trigger_accur
+description             = st_upg_trigger_accur_descr
+icon                    = ui_wp_upgrade_34
+
+
+[up_ab_svu]
+scheme_index            = 1, 0
+known                   = 1
+effects                 = 
+section                 = up_sect_ab_svu
+property                = prop_bullet_speed
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_accel_curved2
+description             = st_upg_accel_curved2_descr
+icon                    = ui_wp_upgrade_48
+
+
+[up_cd_svu]
+scheme_index            = 1, 1
+known                   = 1
+effects                 = 
+section                 = up_sect_cd_svu
+property                = prop_weight
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_poly_weight
+description             = st_upg_poly_weight_descr
+icon                    = ui_wp_upgrade_47
+
+
+[up_abcd_svu]
+scheme_index            = 2, 0
+known                   = 1
+effects                 = 
+section                 = up_sect_abcd_svu
+property                = prop_dispersion
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_electro_accur
+description             = st_upg_electro_accur_descr
+icon                    = ui_wp_upgrade_49
+
+
+
+[up_gr_a_svu]
+elements                = up_a_svu
+
+[up_gr_b_svu]
+elements                = up_b_svu
+
+[up_gr_c_svu]
+elements                = up_c_svu
+
+[up_gr_d_svu]
+elements                = up_d_svu
+
+[up_gr_ab_svu]
+elements                = up_ab_svu
+
+[up_gr_cd_svu]
+elements                = up_cd_svu
+
+[up_gr_abcd_svu]
+elements                = up_abcd_svu

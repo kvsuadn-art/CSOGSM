@@ -1,0 +1,193 @@
+; Модификация затвора. Точная подгонка затвора уменьшает разброс пуль при стрельбе.
+[up_sect_a_val]
+cost		      		= 1750
+value					= +10
+fire_dispersion_base    = -0.03
+
+; Модификация газового поршня. Установка компенсатора газового поршня позволяет уменьшить отдачу.
+[up_sect_b_val]
+cost		      		= 1750
+value					= -20
+cam_dispersion          = -0.28
+cam_dispersion_inc      = -0.28
+cam_step_angle_horz     = -0.14
+zoom_cam_dispersion      = -0.18
+zoom_cam_dispersion_inc  = -0.18
+zoom_cam_step_angle_horz = -0.09
+
+; Замена приклада на полимерный уменьшает вес оружия и позволяет существенно уменьшить отдачу
+[up_sect_c_val]
+cost		      		= 1750
+value					= -20
+cam_dispersion          = -0.28
+cam_dispersion_inc      = -0.28
+cam_step_angle_horz     = -0.14
+zoom_cam_dispersion      = -0.18
+zoom_cam_dispersion_inc  = -0.18
+zoom_cam_step_angle_horz = -0.09
+
+; Мягкий спуск. Плавный спусковой механизм позволяет повысить точность боя.
+[up_sect_d_val]
+cost		      		= 1750
+value					= +10
+fire_dispersion_base    = -0.03
+
+; Пневмоускоритель. Монтаж внутреннего пневмоускорителя, увеличивающего начальную скорость полёта пули.
+[up_sect_ab_val]
+cost		      		= 3500
+value					= +20
+bullet_speed			= 140
+
+; Полимерные детали. Использование полимерных деталей существенно снижает массу оружия.
+[up_sect_cd_val]
+cost		      		= 3500
+value					= -10
+inv_weight				= -0.25
+control_inertion_factor	= -0.13
+
+
+
+[up_a_val]
+scheme_index            = 0, 0
+known                   = 1
+effects                 = up_gr_ab_val
+section                 = up_sect_a_val
+property                = prop_dispersion
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = on_weapon_upgrade_something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_zatvor_recoil
+description             = st_upg_zatvor_recoil_descr
+icon                    = ui_wp_upgrade_41
+
+
+[up_b_val]
+scheme_index            = 0, 1
+known                   = 1
+effects                 = up_gr_ab_val
+section                 = up_sect_b_val
+property                = prop_recoil
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_porsh_recoil
+description             = st_upg_porsh_recoil_descr
+icon                    = ui_wp_upgrade_42
+
+
+[up_c_val]
+scheme_index            = 0, 2
+known                   = 1
+effects                 = up_gr_cd_val
+section                 = up_sect_c_val
+property                = prop_recoil
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_butt_recoil2
+description             = st_upg_butt_recoil2_descr
+icon                    = ui_wp_upgrade_43
+
+
+[up_d_val]
+scheme_index            = 0, 3
+known                   = 1
+effects                 = up_gr_cd_val
+section                 = up_sect_d_val
+property                = prop_dispersion
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_trigger_accur
+description             = st_upg_trigger_accur_descr
+icon                    = ui_wp_upgrade_34
+
+
+[up_ab_val]
+scheme_index            = 1, 0
+known                   = 1
+effects                 = 
+section                 = up_sect_ab_val
+property                = prop_bullet_speed
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_accel_curved
+description             = st_upg_accel_curved_descr
+icon                    = ui_wp_upgrade_18
+
+
+[up_cd_val]
+scheme_index            = 1, 1
+known                   = 1
+effects                 = 
+section                 = up_sect_cd_val
+property                = prop_weight
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_poly_weight
+description             = st_upg_poly_weight_descr
+icon                    = ui_wp_upgrade_47
+
+
+
+[up_gr_a_val]
+elements                = up_a_val
+
+[up_gr_b_val]
+elements                = up_b_val
+
+[up_gr_c_val]
+elements                = up_c_val
+
+[up_gr_d_val]
+elements                = up_d_val
+
+[up_gr_ab_val]
+elements                = up_ab_val
+
+[up_gr_cd_val]
+elements                = up_cd_val

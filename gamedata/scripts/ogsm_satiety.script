@@ -1,0 +1,57 @@
+------------------------------ Copyright 2007-2010 DEXXX ------------------------------
+----------------------------------- Эмулятор голода -----------------------------------
+
+
+local snd = sound_object([[ambient\underground\rnd_giant]])
+
+-- Проверяем нужно ли поесть. Вызывается каждые 6 игровых минут
+function test_for_need_eat()
+	local tmp = ogsm.load_variable("eat", 0)
+	if tmp < 200 then
+		ogsm.save_variable("eat", tmp + 1)
+	end
+	ogsm.g_start_timer("eat",0,0,6)
+	eat_reduce_health()
+end
+
+-- Уменьшение здоровья при критическом голоде
+function eat_reduce_health()
+	local tmp = ogsm.load_variable("eat",0)
+	if tmp > 150 then
+		if db.actor.health > 0.15 then
+			db.actor.health = - 0.15
+		end
+		if not snd:playing() then 
+			snd:play_at_pos(db.actor, vector():set(0,0,0), 0, sound_object.s2d)
+		end
+	end
+end
+
+-- Поедание еды
+function eat_item(oid, time)
+	if alife():object(oid)==nil then
+		db.actor:give_info_portion("addon_system_item_active")
+		local snd = sound_object([[food\inv_food]])
+		snd:play_no_feedback(db.actor,sound_object.s2d, 0, vector():set(0, 0, 0), 1.0)
+		local tmp = ogsm.load_variable("eat",0) - time*10
+		if tmp < 0 then tmp = 0 end
+		ogsm.save_variable("eat", tmp) 
+		eat_reduce_health()
+	end
+end
+
+function eat_item_2(oid, time)
+	if alife():object(oid)==nil then
+		db.actor:give_info_portion("addon_system_item_active")
+		local snd = sound_object([[food\inv_food2]])
+		snd:play_no_feedback(db.actor,sound_object.s2d, 0, vector():set(0, 0, 0), 1.0)
+		local tmp = ogsm.load_variable("eat",0) - time*10
+		if tmp < 0 then tmp = 0 end
+		ogsm.save_variable("eat", tmp) 
+		eat_reduce_health()
+	end
+end
+
+
+----------------------------------- Эмулятор голода -----------------------------------
+------------------------------ Copyright 2007-2010 DEXXX ------------------------------

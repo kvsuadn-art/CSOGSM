@@ -1,0 +1,62 @@
+;--------------------------------------------------------------------------------
+;--- last edited: Jurok -- ----------------------------------------------------------
+;--------------------------------------------------------------------------------
+
+[logic]
+active = smartcover@table_idle
+level_spot = quest_npc
+
+[smartcover@table_idle]
+path_walk = mar_smart_terrain_csky_base_scientist_walk
+cover_name = mar_smart_cover_csky_scientist_lead_stand_look_at_table
+loophole_name = lead_stand_look_at_table
+cover_state = idle_target
+on_timer = 15000 | smartcover@table_fire_no_lookout
+combat_ignore_cond = {!is_enemy_actor}
+meet = meet
+on_actor_dist_le = 7 | smartcover@ward
+
+[smartcover@table_fire_no_lookout]
+path_walk = mar_smart_terrain_csky_base_scientist_walk
+cover_name = mar_smart_cover_csky_scientist_lead_stand_look_at_table
+loophole_name = lead_stand_look_at_table
+cover_state = fire_no_lookout_target
+on_timer = 15000 | smartcover@table_idle
+combat_ignore_cond = {!is_enemy_actor}
+meet = meet
+on_actor_dist_le = 7 | smartcover@ward
+
+[smartcover@ward]
+target = actor
+cover_name = mar_smart_cover_csky_scientist_lead_stand_look_at_table
+on_actor_dist_ge_nvis = 8 | smartcover@table_idle
+combat_ignore_cond = {!is_enemy_actor}
+meet = meet@ward
+
+[meet]
+target = actor
+meet_state = 3 | nil@nil
+meet_state_wpn = 3 | nil@nil
+victim = 0 | actor
+victim_wpn = 0 | actor
+use = true
+use_wpn = true
+;precond = visibility
+trade_enable = false
+sound_start 	= mar_csky_doctor_meet	
+sound_stop 		= mar_csky_doctor_meet_bye
+quest_npc = true
+
+[meet@ward]
+target = actor
+meet_state = 5 | ward_noweap@nil
+meet_state_wpn = 5 | ward_noweap@nil
+victim = 5 | actor
+victim_wpn = 5 | actor
+use = true
+use_wpn = true
+precond = visibility
+trade_enable = false
+sound_start 	= mar_csky_doctor_meet	
+sound_stop 		= mar_csky_doctor_meet_bye
+quest_npc = true

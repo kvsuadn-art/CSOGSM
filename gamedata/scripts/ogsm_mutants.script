@@ -1,0 +1,443 @@
+----------------------------- Copyright 2007-2011 DEXXX -------------------------------
+--------------------------------- Обработчик монстров ---------------------------------
+
+
+--константы для pp эффектов
+local PPE_ZOMBIE = 1001
+local PPE_BURER = 1002
+local PPE_CAT = 1003
+
+local ppe_zombie_set = false
+local ppe_burer_set = false
+local ppe_cat_set = false
+
+class "MutantManager"
+
+function MutantManager:__init()
+end
+
+function MutantManager:update(param)
+
+	self.object = param
+	self.posit = self.object:position()
+	self.enemy = self.object:best_enemy()
+
+	if self.object:alive() then
+
+		-- Взрыв зомби-камикадзе при его приближении к врагу
+		if string.find(self.object:section(), "zombie_kamikaze") then
+			if self.enemy and self.posit:distance_to(self.enemy:position()) < 1.2 and self.object:see(self.enemy) then
+				blow_zombie(self.object)
+			end
+		
+		-- Разряд электрохимеры при её приближении к врагу
+		elseif string.find(self.object:section(), "electro_chimera") then
+			if self.enemy and self.posit:distance_to(self.enemy:position()) < 3 and self.object:see(self.enemy) then
+				charge_chimera(self.object)
+			end
+		
+		-- Атака насекомых при приближении к чумному зомби
+		elseif self.object:section()=="zombie_plague" then
+			if self.posit:distance_to(db.actor:position()) < 8 then
+				zombie_insect(self.object)
+			else
+				stop_insects()
+			end
+
+		-- Эффект при приближении к пси-бюреру
+		elseif string.find(self.object:section(), "psy_burer") then
+			if self.posit:distance_to(db.actor:position()) < 20 then
+				psy_burer(self.object)
+			else
+				stop_psy_burer()
+			end
+
+		-- Эффект при приближении к коту баюну
+		elseif string.find(self.object:section(), "cat") then
+			if self.posit:distance_to(db.actor:position()) < 20 then
+				cat_effects()
+			else
+				reset_cat_effects()
+			end
+
+		-- Эффект при приближении к контроллеру
+		elseif string.find(self.object:section(), "controller") then
+			if self.posit:distance_to(db.actor:position()) < 30 then
+				controller_aura()
+			else
+				stop_controller()
+			end
+		end
+
+	end
+
+end
+
+
+function MutantManager:on_death(param)
+
+	self.object = param
+	
+	-- Выдача статей энциклопедии при убийстве монстров. Плюс выпадение частей мутантов.
+	
+	if self.object:who_hit_name()=="single_player" then
+	local low_probability = 0.4
+	local def_probability = 0.6
+	local high_probability = 0.8
+	
+		if string.find(self.object:section(), "crow") then
+			if not has_alife_info("crow_dead") then db.actor:give_info_portion("crow_dead") end
+
+		elseif string.find(self.object:section(), "rat_") then
+			if not has_alife_info("rat_dead") then db.actor:give_info_portion("rat_dead") end
+
+		elseif string.find(self.object:section(), "tushkan") then
+			if not has_alife_info("tushkano_dead") then db.actor:give_info_portion("tushkano_dead") end
+			ogsm.spawn_item_in_inv("mutant_tushkano_head", self.object, def_probability)
+			
+		elseif string.find(self.object:section(), "pseudodog") then
+			if not has_alife_info("pseudodog_dead") then db.actor:give_info_portion("pseudodog_dead") end
+			ogsm.spawn_item_in_inv("mutant_psevdodog_tail", self.object, def_probability)
+
+		elseif string.find(self.object:section(), "psy_dog") then
+			if not has_alife_info("psydog_dead") then db.actor:give_info_portion("psydog_dead") end			
+                        ogsm.spawn_item_in_inv("mutant_psevdodog_tail", self.object, high_probability)
+
+		elseif string.find(self.object:section(), "dog") then
+			if not has_alife_info("blind_dead") then db.actor:give_info_portion("blind_dead") end
+			ogsm.spawn_item_in_inv("mutant_dog_tail", self.object, low_probability)
+
+		elseif string.find(self.object:section(), "flesh") then
+			if not has_alife_info("flesh_dead") then db.actor:give_info_portion("flesh_dead") end
+			ogsm.spawn_item_in_inv("mutant_flesh_eye", self.object, low_probability)
+
+		elseif string.find(self.object:section(), "boar") then
+			if not has_alife_info("boar_dead") then db.actor:give_info_portion("boar_dead") end
+			ogsm.spawn_item_in_inv("mutant_boar_leg", self.object, low_probability)
+
+		elseif string.find(self.object:section(), "zombie_kamikaze") then
+			if not has_alife_info("zombierusty_dead") then db.actor:give_info_portion("zombierusty_dead") end
+			blow_zombie(self.object)
+
+		elseif string.find(self.object:section(), "zombie_plague") then
+			if not has_alife_info("zombieplague_dead") then db.actor:give_info_portion("zombieplague_dead") end
+			ogsm.spawn_item_in_inv("mutant_zombie_hand", self.object, def_probability)
+			stop_insects()
+
+		elseif string.find(self.object:section(), "zombie") then
+			if not has_alife_info("zombie_dead") then db.actor:give_info_portion("zombie_dead") end	
+			ogsm.spawn_item_in_inv("mutant_zombie_hand", self.object, def_probability)
+
+		elseif string.find(self.object:section(), "fracture") then
+			if not has_alife_info("fracture_dead") then db.actor:give_info_portion("fracture_dead") end
+			ogsm.spawn_item_in_inv("mutant_izlom_hand", self.object, def_probability)
+
+		elseif string.find(self.object:section(), "snork") then
+			if not has_alife_info("snork_dead") then db.actor:give_info_portion("snork_dead") end
+			ogsm.spawn_item_in_inv("mutant_snork_leg", self.object, def_probability)
+
+		elseif string.find(self.object:section(), "cat") then
+			if not has_alife_info("cat_dead") then db.actor:give_info_portion("cat_dead") end
+			ogsm.spawn_item_in_inv("mutant_cat_tail", self.object, def_probability)
+			reset_cat_effects()
+
+		elseif string.find(self.object:section(), "poltergeist") then
+			if not has_alife_info("poltergeist_dead") then db.actor:give_info_portion("poltergeist_dead") end
+			ogsm.spawn_item_in_inv("mutant_poltergeist_hand", self.object, high_probability)
+
+		elseif string.find(self.object:section(), "burer_weak") then
+			if not has_alife_info("burer_dead") then db.actor:give_info_portion("burer_dead") end
+			ogsm.spawn_item_in_inv("mutant_burer_hand", self.object, high_probability)
+
+		elseif string.find(self.object:section(), "psy_burer") then
+			if not has_alife_info("psyburer_dead") then db.actor:give_info_portion("psyburer_dead") end
+			ogsm.spawn_item_in_inv("mutant_burer_hand", self.object, high_probability)
+			stop_psy_burer()
+
+		elseif string.find(self.object:section(), "bloodsucker") and not string.find(self.object:section(), "marsh") then
+			if not has_alife_info("bloodsucker_dead") then db.actor:give_info_portion("bloodsucker_dead") end
+			ogsm.spawn_item_in_inv("mutant_krovosos_jaw", self.object, high_probability)
+
+		elseif string.find(self.object:section(), "bloodsucker_marsh") then
+			if not has_alife_info("bloodsucker_marsh_dead") then db.actor:give_info_portion("bloodsucker_marsh_dead") end
+			ogsm.spawn_item_in_inv("mutant_krovosos_jaw", self.object, high_probability)
+
+		elseif string.find(self.object:section(), "chimera_weak") then
+			if not has_alife_info("chimera_dead") then db.actor:give_info_portion("chimera_dead") end
+			ogsm.spawn_item_in_inv("mutant_chimera_nail", self.object, high_probability)
+
+		elseif string.find(self.object:section(), "electro_chimera") then
+			if not has_alife_info("electrochimera_dead") then db.actor:give_info_portion("electrochimera_dead") end
+			ogsm.spawn_item_in_inv("mutant_chimera_nail", self.object, high_probability)
+
+		elseif string.find(self.object:section(), "controller") then
+			if not has_alife_info("controller_dead") then db.actor:give_info_portion("controller_dead") end
+			ogsm.spawn_item_in_inv("mutant_controller_hand", self.object, high_probability)
+			stop_controller()
+
+		elseif string.find(self.object:section(), "gigant") then
+			if not has_alife_info("pseudogiant_dead") then db.actor:give_info_portion("pseudogiant_dead") end
+			ogsm.spawn_item_in_inv("mutant_pseudogigant_nail", self.object, high_probability)
+		end
+	
+	else
+		if string.find(self.object:section(), "zombie_kamikaze") then
+			blow_zombie(self.object)
+		elseif string.find(self.object:section(), "zombie_plague") then
+			stop_insects()
+		elseif string.find(self.object:section(), "psy_burer") then
+			stop_psy_burer()
+		elseif string.find(self.object:section(), "controller") then
+			stop_controller()
+		elseif string.find(self.object:section(), "cat") then
+			reset_cat_effects()
+		end
+	end
+
+end
+
+local zombie_particle1 = particles_object("explosions\\explosion_04")
+local zombie_particle2 = particles_object("anomaly2\\body_tear_00")
+local zombie_sound1 = sound_object([[anomaly\anomaly_body_tear_1]])
+local zombie_sound2 = sound_object([[weapons\f1_explode_]])
+
+local chimera_particle = particles_object("anomaly2\\electra2_blast_00")
+local chimera_sound = sound_object([[anomaly\electra_blast]])
+
+local insect_particle = particles_object("ogsm\\ogsm_flies_00")
+local insect_sound = sound_object([[monsters\plague\flies]])
+
+local sound_obj_right = sound_object([[ambient\random\rnd_moan1]])
+local sound_obj_left = sound_object([[ambient\random\rnd_moan2]])
+
+sound_obj_right.volume = 0.5
+sound_obj_left.volume = 0.5
+
+local trigger = 0
+
+
+-- Взрыв зомби-камикадзе
+function blow_zombie(p_obj)
+	if p_obj then
+		local posit = p_obj:position()
+		local enemy = p_obj:best_enemy()
+		local zh = hit()
+		zh.type = hit.explosion
+		zh:bone("pelvis")
+		zh.power = 1.5
+		zh.impulse = 5
+	
+		zombie_particle1:play_at_pos(p_obj:position())
+		zombie_particle2:play_at_pos(p_obj:position())
+	
+		zombie_sound1:play_at_pos(p_obj, p_obj:position(), 0)
+		zombie_sound2:play_at_pos(p_obj, p_obj:position(), 0)
+	
+		if enemy and posit:distance_to(enemy:position()) < 5 then 
+			zh.draftsman = enemy
+			zh.direction = p_obj:position():sub(enemy:position())
+			enemy:hit(zh)
+		end
+	
+		if not enemy and posit:distance_to(db.actor:position()) < 5 then
+			zh.draftsman = db.actor
+			zh.direction = p_obj:position():sub(db.actor:position())
+			db.actor:hit(zh)
+		end
+
+		local sobj = alife():object(p_obj:id())
+		if sobj.squad_id == nil then
+			fixme.destroy_object(sobj)
+		else
+			sim_board.get_sim_board().squads[sobj.squad_id]:remove_npc(sobj.id)
+		end	
+	end
+end
+
+
+-- Разряд электрохимеры
+function charge_chimera(p_obj)
+	if p_obj then
+		local posit = p_obj:position()
+		local enemy = p_obj:best_enemy()
+	
+		if not chimera_particle:playing() then chimera_particle:play_at_pos(p_obj:position()) end
+
+		if not chimera_sound:playing() then 
+			chimera_sound:play_at_pos(p_obj, p_obj:position(), 0)
+			local zh = hit()
+			zh.draftsman = enemy
+			zh.type = hit.shock
+			zh.direction = p_obj:position():sub(enemy:position())
+			zh:bone("pelvis")
+			zh.power = 0.6
+			zh.impulse = 0.1
+			enemy:hit(zh)
+		end
+	end
+end
+
+
+-- Насекомые чумного зомби
+function zombie_insect(p_obj)
+	if p_obj then
+
+		local posit = p_obj:position()
+		local actor = db.actor:position()
+		local zh = hit()
+		zh.draftsman = db.actor
+		zh.type = hit.wound
+		zh.direction = p_obj:position():sub(actor)
+		zh:bone("pelvis")
+		zh.power = 0.35
+		zh.impulse = 0.1
+
+		if ppe_zombie_set == false then
+			level.add_pp_effector("dead_zone.ppe", PPE_ZOMBIE, true)
+			level.set_pp_effector_factor(PPE_ZOMBIE, 0.0005)
+			ppe_zombie_set = true
+		end
+	
+		if not insect_particle:playing() then 
+			insect_particle:play_at_pos(vector():set(actor.x, actor.y+1.8, actor.z))
+			if not insect_sound:playing() then 
+				insect_sound:play_at_pos(db.actor, actor)
+				db.actor:hit(zh)
+			else
+				insect_sound:set_position(actor)
+			end
+		else
+			insect_particle:move_to(vector():set(actor.x, actor.y+1.8, actor.z),vector():set(actor.x, actor.y+1.8, actor.z))
+			if not insect_sound:playing() then 
+				insect_sound:play_at_pos(db.actor, actor)
+				db.actor:hit(zh)
+			else
+				insect_sound:set_position(actor)
+			end
+		end
+	
+	end
+end
+function stop_insects()
+	level.remove_pp_effector(PPE_ZOMBIE)
+	ppe_zombie_set = false
+	if insect_particle:playing() then 
+		insect_particle:stop()
+	end
+end
+
+
+-- Аура пси-бюрера
+function psy_burer(p_obj)
+	if p_obj then
+		
+		local zh = hit()
+		zh.draftsman = p_obj
+		zh.type = hit.telepatic
+		zh.direction = p_obj:position():sub(db.actor:position())
+		zh:bone("pelvis")
+		zh.power = 0.1
+
+		if ppe_burer_set == false then
+			level.add_pp_effector("dead_zone.ppe", PPE_BURER, true)
+			ppe_burer_set = true
+		end
+		
+		if not sound_obj_left:playing() then 
+			local i=math.random(1,4)
+			if i==1 then sound_obj_left = sound_object([[ambient\random\rnd_moan1]])
+			elseif i==2 then sound_obj_left = sound_object([[ambient\random\rnd_moan2]])
+			elseif i==3 then sound_obj_left = sound_object([[ambient\random\rnd_moan4]])
+			elseif i==4 then sound_obj_left = sound_object([[ambient\random\rnd_moan5]])
+			end
+			sound_obj_left:play_at_pos(db.actor, vector():set(1, 0, 1), 0, sound_object.s2d)
+			db.actor:hit(zh)
+		end
+		
+		if not sound_obj_right:playing() then
+			local j=math.random(1,4)
+			if j==1 then sound_obj_right = sound_object([[ambient\random\rnd_moan1]])
+			elseif j==2 then sound_obj_right = sound_object([[ambient\random\rnd_moan2]])
+			elseif j==3 then sound_obj_right = sound_object([[ambient\random\rnd_moan4]])
+			elseif j==4 then sound_obj_right = sound_object([[ambient\random\rnd_moan5]])
+			end
+			sound_obj_right:play_at_pos(db.actor, vector():set(-1, 0, 1), 0, sound_object.s2d) 
+			db.actor:hit(zh)
+		end
+	end
+end
+function stop_psy_burer()
+	level.remove_pp_effector(PPE_BURER)
+	ppe_burer_set = false
+end
+
+
+-- Аура контроллера
+function controller_aura()
+
+	if not sound_obj_left:playing() then 
+		sound_obj_left = sound_object([[monsters\controller\controller_presence_l]])
+		sound_obj_left:play_at_pos(db.actor, vector():set(1, 0, 1), 0, sound_object.s2d)
+	end
+	
+	if not sound_obj_right:playing() then
+		sound_obj_right = sound_object([[monsters\controller\controller_presence_r]])
+		sound_obj_right:play_at_pos(db.actor, vector():set(-1, 0, 1), 0, sound_object.s2d) 
+	end
+end
+function stop_controller()
+	if sound_obj_left:playing() then 
+		sound_obj_left:stop()
+		local sound_obj_left_end = sound_object([[monsters\controller\controller_presence_2_l]])
+		sound_obj_left_end:play_at_pos(db.actor, vector():set(1, 0, 1), 0, sound_object.s2d)
+	end
+	if sound_obj_right:playing() then
+		sound_obj_right:stop()
+		local sound_obj_right_end = sound_object([[monsters\controller\controller_presence_2_r]])
+		sound_obj_right_end:play_at_pos(db.actor, vector():set(-1, 0, 1), 0, sound_object.s2d) 
+	end
+end
+
+
+-- Аура кота баюна
+function cat_effects()
+
+	local slp
+	local tg = time_global()
+
+	if ppe_cat_set == false then
+		level.add_pp_effector("alcohol.ppe", PPE_CAT, true)
+		ppe_cat_set = true
+	end
+
+	if not sound_obj_left:playing() then 
+		sound_obj_left = sound_object([[monsters\cat\cat_sleep_attack]])
+		sound_obj_left:play_at_pos(db.actor, vector():set(1, 0, 1), 0, sound_object.s2d)
+	end
+	
+	if not sound_obj_right:playing() then
+		sound_obj_right = sound_object([[ambient\os_1]])
+		sound_obj_right:play_at_pos(db.actor, vector():set(-1, 0, 1), 0, sound_object.s2d) 
+	end
+
+	if trigger < tg then
+		if db.actor.power > 0.2 then
+			db.actor.power = -0.2
+		end
+		slp = ogsm.load_variable("slp", 0)
+		ogsm.save_variable("slp", slp + 10)
+		trigger = tg + 2000
+		if slp > 360 then
+			db.actor:kill(db.actor)
+		end
+	end
+end
+function reset_cat_effects()
+	level.remove_pp_effector(PPE_CAT)
+	ppe_cat_set = false
+end
+
+
+
+--------------------------------- Обработчик монстров ---------------------------------
+----------------------------- Copyright 2007-2011 DEXXX -------------------------------

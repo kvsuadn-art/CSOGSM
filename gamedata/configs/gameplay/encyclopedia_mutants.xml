@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<encyclopedia>
+
+    <!-------------------------------- Private ----------------------------->
+
+    <article id="private_1_note" name="private_1" group="Journal"></article>
+    <article id="private_2_note" name="private_2" group="Journal"></article>
+    <article id="private_3_note" name="private_3" group="Journal"></article>
+    <article id="private_4_note" name="private_4" group="Journal"></article>
+    <article id="private_5_note" name="private_5" group="Journal"></article>
+    <article id="private_6_note" name="private_6" group="Journal"></article>
+    <article id="private_7_note" name="private_7" group="Journal"></article>
+    <article id="private_8_note" name="private_8" group="Journal"></article>
+    <article id="private_9_note" name="private_9" group="Journal"></article>
+    <article id="private_10_note" name="private_10" group="Journal"></article>
+    <article id="private_11_note" name="private_11" group="Journal"></article>
+    <article id="private_12_note" name="private_12" group="Journal"></article>
+    <article id="private_13_note" name="private_13" group="Journal"></article>
+    <article id="private_14_note" name="private_14" group="Journal"></article>
+    <article id="private_15_note" name="private_15" group="Journal"></article>
+    <article id="private_16_note" name="private_16" group="Journal"></article>
+    <article id="private_17_note" name="private_17" group="Journal"></article>
+    <article id="private_18_note" name="private_18" group="Journal"></article>
+    <article id="private_19_note" name="private_19" group="Journal"></article>
+    <article id="private_20_note" name="private_20" group="Journal"></article>
+    <article id="private_21_note" name="private_21" group="Journal"></article>
+    <article id="private_22_note" name="private_22" group="Journal"></article>
+    <article id="private_23_note" name="private_23" group="Journal"></article>
+    <article id="private_24_note" name="private_24" group="Journal"></article>
+    <article id="private_25_note" name="private_25" group="Journal"></article>
+    <article id="private_26_note" name="private_26" group="Journal"></article>
+    <article id="private_27_note" name="private_27" group="Journal"></article>
+    <article id="private_28_note" name="private_28" group="Journal"></article>
+    <article id="private_29_note" name="private_29" group="Journal"></article>
+
+
+    <!-------------------------------- Monsters ----------------------------->
+
+    <article id="mutant_crow_general" name="crow" group="Mutants"></article>
+    <article id="mutant_flesh_general" name="flesh" group="Mutants"></article>
+    <article id="mutant_blind_general" name="blind" group="Mutants"></article>
+    <article id="mutant_tushkano_general" name="tushkano" group="Mutants"></article>
+    <article id="mutant_rat_general" name="rat" group="Mutants"></article>
+    <article id="mutant_boar_general" name="boar" group="Mutants"></article>
+    <article id="mutant_pseudodog_general" name="pseudodog" group="Mutants"></article>
+    <article id="mutant_psydog_general" name="psydog" group="Mutants"></article>
+    <article id="mutant_bloodsucker_general" name="bloodsucker" group="Mutants"></article>
+    <article id="mutant_bloodsucker_marsh_general" name="bloodsucker_marsh" group="Mutants"></article>
+    <article id="mutant_pseudogiant_general" name="pseudogiant" group="Mutants"></article>
+    <article id="mutant_poltergeist_general" name="poltergeist" group="Mutants"></article>
+    <article id="mutant_controller_general" name="controller" group="Mutants"></article>
+    <article id="mutant_snork_general" name="snork" group="Mutants"></article>
+    <article id="mutant_cat_general" name="cat" group="Mutants"></article>
+    <article id="mutant_chimera_general" name="chimera" group="Mutants"></article>
+    <article id="mutant_burer_general" name="burer" group="Mutants"></article>
+    <article id="mutant_fracture_general" name="fracture" group="Mutants"></article>
+    <article id="mutant_zombie_general" name="zombie" group="Mutants"></article>
+    <article id="mutant_zombieg_general" name="zombieg" group="Mutants"></article>
+    <article id="mutant_zombierusty_general" name="zombierusty" group="Mutants"></article>
+    <article id="mutant_zombieplague_general" name="zombieplague" group="Mutants"></article>
+    <article id="mutant_electrochimera_general" name="electrochimera" group="Mutants"></article>
+    <article id="mutant_psyburer_general" name="psyburer" group="Mutants"></article>
+
+
+    <!-------------------------------- Anomalies ----------------------------->
+
+    <article id="tramplin_info" name="tramplin" group="Anomalies"></article>
+    <article id="voronka_info" name="voronka" group="Anomalies"></article>
+    <article id="karusel_info" name="karusel" group="Anomalies"></article>
+    <article id="electra_info" name="electra" group="Anomalies"></article>
+    <article id="zharka_info" name="zharka" group="Anomalies"></article>
+    <article id="razlom_info" name="razlom" group="Anomalies"></article>
+    <article id="simbiont_info" name="simbiont" group="Anomalies"></article>
+    <article id="pukh_info" name="pukh" group="Anomalies"></article>
+    <article id="studen_info" name="studen" group="Anomalies"></article>
+    <article id="teleport_info" name="teleport" group="Anomalies"></article>
+    <article id="tuman_info" name="tuman" group="Anomalies"></article>
+    <article id="psyzone_info" name="psyzone" group="Anomalies"></article>
+    <article id="radioactive_info" name="radioactive" group="Anomalies"></article>
+
+
+    <!-------------------------------- Locations ----------------------------->
+
+    <article id="marsh_visited" name="marsh" group="Locations"></article>
+    <article id="escape_visited" name="escape" group="Locations"></article>
+    <article id="garbage_visited" name="garbage" group="Locations"></article>
+    <article id="darkvalley_visited" name="darkvalley" group="Locations"></article>
+    <article id="agroprom_visited" name="agroprom" group="Locations"></article>
+    <article id="agroprom_underground_visited" name="agroprom_underground" group="Locations"></article>
+    <article id="yantar_visited" name="yantar" group="Locations"></article>
+    <article id="red_forest_visited" name="red_forest" group="Locations"></article>
+    <article id="military_visited" name="military" group="Locations"></article>
+    <article id="limansk_visited" name="limansk" group="Locations"></article>
+    <article id="hospital_visited" name="hospital" group="Locations"></article>
+    <article id="jupiter_underground_visited" name="jupiter_underground" group="Locations"></article>
+    <article id="stancia_2_visited" name="stancia_2" group="Locations"></article>
+
+
+    <!-------------------------------- Factions ----------------------------->
+
+    <article id="csky_info" name="csky" group="Factions"></article>
+    <article id="renegade_info" name="renegade" group="Factions"></article>
+    <article id="stalker_info" name="stalker" group="Factions"></article>
+    <article id="bandit_info" name="bandit" group="Factions"></article>
+    <article id="army_info" name="army" group="Factions"></article>
+    <article id="killer_info" name="killer" group="Factions"></article>
+    <article id="dolg_info" name="dolg" group="Factions"></article>
+    <article id="freedom_info" name="freedom" group="Factions"></article>
+    <article id="ecolog_info" name="ecolog" group="Factions"></article>
+    <article id="monolith_info" name="monolith" group="Factions"></article>
+    <article id="zombied_info" name="zombied" group="Factions"></article>
+
+
+    <!-------------------------------- Stories ----------------------------->
+
+    <article id="dm_ogsm_story_1" name="story_1" group="Stories"></article>
+    <article id="dm_ogsm_story_2" name="story_2" group="Stories"></article>
+    <article id="dm_ogsm_story_3" name="story_3" group="Stories"></article>
+    <article id="dm_ogsm_story_4" name="story_4" group="Stories"></article>
+    <article id="dm_ogsm_story_5" name="story_5" group="Stories"></article>
+    <article id="dm_ogsm_story_6" name="story_6" group="Stories"></article>
+    <article id="dm_ogsm_story_7" name="story_7" group="Stories"></article>
+    <article id="dm_ogsm_story_8" name="story_8" group="Stories"></article>
+    <article id="dm_ogsm_story_9" name="story_9" group="Stories"></article>
+    <article id="dm_ogsm_story_10" name="story_10" group="Stories"></article>
+    <article id="dm_ogsm_story_11" name="story_11" group="Stories"></article>
+    <article id="dm_ogsm_story_12" name="story_12" group="Stories"></article>
+    <article id="dm_ogsm_story_13" name="story_13" group="Stories"></article>
+    <article id="dm_ogsm_story_14" name="story_14" group="Stories"></article>
+    <article id="dm_ogsm_story_15" name="story_15" group="Stories"></article>
+    <article id="dm_ogsm_story_16" name="story_16" group="Stories"></article>
+    <article id="dm_ogsm_story_17" name="story_17" group="Stories"></article>
+    <article id="dm_ogsm_story_18" name="story_18" group="Stories"></article>
+
+
+    <!------------------------------ Documents ----------------------------->
+
+    <article id="doc_1" name="doc_1" group="Documents"></article>
+    <article id="doc_2" name="doc_2" group="Documents"></article>
+    <article id="doc_3" name="doc_3" group="Documents"></article>
+    <article id="doc_4" name="doc_4" group="Documents"></article>
+    <article id="doc_5" name="doc_5" group="Documents"></article>
+    <article id="doc_6" name="doc_6" group="Documents"></article>
+    <article id="doc_7" name="doc_7" group="Documents"></article>
+    <article id="doc_8" name="doc_8" group="Documents"></article>
+    <article id="doc_9" name="doc_9" group="Documents"></article>
+    <article id="doc_10" name="doc_10" group="Documents"></article>
+    <article id="doc_11" name="doc_11" group="Documents"></article>
+    <article id="doc_12" name="doc_12" group="Documents"></article>
+    <article id="doc_13" name="doc_13" group="Documents"></article>
+    <article id="doc_14" name="doc_14" group="Documents"></article>
+    <article id="doc_15" name="doc_15" group="Documents"></article>
+
+</encyclopedia>

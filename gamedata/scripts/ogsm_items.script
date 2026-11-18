@@ -1,0 +1,249 @@
+------------------------------ Copyright 2007-2010 DEXXX ------------------------------
+----------------------------- Функции работы с предметами -----------------------------
+
+
+-- Использование аптечек
+function use_medkit(oid)
+	if alife():object(oid) == nil then
+		ogsm_mutants.hl = db.actor.health
+		local snd = sound_object([[food\inv_medkit]])
+		snd:play_no_feedback(db.actor,sound_object.s2d, 0, vector():set(0, 0, 0), 1.0)
+		db.actor:give_info_portion("addon_system_item_active")
+	end
+end
+
+-- Использование бинта
+function use_bandage(oid)
+	if alife():object(oid) == nil then
+		local snd = sound_object([[food\inv_bandage]])
+		snd:play_no_feedback(db.actor,sound_object.s2d, 0, vector():set(0, 0, 0), 1.0)
+		db.actor:give_info_portion("addon_system_item_active")
+	end
+end
+
+-- Использование чая
+function use_tea(oid)
+	if alife():object(oid) == nil then
+		local snd = sound_object([[food\inv_tea]])
+		snd:play_no_feedback(db.actor,sound_object.s2d, 0, vector():set(0, 0, 0), 1.0)
+		db.actor:give_info_portion("addon_system_item_active")
+	end
+end
+
+-- Использование антирада
+function use_antirad(oid)
+	if alife():object(oid) == nil then
+		local snd = sound_object([[food\inv_pills]])
+		snd:play_no_feedback(db.actor,sound_object.s2d, 0, vector():set(0, 0, 0), 1.0)
+		db.actor:give_info_portion("addon_system_item_active")
+	end
+end
+
+-- Money usage
+
+function use_money_low(oid)
+	if alife():object(oid) == nil then
+		lootmoney(10, 100)
+	end
+end
+
+function use_money_average(oid)
+	if alife():object(oid) == nil then
+		lootmoney(100, 500)
+	end
+end
+
+function use_money_high(oid)
+	if alife():object(oid) == nil then
+		lootmoney(500, 1000)
+	end
+end
+
+function lootmoney(lowest, highest)
+	local money = db.actor:money()
+	local sum = math.random(lowest, highest)
+	
+	db.actor:give_money(sum)
+	news_manager.send_tip(db.actor, "Вы нашли: ".. sum .. " RU", nil, "got_money", nil, nil)
+end
+
+-- Использование йадулина
+function use_yad(pid)
+
+local start_time
+local cur_time
+local end_time
+
+if alife():object(pid)==nil then
+	db.actor:give_info_portion("addon_system_item_active")
+	local snd = sound_object([[food\inv_pills]])
+	snd:play_no_feedback(db.actor,sound_object.s2d, 0, vector():set(0, 0, 0), 1.0)
+	start_time = level.get_time_days()*60*24+level.get_time_hours()*60+level.get_time_minutes()
+	cur_time = ogsm.load_variable("hlth", 0)
+	if cur_time ~= 0 then
+		if (cur_time - start_time) > 0 and (cur_time - start_time) < 15 then
+			end_time = cur_time + 5
+		else
+			end_time = cur_time
+		end
+	else
+		end_time = start_time + 5
+	end
+	ogsm.save_variable("hlth", end_time)
+end
+
+end
+
+
+-- Проверка действия йадулина, даем health-boost
+local heart_sound = sound_object([[heart\3]])
+function check_hlth()
+if db.actor.health < 1.01 then
+	local time = level.get_time_days()*60*24+level.get_time_hours()*60+level.get_time_minutes()
+	local end_time = ogsm.load_variable("hlth", 0)
+	if time < end_time then
+		db.actor.health = 0.003
+--		ogsm.dbglog(db.actor.health)
+		if ogsm.load_variable("hrt", 0) == 0 then
+			if not heart_sound:playing() then 
+				heart_sound:play_at_pos(db.actor, db.actor:position(), 1, sound_object.looped)
+			end
+			ogsm.save_variable("hrt", 1)
+		else
+			if heart_sound:playing() then heart_sound:set_position(db.actor:position()) end
+		end
+	elseif ogsm.load_variable("hrt", 0) == 1 then
+		db.actor.health = -0.8
+		if heart_sound:playing() then heart_sound:stop() end
+		ogsm.del_variable("hrt")
+		ogsm.del_variable("hlth")
+	end
+end
+end
+
+-- Использование водки
+function use_vodka(pid)
+
+local start_time
+local cur_time
+local end_time
+
+if alife():object(pid)==nil then
+	db.actor:give_info_portion("addon_system_item_active")
+	local snd = sound_object([[food\inv_vodka]])
+	snd:play_no_feedback(db.actor,sound_object.s2d, 0, vector():set(0, 0, 0), 1.0)
+	start_time = level.get_time_days()*60*24+level.get_time_hours()*60+level.get_time_minutes()
+	cur_time = ogsm.load_variable("drnk", 0)
+	if cur_time ~= 0 then
+		if (cur_time - start_time) > 0 and (cur_time - start_time) < 15 then
+			end_time = cur_time + 5
+		else
+			end_time = cur_time
+		end
+	else
+		end_time = start_time + 5
+	end
+	ogsm.save_variable("drnk", end_time)
+end
+
+end
+
+-- Проверка, пьян ли актор, если да, то даем защиту от пси
+function check_drunk()
+if db.actor.psy_health < 0.99 then
+	local time = level.get_time_days()*60*24+level.get_time_hours()*60+level.get_time_minutes()
+	local end_time = ogsm.load_variable("drnk", 0)
+	if time < end_time then
+		db.actor.psy_health = 0.0015
+	elseif ogsm.load_variable("drnk", 0) ~= 0 then
+		ogsm.del_variable("drnk")
+	end
+end
+end
+
+-- Использование губной гармошки
+function use_harmonica(pid)
+
+local snd
+local i
+local length
+
+if alife():object(pid)==nil then
+	db.actor:give_info_portion("addon_system_item_active")
+	i = math.random(1,8)
+	snd = sound_object("items\\harmonica\\harmonica_"..i)
+	length = snd:length()
+	if not snd:playing() then
+		snd:play_no_feedback(db.actor,sound_object.s2d, 0, vector():set(0, 0, 0), 1.0)
+	end
+	ogsm.start_timer("spw", length/1000, "harmonica_a")
+end
+
+end
+
+-- Использование гитары
+function use_guitar(pid)
+
+local snd
+local i
+local length
+
+if alife():object(pid)==nil then
+	db.actor:give_info_portion("addon_system_item_active")
+	i = math.random(1,11)
+	snd = sound_object("items\\guitar\\guitar_"..i)
+	length = snd:length()
+	if not snd:playing() then
+		snd:play_no_feedback(db.actor,sound_object.s2d, 0, vector():set(0, 0, 0), 1.0)
+	end
+	ogsm.start_timer("spw", length/1000, "guitar_a")
+end
+
+end
+
+-- Использование рации
+function use_radio(pid)
+
+local snd
+local i
+local length
+
+if alife():object(pid)==nil then
+	db.actor:give_info_portion("addon_system_item_active")
+	if level.name() == "agroprom_underground" then
+		snd = sound_object([[items\radio\radio_noise_2]])
+		length = snd:length()
+	else
+		if math.random()<0.45 then
+			i = math.random(1,12)
+			snd = sound_object("items\\radio\\radio_voice_"..i)
+			length = snd:length()
+		else
+			i = math.random(1,2)
+			snd = sound_object("items\\radio\\radio_noise_"..i)
+			length = snd:length()
+		end
+	end
+	if not snd:playing() then
+		snd:play_no_feedback(db.actor,sound_object.s2d, 0, vector():set(0, 0, 0), 1.0)
+	end
+	ogsm.start_timer("spw", length/1000, "hand_radio")
+end
+
+end
+
+
+-- Использование записной книжки
+function use_notepad(pid)
+
+if alife():object(pid)==nil then
+	local spwn = ogsm_notepad.notepad(get_hud())
+	level.start_stop_menu(spwn, true)
+	ogsm.spawn_item_in_inv("notepad")
+end
+
+end
+
+
+----------------------- Функции работы с предметами для OGSM CS -----------------------
+------------------------------ Copyright 2007-2010 DEXXX ------------------------------

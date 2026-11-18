@@ -1,0 +1,101 @@
+[settings]
+glory_0 = 0
+glory_1 = 0
+glory_2 = 0
+glory_3 = 0
+glory_4 = 0
+glory_5 = 0
+
+[spawn_by_resource]
+0 = bloodsucker_marsh, 1
+1 = flesh_weak, 1, flesh_normal, 1, flesh_strong, 1
+2 = boar_weak, 1, boar_normal, 1, boar_strong, 1
+3 = dog_weak, 1, dog_normal, 1, dog_strong, 1, pseudodog_weak, 1, pseudodog_normal, 1, pseudodog_strong, 1
+4 = snork_weak, 1, snork_normal, 1, snork_strong, 1
+5 = bloodsucker_weak, 1, bloodsucker_normal, 1, bloodsucker_strong, 1
+6 = psy_dog, 1
+
+[spawn_by_level]
+marsh 		= bloodsucker_marsh, 100, flesh_weak, 50, flesh_normal, 50, boar_weak, 50, boar_normal, 50
+escape 		= flesh_weak, 50, flesh_normal, 50, boar_weak, 50, boar_normal, 50, dog_weak, 50, dog_normal, 50, bloodsucker_weak, 50, bloodsucker_normal, 50
+garbage 	= flesh_weak, 50, flesh_normal, 50, dog_normal, 50, dog_strong, 50, pseudodog_weak, 50, pseudodog_normal, 50, bloodsucker_weak, 50, bloodsucker_normal, 50
+darkvalley	= flesh_normal, 50, flesh_strong, 50, boar_normal, 50, boar_strong, 50, pseudodog_weak, 50, pseudodog_normal, 50, bloodsucker_weak, 50, bloodsucker_normal, 50
+agroprom 	= flesh_normal, 50, flesh_strong, 50, boar_normal, 50, boar_strong, 50, pseudodog_weak, 50, pseudodog_normal, 50, bloodsucker_weak, 50, bloodsucker_normal, 50
+yantar 		= pseudodog_normal, 50, pseudodog_strong, 50, snork_normal, 50, snork_strong, 50, psy_dog, 100
+red_forest 	= pseudodog_normal, 50, pseudodog_strong, 50, snork_normal, 50, snork_strong, 50, psy_dog, 100
+military 	= flesh_normal, 50, flesh_strong, 50, boar_normal, 50, boar_strong, 50, pseudodog_normal, 50, pseudodog_strong, 50, bloodsucker_normal, 50, bloodsucker_strong, 50
+
+[expansion_0]
+base_squad_number = 40
+respawn_idle_time = 180  ;Время между двумя попытками доспауна отрядов в игровых минутах.
+respawn_hours = 0,1,2,3,4,5,22,23 ;Время, в который можно спаунить отряды (задаются времена суток)
+precondition_cond = {+esc_join_stalker_on} true, false
+
+[expansion_1]
+base_squad_number = 45
+respawn_idle_time = 180  ;Время между двумя попытками доспауна отрядов в игровых минутах.
+respawn_hours = 0,1,2,3,4,5,22,23 ;Время, в который можно спаунить отряды (задаются времена суток)
+
+
+[start_position]
+
+; Болота
+mar_ogsm_boars = mar_smart_terrain_6_4, mar_smart_terrain_3_10, mar_smart_terrain_5_10
+mar_ogsm_bloodsucker_3_7 = mar_smart_terrain_3_7
+mar_ogsm_flesh_3_7 = mar_smart_terrain_3_7
+mar_ogsm_boar_3_10 = mar_smart_terrain_3_10
+mar_ogsm_bloodsucker_6_7_lair = mar_smart_terrain_6_7
+mar_ogsm_bloodsucker_6_10_lair = mar_smart_terrain_6_10
+mar_ogsm_zombie_6_10  = mar_smart_terrain_6_10
+
+; Кордон
+esc_ogsm_izlom_9_7_lair = esc_smart_terrain_9_7
+esc_ogsm_izlom_5_6_lair = esc_smart_terrain_5_6
+esc_ogsm_zombie_4_10 = esc_smart_terrain_4_10
+esc_ogsm_zombie_5_4 = esc_smart_terrain_5_4
+esc_ogsm_zombie_6_3 = esc_smart_terrain_6_3
+esc_ogsm_zombie_8_10 = esc_smart_terrain_8_10
+esc_ogsm_dogs_6_5 = esc_smart_terrain_6_5
+esc_dogs_lair_guard_2_14 = esc_smart_terrain_2_14
+esc_dogs_lair_8_6 = esc_smart_terrain_8_6
+esc_ogsm_dogs_8_9 = esc_smart_terrain_8_9
+esc_ogsm_boars_4_11 = esc_smart_terrain_4_11
+esc_ogsm_tushkan_6_7 = esc_smart_terrain_6_7
+
+; Свалка
+gar_ogsm_izlom_6_7 = gar_smart_terrain_6_7
+gar_ogsm_zombies = gar_smart_terrain_4_7, gar_smart_terrain_3_2
+gar_ogsm_bloodsucker_6_6_lair = gar_smart_terrain_6_6
+gar_ogsm_bloodsucker_7_3_lair = gar_smart_terrain_7_3
+;gar_ogsm_pseudodog_7_4  = gar_smart_terrain_6_5
+
+; Темная долина
+val_ogsm_tushkan = val_smart_terrain_6_6
+val_ogsm_tushkano = val_smart_terrain_9_10
+val_ogsm_izlom = val_smart_terrain_5_10
+val_ogsm_chimera_9_10 = val_smart_terrain_9_10
+val_ogsm_cats_9_6 = val_smart_terrain_9_6
+val_flesh_lair_guard_8_9 = val_smart_terrain_8_9
+val_flesh_lair_guard_7_8 = val_smart_terrain_7_8
+
+; Агропром
+agr_ogsm_pseudodogs_2_2_lair = agr_smart_terrain_2_2
+agr_ogsm_zombies_1_3_lair = agr_smart_terrain_1_3
+agr_ogsm_cats_7_5_lair = agr_smart_terrain_7_5
+agr_ogsm_chimera_5_2_lair = agr_smart_terrain_5_2
+agr_ogsm_chimera_5_4_lair =  agr_smart_terrain_5_4
+agr_smart_terrain_3_5_snorks_1_lair = agr_smart_terrain_3_5
+
+; Военные склады
+mil_ogsm_chimera_4_7_lair = mil_smart_terrain_4_7
+mil_ogsm_psydog_2_1_lair = mil_smart_terrain_2_1
+mil_ogsm_zombies_8_3 = mil_smart_terrain_8_3
+mil_dogs_lair_3 = mil_smart_terrain_7_8
+
+; Рыжий лес
+red_ogsm_echimera = red_smart_terrain_monsters
+red_ogsm_cats_4_3_lair = red_smart_terrain_4_3
+red_ogsm_zombies_5_6 = red_smart_terrain_5_6
+;red_ogsm_kamikaze_6_3_lair = red_smart_terrain_6_3
+red_snork_dangeon_keepers_2 = red_smart_terrain_monsters_2
+red_forest_monsters_1 = red_smart_terrain_monsters_3

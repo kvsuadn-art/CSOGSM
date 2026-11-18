@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<cheat>
+
+<!-- 25.11.10 добавил часы и переделал кнопки в tab -->
+
+	<background x="0" y="0" width="950" height="1000" stretch="1">
+		<texture>ui\ui_notepad</texture>
+	</background>
+
+	<!-- Notepad Off Button -->
+	<off_button x="0" y="0" width="1" height="1">
+		<!--<texture>ui\ui_notepad</texture>-->
+		<text x="0" y="0" font="letterica18" r="255" g="255" b="255"/>
+	</off_button>
+
+	<!-- Main buttons background -->
+	<mbbackground_frame_line x="95" y="584" width="625" height="32">
+		<texture>ui_string_01</texture>
+	</mbbackground_frame_line>
+
+	<!-- Time Display Background -->
+	<timer_frame_line x="725" y="584" width="91" height="32">
+		<texture>ui_string_01</texture>
+		<title x="10" y="7" width="90" height="18">
+			<text font="letterica18" r="255" g="255" b="255" complex_mode="0"/>
+		</title>
+	</timer_frame_line>
+
+	<!-- TAB Control -->
+	<tab x="110" y="584" width="800" height="30">
+		<!-- Buttons -->
+		<button x="0" width="80" y="6" height="20" id="private" hint="Личное" frame_mode="0">
+			<auto_static x="0" y="5" width="9" height="11">
+				<texture>ui_pda_m_update</texture>
+			</auto_static>
+			<text align="l" x="10" y="0" font="letterica18" r="255" g="255" b="255">Личное</text>
+			<text_color>
+				<t r="231" g="168" b="12"/>
+				<d r="181" g="170" b="148"/>
+				<e r="127" g="127" b="127"/>
+				<h r="255" g="255" b="255"/>
+			</text_color>
+			<!--
+			<texture_e x="0" y="4" width="9" height="11">ui_pda_m_update</texture_e>
+			<texture_t x="0" y="4" width="9" height="11">ui_pda_m_noupdate</texture_t>
+			<texture_h x="0" y="4" width="9" height="11">ui_pda_m_noupdate</texture_h>
+			-->
+		</button>
+		<button x="72" y="6" width="80" height="20" id="monsters" hint="Мутанты" frame_mode="0">
+			<auto_static x="0" y="5" width="9" height="11">
+				<texture>ui_pda_m_update</texture>
+			</auto_static>
+			<text align="l" x="10" y="0" font="letterica18" r="255" g="255" b="255">Мутанты</text>
+			<text_color>
+				<t r="231" g="168" b="12"/>
+				<d r="181" g="170" b="148"/>
+				<e r="127" g="127" b="127"/>
+				<h r="255" g="255" b="255"/>
+			</text_color>
+			<!--
+			<texture_e x="0" y="4" width="9" height="11">ui_pda_m_update</texture_e>
+			<texture_t x="0" y="4" width="9" height="11">ui_pda_m_noupdate</texture_t>
+			<texture_h x="0" y="4" width="9" height="11">ui_pda_m_noupdate</texture_h>
+			-->
+		</button>
+		<button x="151" y="6" width="92" height="20" id="anomalies" hint="Аномалии" frame_mode="0">
+			<auto_static x="0" y="5" width="9" height="11">
+				<texture>ui_pda_m_update</texture>
+			</auto_static>
+			<text align="l" x="10" y="0" font="letterica18" r="255" g="255" b="255">Аномалии</text>
+			<text_color>
+				<t r="231" g="168" b="12"/>
+				<d r="181" g="170" b="148"/>
+				<e r="127" g="127" b="127"/>
+				<h r="255" g="255" b="255"/>
+			</text_color>
+			<!--
+			<texture_e x="0" y="4" width="9" height="11">ui_pda_m_update</texture_e>
+			<texture_t x="0" y="4" width="9" height="11">ui_pda_m_noupdate</texture_t>
+			<texture_h x="0" y="4" width="9" height="11">ui_pda_m_noupdate</texture_h>
+			-->
+		</button>
+		<button x="241" y="6" width="82" height="20" id="locations" hint="Локации" frame_mode="0">
+			<auto_static x="0" y="5" width="9" height="11">
+				<texture>ui_pda_m_update</texture>
+			</auto_static>
+			<text align="l" x="10" y="0" font="letterica18" r="255" g="255" b="255">Локации</text>
+			<text_color>
+				<t r="231" g="168" b="12"/>
+				<d r="181" g="170" b="148"/>
+				<e r="127" g="127" b="127"/>
+				<h r="255" g="255" b="255"/>
+			</text_color>
+			<!--
+			<texture_e x="0" y="4" width="9" height="11">ui_pda_m_update</texture_e>
+			<texture_t x="0" y="4" width="9" height="11">ui_pda_m_noupdate</texture_t>
+			<texture_h x="0" y="4" width="9" height="11">ui_pda_m_noupdate</texture_h>
+			-->
+		</button>
+		<button x="322" y="6" width="112" height="20" id="factions" hint="Группировки" frame_mode="0">
+			<auto_static x="0" y="5" width="9" height="11">
+				<texture>ui_pda_m_update</texture>
+			</auto_static>
+			<text align="l" x="10" y="0" font="letterica18" r="255" g="255" b="255">Группировки</text>
+			<text_color>
+				<t r="231" g="168" b="12"/>
+				<d r="181" g="170" b="148"/>
+				<e r="127" g="127" b="127"/>
+				<h r="255" g="255" b="255"/>
+			</text_color>
+			<!--
+			<texture_e x="0" y="4" width="9" height="11">ui_pda_m_update</texture_e>
+			<texture_t x="0" y="4" width="9" height="11">ui_pda_m_noupdate</texture_t>
+			<texture_h x="0" y="4" width="9" height="11">ui_pda_m_noupdate</texture_h>
+			-->
+		</button>
+		<button x="430" y="6" width="70" height="20" id="stories" hint="Легенды" frame_mode="0">
+			<auto_static x="0" y="5" width="9" height="11">
+				<texture>ui_pda_m_update</texture>
+			</auto_static>
+			<text align="l" x="10" y="0" font="letterica18" r="255" g="255" b="255">Легенды</text>
+			<text_color>
+				<t r="231" g="168" b="12"/>
+				<d r="181" g="170" b="148"/>
+				<e r="127" g="127" b="127"/>
+				<h r="255" g="255" b="255"/>
+			</text_color>
+			<!--
+			<texture_e x="0" y="4" width="9" height="11">ui_pda_m_update</texture_e>
+			<texture_t x="0" y="4" width="9" height="11">ui_pda_m_noupdate</texture_t>
+			<texture_h x="0" y="4" width="9" height="11">ui_pda_m_noupdate</texture_h>
+			-->
+		</button>
+		<button x="508" y="6" width="70" height="20" id="docs" hint="Документы" frame_mode="0">
+			<auto_static x="0" y="5" width="9" height="11">
+				<texture>ui_pda_m_update</texture>
+			</auto_static>
+			<text align="l" x="10" y="0" font="letterica18" r="255" g="255" b="255">Документы</text>
+			<text_color>
+				<t r="231" g="168" b="12"/>
+				<d r="181" g="170" b="148"/>
+				<e r="127" g="127" b="127"/>
+				<h r="255" g="255" b="255"/>
+			</text_color>
+			<!--
+			<texture_e x="0" y="4" width="9" height="11">ui_pda_m_update</texture_e>
+			<texture_t x="0" y="4" width="9" height="11">ui_pda_m_noupdate</texture_t>
+			<texture_h x="0" y="4" width="9" height="11">ui_pda_m_noupdate</texture_h>
+			-->
+		</button>
+	</tab>
+
+	<list_frame x="95" y="100" width="240" height="482">
+		<texture>ui_pda2_mapframe</texture>
+	</list_frame>
+
+	<list x="105" y="110" width="200" height="442" item_height="20" always_show_scroll="0">
+		<font font="letterica16" r="216" g="186" b="140" />
+	</list>
+
+	<list_item>
+		<main width="198" height="22"/>
+		<fn width="198" height="22"/>
+		<fa width="0" height="0"/>
+	</list_item>
+
+	<descr_frame x="337" y="100" width="478" height="482">
+		<texture>ui_stroketextbox</texture>
+	</descr_frame>
+
+	<description_list x="346" y="230" width="460" height="342" item_height="18" always_show_scroll="0">
+		<font font="letterica16" r="216" g="186" b="140" />
+	</description_list>
+
+	<picture x="347" y="112" width="165" height="108">
+		<texture width="165" height="108">ui\ui_noise</texture>
+		<text font="graffiti22" align="l" r="216" g="186" b="140" />
+	</picture>
+
+	<description_item x="0" y="0" width="470" height="0" min_height="13" bottom_footer="5">
+		<content_text x="0" y="0" width="460" height="10" complex_mode="0">
+			<text font="letterica16" r="216" g="186" b="140" />
+		</content_text>
+	</description_item>
+
+	<updated_section_static x="0" y="0" width="9" height="11">
+		<texture>ui_pda_m_noupdate</texture>
+	</updated_section_static>
+
+	<hint_wnd x="0" y="0" width="210" height="120">
+		<background x="0" y="0" width="210" height="100" border="5">
+			<texture a="100">ui_icons_PDA_tooltips</texture>
+		</background>
+		<text x="10" y="10" width="190" height="100">
+			<text font="letterica16" color="ui_6" complex_mode="1" align="l" vert_align="t"/>
+		</text>
+	</hint_wnd>
+
+</cheat>

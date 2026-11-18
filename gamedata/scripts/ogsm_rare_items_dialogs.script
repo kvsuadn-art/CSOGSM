@@ -1,0 +1,76 @@
+---------------------------- Copyright 2010-2011 Minister -----------------------------
+-------------------- Обработка диалогов по заказам редких предметов -------------------
+
+
+function rare_list_text(first_speaker, dialog_id, phrase_id)
+	if ogsm_rare_items_manager.get_rim().rare_items[first_speaker:name()][1] == nil then
+		return "На данный момент ничего нет."
+	else
+		return "Могу предложить следующее:"
+	end
+end
+
+function rare_list(first_speaker, second_speaker, dialog_id, phrase_id)
+	local rare_items = ogsm_rare_items_manager.get_rim().rare_items[first_speaker:name()]
+	
+	for k,v in pairs(rare_items) do
+		local text = ogsm_rare_items_manager.get_inv_name(rare_items[k])..". Цена: "..ogsm_rare_items_manager.get_cost(rare_items[k], first_speaker:name()).."р."
+		db.actor:give_talk_message2("", text, "ui_iconsTotal_found_money", "iconed_answer_item")
+	end
+end
+
+function check_first_rare_item(first_speaker, second_speaker, dialog_id, prev_phrase_id, phrase_id)
+    local rare_items = ogsm_rare_items_manager.get_rim().rare_items[second_speaker:name()]	
+	return rare_items[1] and db.actor:money() >= ogsm_rare_items_manager.get_cost(rare_items[1], second_speaker:name())
+end
+
+function check_second_rare_item(first_speaker, second_speaker, dialog_id, prev_phrase_id, phrase_id)
+    local rare_items = ogsm_rare_items_manager.get_rim().rare_items[second_speaker:name()]	
+	return rare_items[2] and db.actor:money() >= ogsm_rare_items_manager.get_cost(rare_items[2], second_speaker:name())
+end
+
+function check_third_rare_item(first_speaker, second_speaker, dialog_id, prev_phrase_id, phrase_id)
+    local rare_items = ogsm_rare_items_manager.get_rim().rare_items[second_speaker:name()]	
+	return rare_items[3] and db.actor:money() >= ogsm_rare_items_manager.get_cost(rare_items[3], second_speaker:name())
+end
+
+function give_first_rare_item(first_speaker, second_speaker, dialog_id, phrase_id)
+    local rare_items = ogsm_rare_items_manager.get_rim().rare_items[second_speaker:name()]
+	dialogs.relocate_item_section_to_actor(first_speaker, second_speaker, rare_items[1])
+	dialogs.relocate_money(second_speaker, ogsm_rare_items_manager.get_cost(rare_items[1], second_speaker:name()), "out")
+	table.remove(rare_items, 1)
+end
+
+function give_second_rare_item(first_speaker, second_speaker, dialog_id, phrase_id)
+    local rare_items = ogsm_rare_items_manager.get_rim().rare_items[second_speaker:name()]
+	dialogs.relocate_item_section_to_actor(first_speaker, second_speaker, rare_items[2])
+	dialogs.relocate_money(second_speaker, ogsm_rare_items_manager.get_cost(rare_items[2], second_speaker:name()), "out")
+	table.remove(rare_items, 2)
+end
+
+function give_third_rare_item(first_speaker, second_speaker, dialog_id, phrase_id)
+    local rare_items = ogsm_rare_items_manager.get_rim().rare_items[second_speaker:name()]
+	dialogs.relocate_item_section_to_actor(first_speaker, second_speaker, rare_items[3])
+	dialogs.relocate_money(second_speaker, ogsm_rare_items_manager.get_cost(rare_items[3], second_speaker:name()), "out")
+	table.remove(rare_items, 3)
+end
+
+function not_news(first_speaker, second_speaker, dialog_id, prev_phrase_id, phrase_id)
+    return db.actor:dont_has_info(second_speaker:name().."_rareitems_news")
+end
+
+function have_news(first_speaker, second_speaker, dialog_id, prev_phrase_id, phrase_id)
+	return db.actor:has_info(second_speaker:name().."_rareitems_news")
+end
+
+function allow_news(first_speaker, second_speaker, dialog_id, phrase_id)
+    db.actor:give_info_portion(second_speaker:name().."_rareitems_news")
+end
+
+function not_allow_news(first_speaker, second_speaker, dialog_id, phrase_id)
+    db.actor:disable_info_portion(second_speaker:name().."_rareitems_news")
+end
+
+
+-------------------- Обработка диалогов по заказам редких предметов -------------------
+---------------------------- Copyright 2010-2011 Minister -----------------------------

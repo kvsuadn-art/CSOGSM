@@ -1,0 +1,147 @@
+--[[-----------------------------------------------------------------------------------------------
+ File              : ui_cheat_main.script
+ Description       : Универсальное спавн-меню (ТЧ, ЧН, ЗП)
+ Created           : 02.11.2014
+ Last update       : 17.05.2015
+ Copyright         : naxac
+--]]-----------------------------------------------------------------------------------------------
+local log = function(fmt, ...)
+	fmt = string.format(fmt, ...)
+	if log1 then log1(fmt)			-- X-Ray Extensions
+	elseif log123 then log123(fmt)	-- Lua Extensions
+	elseif ver_prefix=='soc' or alife() then	-- crutches
+		fmt = string.gsub(fmt, "%s", "_")
+		get_console():execute(fmt)
+	end
+end
+
+cheat_list = nil
+
+gameIsOn = false
+local file = nil
+
+function start_menu(self)
+	if _G.kScreen == nil then
+		_G.kScreen = (1024/768) / (device().width/device().height)
+	end
+	gameIsOn = (level.present() and db.actor and db.actor:alive())
+	if cheat_list == nil then
+		cheat_list = {}
+		local tmp = collect_sections.main()
+		_G["collect_sections"] = nil
+		local t
+		for k,v in pairs(tmp) do
+			cheat_list[k] = {}
+			t = cheat_list[k]
+			for i,s in pairs(v) do
+				t[#t+1] = {
+					section = s,
+					name = game.translate_string(sys_ini:r_string_ex(s, "inv_name", s))
+				}
+			end
+			table.sort(t, sort_main)
+		end
+	end
+	
+	if self.spawn_dlg == nil then
+		if file == nil then
+			file = "ui_cheat_"..ver_prefix
+			if not _G[file] then
+				file = nil
+				log("ui_cheat_main: can't find module '%s' for version %s", file, ver_prefix)
+				return
+			end
+		end
+		self.spawn_dlg = _G[file].cheat_menu()
+		self.spawn_dlg.owner = self
+	end
+	
+	if ver_prefix == "cop" then
+		self.spawn_dlg:ShowDialog(true)
+		self:HideDialog()
+		self:Show(false)
+	else
+		self:GetHolder():start_stop_menu(self.spawn_dlg, true)
+		self:GetHolder():start_stop_menu(self, true)
+		self:Show(false)
+	end
+end
+
+-- Сортируем предметы по алфавиту: чтоб было проще искать нужное
+-- Сортируем предметы по алфавиту: чтоб было проще искать нужное
+function sort_main(s1,s2)
+	local sname = sort_by_name(s1.name, s2.name)
+	if sname ~= nil then return sname end
+	return sort_by_section(s1.section, s2.section)
+end
+
+function sort_by_name(n1, n2)
+	n1 = string.lower1(n1)
+	n2 = string.lower1(n2)
+	local cnt = math.min(#n1, #n2)
+	local l1, l2
+	for a=1,cnt do
+		l1 = n1:sub(a,a):byte()
+		l2 = n2:sub(a,a):byte()
+		if l1~=l2 then return l1<l2 end
+	end
+	return nil
+end
+	
+function sort_by_section(s1, s2)
+	local cnt = math.min(#s1, #s2)
+	local l1, l2
+	for a=1,cnt do
+		l1 = s1:sub(a,a):byte()
+		l2 = s2:sub(a,a):byte()
+		if l1~=l2 then return l1<l2 end
+	end
+	return #s1<#s2
+end
+
+function give_item_icon(section)
+	local t = {}
+	t.width = sys_ini:r_u32_ex(section, "inv_grid_width", 1) *50
+	t.height = sys_ini:r_u32_ex(section, "inv_grid_height", 1) *50
+	t.x = sys_ini:r_u32_ex(section, "inv_grid_x", 8) *50
+	t.y = sys_ini:r_u32_ex(section, "inv_grid_y", 13) *50
+	return t
+end
+
+function give_monster_icon(section)
+	local t = {}
+	local texture = sys_ini:r_string_ex(section, "icon", "ui_npc_monster_mutant_boar")
+	
+	local tex_info = GetTextureInfo(texture, texture)
+	local rect = tex_info:get_rect()
+	t.x = rect.x1
+	t.y = rect.y1
+	t.width = rect.x2 - rect.x1
+	t.height = rect.y2 - rect.y1
+	return t, tex_info:get_file_name()
+end
+
+function spawn_item(section, num)
+	if not section then return end
+	if gameIsOn then
+		if num==nil then num = 1 end
+		for i=1,num do
+			alife():create(section,vector(),0,0,0)
+		end
+		local snd = sound_object([[detectors\contact_1]])
+		snd:play(db.actor, 0, sound_object.s2d)
+	end
+end
+
+function spawn_npc(section, num)
+	if not section then return end
+	if gameIsOn then
+		if num==nil then num = 1 end
+		local act = db.actor
+		for i=1,num do
+			alife():create(section, act:position():add(act:direction():mul(4)), act:level_vertex_id(), act:game_vertex_id())
+		end
+		local snd = sound_object([[detectors\contact_1]])
+		snd:play(act, 0, sound_object.s2d)
+	end
+end

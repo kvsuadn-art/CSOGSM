@@ -1,0 +1,434 @@
+------------------------------ Copyright 2007-2010 DEXXX ------------------------------
+----------------------------------- Çàïèñíàÿ êíèæêà -----------------------------------
+
+
+-- Êîëáıê íà ïîëó÷åíèå èíôî
+function send_article(group, name)
+
+	local news_caption = ""
+
+ 	if group == "Journal" then news_caption = "Ëè÷íàÿ çàìåòêà:"
+ 	elseif group == "Mutants" then news_caption = "Çàìåòêà î ìóòàíòå:"
+	elseif group == "Locations" then news_caption = "Çàìåòêà î ëîêàöèè:"
+	elseif group == "Factions" then news_caption = "Çàìåòêà î ãğóïïèğîâêå:"
+	elseif group == "Stories" then news_caption = "Ëåãåíäà Çîíû:"
+	elseif group == "Anomalies" then news_caption = "Çàìåòêà îá àíîìàëèè:"
+	elseif group == "Documents" then news_caption = "Ñåêğåòíûé äîêóìåíò:"
+	end
+
+	local news_text = game.translate_string(name)
+	db.actor:give_game_news(news_caption, news_text, "ui_iconsTotal_storyline", 0, 5000, 1)
+	local pda_news = sound_object([[device\pda\pda_tip]])
+	pda_news:play(db.actor, 0, sound_object.s2d)
+	if group == "Journal" or group == "Documents" then ogsm.autosave(name) end
+
+end
+
+local private_array = {
+	{name = "private_1", info = "mar_intro_start"},
+	{name = "private_2", info = "mar_intro_start"},
+	{name = "private_3", info = "mar_intro_start"},
+	{name = "private_4", info = "mar_intro_start"},
+	{name = "private_5", info = "mar_intro_scene_2_cameff_end"},
+	{name = "private_6", info = "mar_tutorial_returned_got_on_feet"},
+	{name = "private_7", info = "mar_story_empower_csky_done"},
+	{name = "private_8", info = "esc_reach_trader_complete"},
+	{name = "private_9", info = "esc_leader_talked2"},
+	{name = "private_10", info = "esc_bring_habar_complete"},
+	{name = "private_11", info = "gar_story_got_info_from_digger"},
+	{name = "private_12", info = "val_go_to_trader_complete"},
+	{name = "private_13", info = "val_take_pda_done"},
+	{name = "private_14", info = "val_deliver_pda_complete"},
+	{name = "private_15", info = "gar_story_got_fang_pda"},
+	{name = "private_16", info = "agr_actor_inside_5"},
+	{name = "private_17", info = "agru_controller_death"},
+	{name = "private_18", info = "agru_find_secret_task_complete"},
+	{name = "private_19", info = "agr_take_reward_complete"},
+	{name = "private_20", info = "yan_quest_doc"},
+	{name = "private_21", info = "yan_go_to_red_forest_cut6"},
+	{name = "private_22", info = "red_pursuit_task_end"},
+	{name = "private_23", info = "red_actor_find_teleport"},
+	{name = "private_24", info = "red_actor_find_forester"},
+	{name = "private_25", info = "mil_merc_talked"},
+	{name = "private_26", info = "red_forester_take_compas"},
+	{name = "private_27", info = "mil_actor_go_to_limansk"},
+	{name = "private_28", info = "red_bridge_csky_go_limansk"},
+	{name = "private_29", info = "freeplay"}
+}
+
+local monsters_array = {
+	"crow",
+	"rat",
+	"tushkano",
+	"blind",
+	"flesh",
+	"boar",
+	"zombie",
+	"zombierusty",
+	"zombieplague",
+	"fracture",
+	"snork",
+	"cat",
+	"pseudodog",
+	"psydog",
+	"poltergeist",
+	"burer",
+	"psyburer",
+	"bloodsucker",
+	"bloodsucker_marsh",
+	"chimera",
+	"electrochimera",
+	"controller",
+	"pseudogiant"
+}
+
+
+local anomalies_array = {
+	"tramplin",
+	"voronka",
+	"karusel",
+	"zharka",
+	"razlom",
+	"electra",
+	"pukh",
+	"studen",
+	"tuman",
+	"simbiont",
+	"teleport",
+	"psyzone",
+	"radioactive"
+}
+
+local locations_array = {
+	"marsh",
+	"escape",
+	"garbage",
+	"darkvalley",
+	"agroprom",
+	"agroprom_underground",
+	"yantar",
+	"red_forest",
+	"military",
+	"limansk",
+	"hospital",
+	"jupiter_underground",
+	"stancia_2"
+}
+
+local factions_array = {
+	"ecolog",
+	"csky",
+	"renegade",
+	"stalker",
+	"bandit",
+	"dolg",
+	"freedom",
+	"army",
+	"killer",
+	"monolith",
+	"zombied"
+}
+
+local stories_array = {
+	"story_1",
+	"story_2",
+	"story_3",
+	"story_4",
+	"story_5",
+	"story_6",
+	"story_7",
+	"story_8",
+	"story_9",
+	"story_10",
+	"story_11",
+	"story_12",
+	"story_13",
+	"story_14",
+	"story_15",
+	"story_16",
+	"story_17",
+	"story_18"
+}
+
+local docs_array = {
+	"doc_1",
+	"doc_2",
+	"doc_3",
+	"doc_4",
+	"doc_5",
+	"doc_6",
+	"doc_7",
+	"doc_8",
+	"doc_9",
+	"doc_10",
+	"doc_11",
+	"doc_12",
+	"doc_13",
+	"doc_14",
+	"doc_15"
+}
+
+class "load_item" (CUIListItemEx)
+
+function load_item:__init() super()
+	self.item_name = "itemname"
+	local ca = 255
+	local cr = 216
+	local cg = 186
+	local cb = 140
+	self.fn	= CUIStatic()
+	self.fn:SetAutoDelete(true)
+	self.fn:SetFont(GetFontLetterica18Russian())
+	self.fn:SetTextColor(ca,cr,cg,cb)
+	self.fn:SetElipsis(2,2)
+	self:AttachChild(self.fn)
+	self.fa	= CUIStatic()
+	self.fa:SetAutoDelete(true)
+	self.fa:SetFont(GetFontLetterica16Russian())
+	self.fa:SetTextColor(ca,cr,cg,cb)
+	self:AttachChild(self.fa)
+end
+
+class "load_item2" (CUIListItemEx)
+
+function load_item2:__init() super()
+	self.item_name = "itemname"
+	local ca = 255
+	local cr = 216
+	local cg = 186
+	local cb = 140
+	self.fn	= CUIStatic()
+	self.fn:SetFont(GetFontLetterica16Russian())
+	self.fn:SetTextColor(ca,cr,cg,cb)
+	self:AttachChild(self.fn)
+end
+
+class "notepad" (CUIScriptWnd)
+
+function notepad:__init(owner,action) super()
+	self.action = action
+	self.owner = owner
+	get_hud():HideActorMenu()
+	self:InitControls()
+	self:InitCallBacks()
+	self.tab:SetActiveTab("private")
+end
+
+function notepad:__finalize() end
+
+function notepad:InitControls()
+
+	self:SetWndRect(Frect():set(30,20,1024,768))
+
+	local xml = CScriptXmlInit()
+
+	xml:ParseFile("ui_notes_wnd.xml")
+
+	self.background = xml:InitStatic("background", self)
+
+	local ctrl = CUIWindow()
+
+	xml:InitWindow("list_item:main", 0, ctrl)
+	self.list_item_main_sz = vector2():set(ctrl:GetWidth(), ctrl:GetHeight())
+
+	xml:InitWindow("list_item:fn", 0, ctrl)
+	self.list_item_fn_sz = vector2():set(ctrl:GetWidth(), ctrl:GetHeight())
+
+	xml:InitWindow("list_item:fa", 0, ctrl)
+	self.list_item_fa_sz = vector2():set(ctrl:GetWidth(), ctrl:GetHeight())
+
+	xml:InitWindow("description_item", 0, ctrl)
+	self.desc_item_main_sz = vector2():set(ctrl:GetWidth(), ctrl:GetHeight())
+
+	xml:InitWindow("description_item:content_text", 0, ctrl)
+	self.desc_item_fn_sz = vector2():set(ctrl:GetWidth(), ctrl:GetHeight())
+
+	-- off button
+	self.off_button = xml:Init3tButton("off_button", self)
+	self:Register(self.off_button, "off_button")
+
+	-- main button frame & tab
+	self.back_frame = xml:InitFrameLine("mbbackground_frame_line", self)
+	self.tab = xml:InitTab("tab", self)
+	self:Register(self.tab, "tab")
+
+	-- time frame & time
+	self.time_frame = xml:InitFrameLine("timer_frame_line", self)
+	self.timer = xml:InitStatic("timer_frame_line:title", self.time_frame)
+
+	xml:InitFrame("list_frame", self)
+	xml:InitFrame("descr_frame", self)
+
+	self.list_box = xml:InitList("list", self)
+	self.list_box:EnableScrollBar(true)
+	self:Register(self.list_box, "list")
+
+	self.picture = xml:InitStatic("picture", self)
+
+	self.description_list = xml:InitList("description_list", self)
+	self.description_list:EnableScrollBar(true)
+	self:Register(self.description_list, "description_list")
+
+end
+
+function notepad:InitCallBacks()
+	self:AddCallback("off_button", ui_events.BUTTON_CLICKED, self.OnQuit, self)
+	self:AddCallback("tab", ui_events.TAB_CHANGED, self.OnTabChange, self)
+	self:AddCallback("list", ui_events.LIST_ITEM_CLICKED, self.OnListItemClicked, self)
+end
+
+function notepad:Update()
+	CUIScriptWnd.Update(self)
+	local parse_time = function()
+		local t_m = level.get_time_minutes()
+		local t_h = level.get_time_hours()
+		if t_m >= 0 and t_m <= 9 then
+			return t_h..":".."0"..t_m
+		elseif t_m >= 10 and t_m <= 59 then
+			return t_h..":"..t_m
+		elseif t_m >= 0 and t_m <= 9 and t_h >= 0 and t_h < 10 then
+			return "0"..t_h..":".."0"..t_m
+		elseif t_m >= 10 and t_m <= 59 and t_h >= 0 and t_h < 10 then
+			return "0"..t_h..":"..t_m
+		end
+	end
+	self.timer:SetText(parse_time())
+end
+
+function notepad:OnKeyboard(dik, keyboard_action)
+	CUIScriptWnd.OnKeyboard(self, dik, keyboard_action)
+	if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+		if dik == DIK_keys.DIK_ESCAPE then
+			self:OnQuit()
+		end
+	end
+	return true
+end
+
+function notepad:OnQuit()
+	self:GetHolder():start_stop_menu(self, true)
+end
+
+function notepad:OnTabChange()
+	local ids = self.tab:GetActiveId()
+	if ids == "private" then
+		self:FillList(private_array)
+	elseif ids == "monsters" then
+		self:FillList(monsters_array)
+	elseif ids == "anomalies" then
+		self:FillList(anomalies_array)
+	elseif ids == "locations" then
+		self:FillList(locations_array)
+	elseif ids == "factions" then
+		self:FillList(factions_array)
+	elseif ids == "stories" then
+		self:FillList(stories_array)
+	elseif ids == "docs" then
+		self:FillList(docs_array)
+	end
+end
+
+
+function notepad:OnListItemClicked()
+	if self.list_box:GetSize() == 0 then return end
+	local itm_index	= self.list_box:GetSelectedItem()
+	local item = self.list_box:GetItem(itm_index)
+	if item == nil then return end
+	local item_text	= item.fn:GetText()
+	local item_alias = item.fa:GetText()
+	if item_alias == "null" then return end
+	self.description_list:RemoveAll()
+	self.description_list:ScrollToBegin()
+	self.description_list:ShowSelectedItem(false)
+	self.picture:SetText("")
+	local ids = self.tab:GetActiveId()
+	if ids == "private" then
+		self:FillDescription(game.translate_string("enc_notepad_"..item_alias))
+		self.picture:InitTexture("ui\\ui_noise")
+	elseif ids == "monsters" then
+		self:FillDescription(game.translate_string("enc_mutant_"..item_alias))
+		self.picture:InitTexture("ui\\monsters\\ui_monster_"..item_alias)
+	elseif ids == "anomalies" then
+		self:FillDescription(game.translate_string("enc_anomaly_"..item_alias))
+		self.picture:InitTexture("ui\\anomalies\\ui_anomaly_"..item_alias)
+	elseif ids == "locations" then
+		self:FillDescription(game.translate_string("enc_location_"..item_alias))
+		self.picture:InitTexture("ui\\locations\\ui_location_"..item_alias)
+	elseif ids == "factions" then
+		self:FillDescription(game.translate_string("enc_faction_"..item_alias))
+		self.picture:InitTexture("ui\\factions\\ui_faction_"..item_alias)
+	elseif ids == "stories" then
+		self:FillDescription(game.translate_string("enc_notepad_"..item_alias))
+		self.picture:InitTexture("ui\\ui_noise")
+	elseif ids == "docs" then
+		self:FillDescription(game.translate_string("enc_notepad_"..item_alias))
+		self.picture:InitTexture("ui\\ui_noise")
+	else
+		self.picture:InitTexture("ui\\ui_disk_io")
+		self.picture:SetText("Íè÷åãî íå âûáğàíî")
+	end
+	local r = self.picture:GetOriginalRect()
+	self.picture:SetOriginalRect(Frect():set(r.x1,r.y1,r.x2,r.y2))
+	self.list_box:ShowSelectedItem(true)
+end
+
+function notepad:FillList(array)
+	self.list_box:RemoveAll()
+	self.list_box:ScrollToBegin()
+	self.list_box:ShowSelectedItem(false)
+	self.description_list:RemoveAll()
+	self.description_list:ScrollToBegin()
+	self.description_list:ShowSelectedItem(false)
+	local r = self.picture:GetOriginalRect()
+	self.picture:InitTexture("ui\\ui_disk_io")
+	self.picture:SetOriginalRect(Frect():set(r.x1,r.y1,r.x2,r.y2))
+	self.picture:SetText("Íè÷åãî íå âûáğàíî")
+	for k,v in pairs(array) do
+		if array == private_array and has_alife_info(v.info) then
+			self:AddItemToList(game.translate_string(v.name), v.name)
+		elseif array == monsters_array and has_alife_info(v.."_dead") then
+			self:AddItemToList(game.translate_string(v), v)
+		elseif array == locations_array and has_alife_info(v.."_visited") then
+			self:AddItemToList(game.translate_string(v), v)
+		elseif array == factions_array and has_alife_info(v.."_info") then
+			self:AddItemToList(game.translate_string(v), v)
+		elseif array == stories_array and has_alife_info("dm_ogsm_"..v.."_info") then
+			self:AddItemToList(game.translate_string(v), v)
+		elseif array == anomalies_array and has_alife_info(v.."_info") then
+			self:AddItemToList(game.translate_string(v), v)
+		elseif array == docs_array and has_alife_info(v.."_info") then
+			self:AddItemToList(game.translate_string(v), v)
+		end
+	end
+	if self.list_box:GetSize() == 0 then 
+		self:AddItemToList("Ñïèñîê ïóñò", "null") 
+	end
+end
+
+function notepad:AddItemToList(item_name, item_alias)
+	local itm = load_item()
+	itm:SetWndSize(self.list_item_main_sz)
+	itm.fn:SetWndPos(vector2():set(0,0))
+	itm.fn:SetWndSize(self.list_item_fn_sz)
+	itm.fa:SetWndPos(vector2():set(self.list_item_fn_sz.x-40, 1200))
+	itm.fa:SetWndSize(self.list_item_fa_sz)
+	itm.fn:SetText(item_name)
+	itm.fa:SetText(item_alias)
+	self.list_box:AddItem(itm)
+end
+
+function notepad:FillDescription(item_name)
+	local arr = ogsm.str_explode(" ", item_name, 45, 50)
+	for k,v in pairs(arr) do
+		itm = load_item2()
+		itm:SetWndSize(self.desc_item_main_sz)
+		itm.fn:SetWndPos(vector2():set(0,0))
+		itm.fn:SetWndSize(self.desc_item_fn_sz)
+		itm.fn:SetText(v)
+		self.description_list:AddItem(itm)
+	end
+end
+
+
+----------------------------------- Çàïèñíàÿ êíèæêà -----------------------------------
+------------------------------ Copyright 2007-2010 DEXXX ------------------------------

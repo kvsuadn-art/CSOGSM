@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<game_dialogs>
+	<dialog id="rare_items_dialog">
+		<has_info>mar_tutorial_returned_to_base</has_info>
+		<phrase_list>
+			<phrase id="0">
+				<text>Можно ли у тебя приобрести какие-нибудь редкие товары?</text>
+				<next>1</next>
+			</phrase>
+			<phrase id="1">
+				<script_text>ogsm_rare_items_dialogs.rare_list_text</script_text>
+				<action>ogsm_rare_items_dialogs.rare_list</action>
+				<next>11</next>
+				<next>12</next>
+				<next>13</next>
+				<next>2</next>
+				<next>3</next>
+				<next>4</next>
+			</phrase>
+			<phrase id="11">
+				<text>Давай первое.</text>
+				<precondition>ogsm_rare_items_dialogs.check_first_rare_item</precondition>
+				<action>ogsm_rare_items_dialogs.give_first_rare_item</action>
+			</phrase>
+			<phrase id="12">
+				<text>Давай второе.</text>
+				<precondition>ogsm_rare_items_dialogs.check_second_rare_item</precondition>
+				<action>ogsm_rare_items_dialogs.give_second_rare_item</action>
+			</phrase>
+			<phrase id="13">
+				<text>Давай третье.</text>
+				<precondition>ogsm_rare_items_dialogs.check_third_rare_item</precondition>
+				<action>ogsm_rare_items_dialogs.give_third_rare_item</action>
+			</phrase>
+			<phrase id="2">
+				<text>Если вдруг появится что-то еще, можешь мне сообщить об этом?</text>
+				<precondition>ogsm_rare_items_dialogs.not_news</precondition>
+				<action>ogsm_rare_items_dialogs.allow_news</action>
+				<next>21</next>
+			</phrase>
+			<phrase id="21">
+				<text>Конечно, договорились.</text>
+			</phrase>
+			<phrase id="3">
+				<text>Перестань сообщать мне о новых поступлениях...</text>
+				<precondition>ogsm_rare_items_dialogs.have_news</precondition>
+				<action>ogsm_rare_items_dialogs.not_allow_news</action>
+				<next>31</next>
+			</phrase>
+			<phrase id="31">
+				<text>Без проблем, больше не буду.</text>
+			</phrase>
+			<phrase id="4">
+				<text>Как-нибудь в другой раз.</text>
+			</phrase>
+		</phrase_list>
+	</dialog>
+</game_dialogs>

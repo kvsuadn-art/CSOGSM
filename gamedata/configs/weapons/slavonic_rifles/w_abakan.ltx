@@ -1,0 +1,262 @@
+[wpn_abakan]:identity_immunities,weapon_probability,default_weapon_params
+GroupControlSection     			= spawn_group
+discovery_dependency    			=
+$spawn               				= "weapons\abakan"
+$npc              					= on
+$prefetch               			= 8
+scheduled               			= off
+cform                   			= skeleton
+class                				= WP_AK74
+min_radius           				= 30
+max_radius           				= 150
+
+ef_main_weapon_type     			= 2
+ef_weapon_type          			= 6
+
+default_to_ruck         			= false
+sprint_allowed             	 		= true
+
+zoom_dof             				= 0.5, 1.0, 150
+reload_dof           				= 0.0, 0.5, 5, 2.7
+
+upgrades                			= up_gr_ab_abakan, up_gr_cd_abakan, up_gr_ef_abakan, up_gr_gh_abakan
+installed_upgrades      			=
+upgrade_scheme          			= upgrade_scheme_u16a_ogsm
+
+holder_range_modifier   			= 1.0
+holder_fov_modifier     			= 0.7
+
+description          				= st_wpn_abakan_descr
+inv_name             				= st_wpn_abakan
+inv_name_short       				= st_wpn_abakan
+
+inv_grid_width     					= 5
+inv_grid_height    					= 2
+inv_grid_x         					= 28
+inv_grid_y         					= 15
+
+inv_weight           				= 3.9
+
+cost								= 6000
+
+weapon_class        				= assault_rifle
+
+ammo_limit							= 300
+ammo_elapsed        				= 30
+ammo_mag_size        				= 30
+ammo_class           				= ammo_5.45x39_fmj, ammo_5.45x39_ap
+
+grenade_class        				= ammo_vog-25, ammo_vog-25p
+
+fire_modes           				= 1, 2, -1
+
+launch_speed         				= 0
+hand_dependence      				= 1
+single_handed        				= 0
+slot                 				= 2
+animation_slot       				= 2
+
+kill_msg_x        					= 119
+kill_msg_y        					= 199
+kill_msg_width    					= 93
+kill_msg_height   					= 32
+
+fire_dispersion_base    			= 0.85
+control_inertion_factor 			= 1.4f
+
+cam_relax_speed          			= 10
+cam_relax_speed_ai      	 		= 360
+cam_dispersion           			= 1.5
+cam_dispersion_inc       			= 1.5
+cam_dispersion_frac      			= 0.7
+cam_max_angle            			= 15
+cam_max_angle_horz       			= 15
+cam_step_angle_horz      			= 1.5
+
+zoom_cam_relax_speed         		= 10
+zoom_cam_relax_speed_ai      		= 120
+zoom_cam_dispersion          		= 1.1
+zoom_cam_dispersion_inc      		= 1.1
+zoom_cam_dispersion_frac     		= 0.7
+zoom_cam_max_angle           		= 5
+zoom_cam_max_angle_horz     	 	= 5
+zoom_cam_step_angle_horz     		= 1.1
+
+fire_dispersion_condition_factor	= 15
+misfire_probability					= 0.0004
+misfire_condition_k     			= 0.05
+condition_shot_dec         			= 0.0003
+
+position                = -0.026, -0.178, 0.0
+orientation             = 0, 0, 0
+
+fire_point				= -0.0,0.228,0.713
+fire_point2             = -0.0,0,153.608
+
+flame_particles         			= weapons\generic_weapon05
+smoke_particles         			= weapons\generic_shoot_00
+grenade_flame_particles 			= weapons\generic_weapon01
+
+shell_point             = 0.120000,0.000000,0.070000
+shell_dir               = 0.0, 0.0, 0.4
+shell_particles         = weapons\545x39
+
+PDM_disp_base           			= 1.0
+PDM_disp_vel_factor     			= 1.8
+PDM_disp_accel_factor   			= 1.8
+PDM_disp_crouch         			= 1.0
+PDM_disp_crouch_no_acc  			= 1.0
+
+hit_power               			= 0.6, 0.6, 0.6, 0.6
+hit_impulse          				= 110
+hit_type                			= fire_wound
+
+hit_probability_gd_novice			= 0.20
+hit_probability_gd_stalker			= 0.40
+hit_probability_gd_veteran			= 0.60
+hit_probability_gd_master			= 0.80
+
+fire_distance           			= 200
+bullet_speed            			= 660
+rpm                     			= 680
+rpm_empty_click         			= 200
+
+silencer_hit_power      			= 0.6, 0.6, 0.6, 0.6
+silencer_hit_impulse    			= 110
+silencer_fire_distance  			= 200
+silencer_bullet_speed   			= 660
+
+use_aim_bullet          			= true
+time_to_aim             			= 3.0
+
+hud                     			= wpn_abakan_hud
+
+strap_position          = -0.26,-0.11,0.25                                
+strap_orientation       = -15,-9,110                                        
+strap_bone0             = bip01_spine2
+strap_bone1             = bip01_spine1
+
+startup_ammo            			= 90
+visual                  			= dynamics\weapons\wpn_abakan\wpn_abakan.ogf
+
+light_disabled                      = false
+light_color             			= 0.6,0.5,0.3
+light_range             			= 5
+light_var_color         			= 0.05
+light_var_range         			= 0.5
+light_time              			= 0.2
+
+ph_mass                 			= 4
+
+scope_status               			= 2
+silencer_status            			= 0
+grenade_launcher_status    			= 0
+
+zoom_enabled            			= true
+zoom_rotate_time                    = 0.25
+scope_zoom_factor       			= 55
+
+scope_name 					= wpn_addon_scope
+scope_x              	= 23              ; offset in inventory icon
+scope_y                 = 2
+silencer_name              = wpn_addon_silencer    ; section name for the attachable silencer
+silencer_x              = 228                ; offset in inventory icon
+silencer_y              = 9
+grenade_launcher_name      = wpn_addon_grenade_launcher; section name for the attachable grenade launcher
+grenade_launcher_x         = 116               ; offset in inventory icon
+grenade_launcher_y         = 25
+
+;==================================== Copyright 2009 MulleR, Mongol ====================================
+snd_holster							= weapons\rifle_holster
+snd_draw							= weapons\abakan\abakan_draw
+snd_shoot							= weapons\abakan\abakan_shoot
+snd_shoot1							= weapons\abakan\abakan_shoot1
+snd_shoot2							= weapons\abakan\abakan_shoot2
+snd_shoot3							= weapons\abakan\abakan_shoot3		
+snd_shoot4							= weapons\abakan\abakan_shoot4		
+snd_empty							= weapons\abakan\abakan_empty,		0.7
+snd_reload				= weapons\abakan\abakan_reload
+snd_shoot_grenade					= weapons\gp30\gp30_grenshoot
+snd_reload_grenade					= weapons\gp30\gp30_grenload, 1.0, 0.8
+snd_switch				= $no_sound
+snd_silncer_shot					= weapons\abakan\abakan_shot_sil
+;==================================== Copyright 2009 MulleR, Mongol ====================================
+snd_bore					= $no_sound
+silencer_smoke_particles   			= weapons\generic_shoot_00
+
+silencer_light_color    			= 0.6,0.5,0.3
+silencer_light_range    			= 0.01
+silencer_light_var_color			= 0.05
+silencer_light_var_range			= 0.5
+silencer_light_time     			= 0.2
+
+[wpn_abakan_hud]
+zoom_hide_crosshair        			= true
+attach_place_idx        			= 0
+item_visual                			= dynamics\weapons\wpn_abakan\wpn_abakan_hud.ogf
+
+hands_position					= -0.1195,-0.18,0.12
+hands_orientation					= -0.75,1.7,-4.199999
+
+hands_position_16x9					= -0.1195,-0.18,0.12
+hands_orientation_16x9				= -0.75,1.7,-4.199999
+
+item_position					= -0.0,0.004,-0.0
+item_orientation					= -15.488927,-3.320898,367.220154
+
+shell_point						= 0.019,0.073,0.234
+shell_dir						= 0.0, 1.0, 0.0
+shell_bone						= wpn_body
+
+fire_point						= 0,0.034911,0.659527
+fire_bone						= wpn_body
+fire_point2						= 0.0,-0.027,0.603
+fire_bone2						= wpn_body
+
+anm_show						= lancew_an94_draw
+anm_hide						= lancew_an94_holster
+anm_idle                					= lancew_an94_idle
+anm_idle_sprint         					= lancew_an94_sprint
+anm_idle_moving         					= lancew_an94_moving
+anm_shots               					= lancew_an94_shoot, shoot
+anm_reload              					= lancew_an94_reload, reload
+anm_idle_aim            					= lancew_an94_idle_aim, idle_aim
+
+anm_bore						= lancew_an94_no_reload
+anm_switch              					= lancew_an94_no_reload_w_gl
+anm_switch_g            					= lancew_an94_no_reload_w_gl
+
+anm_show_w_gl           				= lancew_an94_draw_w_gl
+anm_hide_w_gl           					= lancew_an94_holster_w_gl
+anm_idle_w_gl           					= lancew_an94_idle_w_gl
+anm_shots_w_gl          					= lancew_an94_shoot_w_gl, shoot
+anm_reload_w_gl         				= lancew_an94_reload_w_gl, reload
+anm_idle_w_gl_aim       				= lancew_an94_idle_aim_w_gl, idle_aim
+anm_idle_sprint_w_gl    				= lancew_an94_sprint_w_gl
+anm_idle_moving_w_gl    				= lancew_an94_moving_w_gl
+anm_bore_w_gl           					= lancew_an94_no_reload_w_gl
+
+anm_show_g              					= lancew_an94_draw_w_gl								
+anm_hide_g              					= lancew_an94_holster_w_gl									
+anm_idle_g              					= lancew_an94_idle_w_gl				
+anm_reload_g            					= lancew_an94_reload_g, reload_g
+anm_idle_g_aim          					= lancew_an94_idle_aim_w_gl						
+anm_shots_g					= lancew_an94_shoot_g, shoot_g
+anm_idle_sprint_g					= lancew_an94_sprint_w_gl			
+anm_idle_moving_g					= lancew_an94_moving_w_gl					
+anm_bore_g					= lancew_an94_no_reload_w_gl     
+
+aim_hud_offset_pos 					= -0.0998,0.051,-0.15
+aim_hud_offset_rot					= 0.0104,-0.0004,0.005
+
+aim_hud_offset_pos_16x9 				= -0.0998,0.051,-0.15
+aim_hud_offset_rot_16x9 				= 0.0104,-0.0004,0.005
+
+gl_hud_offset_pos					= -0.064,0.0,-0.021
+gl_hud_offset_rot					= -0.092,-0.0045,-0.025
+
+gl_hud_offset_pos_16x9 				= -0.064,0.0,-0.021
+gl_hud_offset_rot_16x9 				= -0.092,-0.0045,-0.025
+
+lean_hud_offset_pos        			= 0,0,0
+lean_hud_offset_rot        			= 0,0,0

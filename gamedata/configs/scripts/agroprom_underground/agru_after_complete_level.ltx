@@ -1,0 +1,7 @@
+[logic]
+active = sr_idle@line_0
+
+[sr_idle@line_0]
+on_info = {+agr_actor_inside_9} %=create_squad(agru_monsters_squad:agru_smart_terrain_1)% sr_idle@line_1
+
+[sr_idle@line_1]

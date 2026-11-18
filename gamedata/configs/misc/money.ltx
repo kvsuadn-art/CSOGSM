@@ -1,0 +1,48 @@
+[money_preset]:identity_immunities
+GroupControlSection		= spawn_group
+discovery_dependency 	=
+$spawn 					= "wogsm\money\preset"
+$prefetch 				= 8
+class					= II_ANTIR
+cform					= skeleton
+inv_grid_width			= 1
+inv_grid_height			= 1
+inv_weight				= 0.05
+cost					= 0
+eat_health				= 0.0
+eat_satiety				= 0.0
+eat_power				= 0.0
+eat_radiation			= 0.0
+wounds_heal_perc		= 0.0
+eat_portions_num		= 1
+eat_max_power			= 0.0
+animation_slot			= 4
+hud 					= wpn_vodka_hud
+can_trade				= false
+
+[wogsm_money_low]:money_preset
+$spawn 					= "wogsm\money\low"
+visual					= treasures\money\ten.ogf
+description				= wogsm_money_low_descr
+inv_name				= wogsm_money_low_name
+inv_name_short			= wogsm_money_low_name
+inv_grid_x				= 2
+inv_grid_y				= 33
+
+[wogsm_money_average]:money_preset
+$spawn 					= "wogsm\money\average"
+visual					= treasures\money\twentyfive.ogf
+description				= wogsm_money_average_descr
+inv_name				= wogsm_money_average_name
+inv_name_short			= wogsm_money_average_name
+inv_grid_x				= 1
+inv_grid_y				= 33
+
+[wogsm_money_high]:money_preset
+$spawn 					= "wogsm\money\high"
+visual					= treasures\money\fifty.ogf
+description				= wogsm_money_high_descr
+inv_name				= wogsm_money_high_name
+inv_name_short			= wogsm_money_high_name
+inv_grid_x				= 0
+inv_grid_y				= 33

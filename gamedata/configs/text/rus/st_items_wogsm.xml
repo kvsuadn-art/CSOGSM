@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="st_vodka">
+		<text>Водка</text>
+	</string>
+	<string id="st_vodka_descr">
+		<text>Дешёвая водка местного разлива. Считай, что самогон. Пьётся неплохо, а заодно снижает воздействие радиации. Но в основном ценится сталкерами за способность в течение некоторого времени после распития защищать от пси-воздействия. Так же обладает небольшим согревающим эффектом.\n%c[0,225,0,0]• Сытость: - 1\n%c[0,0,255,0]• Радиация: - 3\n%c[0,225,0,0]• Алкоголь: + 1</text>
+	</string>
+	<string id="st_tea_name">
+		<text>Чай</text>
+	</string>
+	<string id="st_tea_descr">
+		<text>Горячий чай из неких высушенных растений, вероятно, осенних запасов. Имеет слегка нетипичный для чая запах, но выбирать не приходится: по сути, только он способен как следует согреть в дальних ходках.\n%c[0,0,225,0]• Алкоголь: - 2</text>
+	</string>
+	<string id="faction_part_descr">
+		<text>Именная эмблема соответствующей фракции с нашитым позывным бойца. Может заинтересовать торговцев на более-менее крупных базах.</text>
+	</string>
+	<string id="faction_part_cs_name">
+		<text>Нашивка «Чистого неба»</text>
+	</string>
+	<string id="faction_part_stalker_name">
+		<text>Нашивка «Сталкеров»</text>
+	</string>
+	<string id="faction_part_bandit_name">
+		<text>Нашивка «Бандитов»</text>
+	</string>
+	<string id="faction_part_duty_name">
+		<text>Нашивка «Долга»</text>
+	</string>
+	<string id="faction_part_freedom_name">
+		<text>Нашивка «Свободы»</text>
+	</string>
+	<string id="faction_part_merc_name">
+		<text>Нашивка «Наёмников»</text>
+	</string>
+	<string id="faction_part_army_name">
+		<text>Нашивка «Военных»</text>
+	</string>
+	<string id="faction_part_sci_name">
+		<text>Нашивка «Ученых»</text>
+	</string>
+	<string id="faction_part_monolith_name">
+		<text>Нашивка «Монолита»</text>
+	</string>
+	<string id="wogsm_money_low_name">
+		<text>Пачка денег низкого достоинства</text>
+	</string>
+	<string id="wogsm_money_low_descr">
+		<text>Толстая пачка старых советских бумажных денег низкого достоинства. Здесь может быть от 10 до 100 рублей. Что бы узнать, необходимо использовать.</text>
+	</string>
+	<string id="wogsm_money_average_name">
+		<text>Пачка денег среднего достоинства</text>
+	</string>
+	<string id="wogsm_money_average_descr">
+		<text>Толстая пачка старых советских бумажных денег среднего достоинства. Здесь может быть от 100 до 500 рублей. Что бы узнать, необходимо использовать.</text>
+	</string>
+	<string id="wogsm_money_high_name">
+		<text>Пачка денег высокого достоинства</text>
+	</string>
+	<string id="wogsm_money_high_descr">
+		<text>Толстая пачка старых советских бумажных денег высокого достоинства. Здесь может быть от 500 до 1000 рублей. Что бы узнать, необходимо использовать.</text>
+	</string>
+</string_table>

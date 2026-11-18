@@ -1,0 +1,223 @@
+; Модификация затвора. Технологическая доработка затвора позволяет увеличить темп стрельбы.
+[up_sect_a_groza]
+cost		      		= 2000
+value					= +10
+rpm                     = 62
+
+; Модификация газового поршня. Установка компенсатора газового поршня позволяет уменьшить отдачу.
+[up_sect_c_groza]
+cost		      		= 2000
+value					= -15
+cam_dispersion          = -0.255
+cam_dispersion_inc      = -0.255
+cam_step_angle_horz     = -0.255
+zoom_cam_dispersion     	= -0.195
+zoom_cam_dispersion_inc     = -0.195
+zoom_cam_step_angle_horz    = -0.195
+
+; Модификация ствола. Насадка, увеличивающая длину ствола и, как следствие, начальную скорость пули.
+[up_sect_e_groza]
+cost	      	     	= 2000
+value					= +10
+bullet_speed			= 56
+
+; Пневмоприклад. Особая конструкция приклада позволяет существенно уменьшить отдачу.
+[up_sect_g_groza]
+cost		      		= 2000
+value					= -15
+cam_dispersion          = -0.255
+cam_dispersion_inc      = -0.255
+cam_step_angle_horz     = -0.255
+zoom_cam_dispersion     	= -0.195
+zoom_cam_dispersion_inc     = -0.195
+zoom_cam_step_angle_horz    = -0.195
+
+; Сбалансированная автоматика. Более точная балансировка подвижных частей оружия значительно увеличит темп стрельбы.
+[up_sect_ac_groza]
+cost		      		= 4000
+value					= +20
+rpm                     = 124
+
+; Замена ствола. Ствол из прочной стали не подвергается деформации даже при интенсивной стрельбе, в результате чего снижается разброс пуль.
+[up_sect_eg_groza]
+cost		      		= 4000
+value					= +20
+bullet_speed			= 112
+
+; Грави-стабилизация. Повышение точности стрельбы за счёт дополнительной стабилизации пули, обеспеченной артефактами гравитационной природы.
+[up_sect_aceg_groza]
+cost		      		= 6000
+value					= +30
+fire_dispersion_base	= -0.315
+
+
+
+[up_a_groza]
+scheme_index            = 0, 0
+known                   = 1
+effects                 = up_gr_ac_groza
+section                 = up_sect_a_groza
+property                = prop_rpm
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = on_weapon_upgrade_something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_zatvor_rpm
+description             = st_upg_zatvor_rpm_descr
+icon                    = ui_wp_upgrade_30
+
+
+[up_c_groza]
+scheme_index            = 0, 1
+known                   = 1
+effects                 = up_gr_ac_groza
+section                 = up_sect_c_groza
+property                = prop_recoil
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_porsh_recoil
+description             = st_upg_porsh_recoil_descr
+icon                    = ui_wp_upgrade_41
+
+
+[up_e_groza]
+scheme_index            = 0, 2
+known                   = 1
+effects                 = up_gr_eg_groza
+section                 = up_sect_e_groza
+property                = prop_bullet_speed
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_barrel_curved
+description             = st_upg_barrel_curved_descr
+icon                    = ui_wp_upgrade_25
+
+
+[up_g_groza]
+scheme_index            = 0, 3
+known                   = 1
+effects                 = up_gr_eg_groza
+section                 = up_sect_g_groza
+property                = prop_recoil
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_butt_recoil4
+description             = st_upg_butt_recoil4_descr
+icon                    = ui_wp_upgrade_16
+
+
+[up_ac_groza]
+scheme_index            = 1, 0
+known                   = 1
+effects                 = up_gr_aceg_groza
+section                 = up_sect_ac_groza
+property                = prop_rpm
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_auto_rpm
+description             = st_upg_auto_rpm_descr
+icon                    = ui_wp_upgrade_38
+
+
+[up_eg_groza]
+scheme_index            = 1, 1
+known                   = 1
+effects                 = up_gr_aceg_groza
+section                 = up_sect_eg_groza
+property                = prop_bullet_speed
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_hard_barrel_curved
+description             = st_upg_hard_barrel_curved_descr
+icon                    = ui_wp_upgrade_23
+
+
+[up_aceg_groza]
+scheme_index            = 2, 0
+effects                 =
+section                 = up_sect_aceg_groza
+property                = prop_dispersion
+
+known                   = 1
+
+precondition_functor    = inventory_upgrades.precondition_functor_a
+precondition_parameter  = a & b
+
+effect_functor          = inventory_upgrades.effect_functor_a
+effect_parameter        = something_here
+
+prereq_functor          = inventory_upgrades.prereq_functor_a
+prereq_tooltip_functor  = inventory_upgrades.prereq_tooltip_functor_a
+prereq_params           = money(1000), item(habar)
+name                    = st_upg_gravi_accur
+description             = st_upg_gravi_accur_descr
+icon                    = ui_wp_upgrade_37
+
+
+
+[up_gr_ab_groza]
+elements                = up_a_groza
+
+[up_gr_cd_groza]
+elements                = up_c_groza
+
+[up_gr_ef_groza]
+elements                = up_e_groza
+
+[up_gr_gh_groza]
+elements                = up_g_groza
+
+[up_gr_ac_groza]
+elements                = up_ac_groza
+
+[up_gr_eg_groza]
+elements                = up_eg_groza
+
+[up_gr_aceg_groza]
+elements                = up_aceg_groza

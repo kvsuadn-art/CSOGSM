@@ -1,0 +1,879 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<xml>
+  
+<!-- КВЕСТОВЫЕ ТРУПЫ -->
+
+<specific_character id="stalker_petrenko" team_default = "1">
+    <name>Петренко</name>
+    <icon>icon_stalker_nebo_2</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>stalker_petrenko</class>
+    <community>csky</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\csky\</snd_config>
+    <rank>125</rank>
+    <reputation>0</reputation>
+	<money min="250" max="1000" infinitive="0"/>
+    <visual>actors\stalker_nebo\stalker_nebo_2</visual>
+    <supplies>
+	[spawn] \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="marsh_dead_ecolog" team_default = "1">
+    <name>GENERATE_NAME_science</name>
+    <icon>icon_stalker_scientist_red</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>marsh_dead_ecolog</class>
+    <community>ecolog</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\csky\</snd_config>
+    <rank>125</rank>
+    <reputation>0</reputation>
+	<money min="5000" max="10000" infinitive="0"/>
+    <visual>actors\stalker_ecolog\ecolog_red</visual>
+    <crouch_type>0</crouch_type>
+    <supplies>
+	[spawn]\n
+#include "gameplay\character_drugs_medkits_scientic.xml"
+    </supplies>
+#include "gameplay\character_criticals_1.xml"
+    <start_dialog>ecologs_hello</start_dialog>
+    <actor_dialog>ecologs_dialog</actor_dialog>
+</specific_character>
+
+<specific_character id="yantar_dead_ecolog1" team_default = "1">
+    <name>GENERATE_NAME_science</name>
+    <icon>icon_stalker_scientist_red</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>yantar_dead_ecolog1</class>
+    <community>ecolog</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\csky\</snd_config>
+    <rank>125</rank>
+    <reputation>0</reputation>
+	<money min="5000" max="10000" infinitive="0"/>
+    <visual>actors\stalker_ecolog\ecolog_red</visual>
+    <crouch_type>0</crouch_type>
+    <supplies>
+	[spawn]\n
+	experimental_device_1 \n
+	wpn_sig220 \n
+	ammo_11.43x23_fmj = 1 \n
+#include "gameplay\character_drugs_medkits_scientic.xml"
+    </supplies>
+#include "gameplay\character_criticals_1.xml"
+    <start_dialog>ecologs_hello</start_dialog>
+    <actor_dialog>ecologs_dialog</actor_dialog>
+</specific_character>
+
+<specific_character id="yantar_dead_ecolog2" team_default = "1">
+    <name>GENERATE_NAME_science</name>
+    <icon>icon_stalker_scientist_green</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>yantar_dead_ecolog2</class>
+    <community>ecolog</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\csky\</snd_config>
+    <rank>125</rank>
+    <reputation>0</reputation>
+	<money min="10000" max="20000" infinitive="0"/>
+    <visual>actors\stalker_ecolog\ecolog_green</visual>
+    <crouch_type>0</crouch_type>
+    <supplies>
+	[spawn]\n
+	experimental_device_2 \n
+	wpn_usp \n
+	ammo_11.43x23_hydro = 1 \n
+#include "gameplay\character_drugs_medkits_scientic.xml"
+    </supplies>
+#include "gameplay\character_criticals_1.xml"
+    <start_dialog>ecologs_hello</start_dialog>
+    <actor_dialog>ecologs_dialog</actor_dialog>
+</specific_character>
+
+<specific_character id="yantar_dead_ecolog3" team_default = "1">
+    <name>GENERATE_NAME_science</name>
+    <icon>icon_stalker_scientist_green</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>yantar_dead_ecolog3</class>
+    <community>ecolog</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\csky\</snd_config>
+    <rank>125</rank>
+    <reputation>0</reputation>
+	<money min="10000" max="20000" infinitive="0"/>
+    <visual>actors\stalker_ecolog\ecolog_green</visual>
+    <crouch_type>0</crouch_type>
+    <supplies>
+	[spawn]\n
+	experimental_device_3 \n
+	wpn_sig220 \n
+	ammo_11.43x23_hydro = 1 \n
+#include "gameplay\character_drugs_medkits_scientic.xml"
+    </supplies>
+#include "gameplay\character_criticals_1.xml"
+    <start_dialog>ecologs_hello</start_dialog>
+    <actor_dialog>ecologs_dialog</actor_dialog>
+</specific_character>
+
+<specific_character id="dead_cs_scout1" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_1_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>dead_cs_scout1</class>
+    <community>csky</community> 
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\csky\</snd_config>
+    <rank>375</rank>
+    <reputation>0</reputation>
+    <money min="250" max="1000" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_1_1</visual>
+    <supplies>
+	[spawn] \n
+	scout_cs_pda_1 \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="dead_cs_scout2" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_1_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>dead_cs_scout2</class>
+    <community>csky</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\csky\</snd_config>
+    <rank>375</rank>
+    <reputation>0</reputation>
+    <money min="250" max="1000" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_1_1</visual>
+    <supplies>
+	[spawn] \n
+	scout_cs_pda_2 \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="dead_cs_scout3" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_1_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>dead_cs_scout3</class>
+    <community>csky</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\csky\</snd_config>
+    <rank>375</rank>
+    <reputation>0</reputation>
+    <money min="250" max="1000" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_1_1</visual>
+    <supplies>
+	[spawn] \n
+	scout_cs_pda_3 \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="dead_freedom_scout1" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_3</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>dead_freedom_scout1</class>
+    <community>stalker</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\stalker\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+    <money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_3</visual>
+    <supplies>
+	[spawn] \n
+	scout_freedom_pda_1 \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="dead_freedom_scout2" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_5</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>dead_freedom_scout2</class>
+    <community>stalker</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\stalker\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+    <money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_5</visual>
+    <supplies>
+	[spawn] \n
+	scout_freedom_pda_2 \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="dead_freedom_scout3" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_3</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>dead_freedom_scout3</class>
+    <community>stalker</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\stalker\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+    <money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_3</visual>
+    <supplies>
+	[spawn] \n
+	scout_freedom_pda_3 \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="dead_duty_scout1" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_3</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>dead_duty_scout1</class>
+    <community>stalker</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\stalker\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+    <money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_3</visual>
+    <supplies>
+	[spawn] \n
+	scout_duty_pda_1 \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="dead_duty_scout2" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_5</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>dead_duty_scout2</class>
+    <community>stalker</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\stalker\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+    <money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_5</visual>
+    <supplies>
+	[spawn] \n
+	scout_duty_pda_2 \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="dead_duty_scout3" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_3</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>dead_duty_scout3</class>
+    <community>stalker</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\stalker\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+    <money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_3</visual>
+    <supplies>
+	[spawn] \n
+	scout_duty_pda_3 \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="dead_quest_bandit1" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_1_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>dead_quest_bandit1</class>
+    <community>bandit</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>125</rank>
+    <reputation>0</reputation>
+    <money min="500" max="1000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_1_1</visual>
+    <supplies>
+	[spawn] \n
+	quest_item_cup \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="dead_quest_bandit2" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_1_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>dead_quest_bandit2</class>
+    <community>bandit</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>125</rank>
+    <reputation>0</reputation>
+    <money min="500" max="1000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_1_1</visual>
+    <supplies>
+	[spawn] \n
+	quest_item_detector \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="dead_quest_bandit3" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_1_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>dead_quest_bandit3</class>
+    <community>bandit</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>125</rank>
+    <reputation>0</reputation>
+    <money min="500" max="1000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_1_1</visual>
+    <supplies>
+	[spawn] \n
+	quest_item_grenade \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="dead_quest_bandit4" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_1_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>dead_quest_bandit4</class>
+    <community>bandit</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>125</rank>
+    <reputation>0</reputation>
+    <money min="500" max="1000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_1_1</visual>
+    <supplies>
+	[spawn] \n
+	quest_item_poolball \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="neutral_bodies_default_0" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_2_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>neutral_bodies</class>
+    <community>stalker</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\stalker\</snd_config>
+    <rank>375</rank>
+    <reputation>0</reputation>
+    <money min="500" max="1500" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_2_1</visual>
+    <supplies>
+	[spawn] \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="neutral_bodies_default_1" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_2_2</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>neutral_bodies</class>
+    <community>stalker</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_02\stalker\</snd_config>
+    <rank>375</rank>
+    <reputation>0</reputation>
+    <money min="500" max="1500" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_2_2</visual>
+    <supplies>
+	[spawn] \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="neutral_bodies_default_2" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_2_3</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>neutral_bodies</class>
+    <community>stalker</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\stalker\</snd_config>
+    <rank>375</rank>
+    <reputation>0</reputation>
+    <money min="500" max="1500" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_2_3</visual>
+    <supplies>
+	[spawn] \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="neutral_bodies_default_3" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_2_4</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>neutral_bodies</class>
+    <community>stalker</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_02\stalker\</snd_config>
+    <rank>375</rank>
+    <reputation>0</reputation>
+    <money min="500" max="1500" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_2_4</visual>
+    <supplies>
+	[spawn] \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="neutral_bodies_default_4" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_2_5</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>neutral_bodies</class>
+    <community>stalker</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\stalker\</snd_config>
+    <rank>375</rank>
+    <reputation>0</reputation>
+    <money min="500" max="1500" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_2_5</visual>
+    <supplies>
+	[spawn] \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="neutral_bodies_default_5" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_2_6</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>neutral_bodies</class>
+    <community>stalker</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_02\stalker\</snd_config>
+    <rank>375</rank>
+    <reputation>0</reputation>
+    <money min="500" max="1500" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_2_6</visual>
+    <supplies>
+	[spawn] \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="neutral_bodies_default_6" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_3</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>neutral_bodies</class>
+    <community>stalker</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\stalker\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+    <money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_3</visual>
+    <supplies>
+	[spawn] \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="neutral_bodies_default_7" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_neutral_5</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>neutral_bodies</class>
+    <community>stalker</community>
+    <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\stalker\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+    <money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_neutral\stalker_neutral_5</visual>
+    <supplies>
+	[spawn] \n
+	#include "gameplay\character_items.xml"
+	#include "gameplay\character_food.xml"
+	#include "gameplay\character_drugs.xml"
+    </supplies>
+    #include "gameplay\character_criticals_4.xml"
+    #include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<!-- ЗОМБИРОВАННЫЕ В ПОДЗЕМЕЛЬЯХ АГРОПРОМА -->
+
+<specific_character id="agru_zombied_default_0" team_default = "1">
+	<name>GENERATE_NAME_stalker</name>
+	<icon>icon_stalker_zombied_2_7</icon>
+	<map_icon x="1" y="0"></map_icon>
+	<bio></bio>
+	<class>agru_zombied</class>
+	<community>zombied</community> 
+	<snd_config>characters_voice\human_02\zombied\</snd_config>
+	<rank>375</rank>
+	<reputation>0</reputation>
+	<visual>actors\stalker_zombied\stalker_zombied_2_7</visual>
+	<crouch_type>0</crouch_type>
+	<supplies>
+	[spawn]\n
+	wpn_binoc \n
+	hand_radio \n
+	wpn_spas12 \n
+	ammo_12x76_zhekan = 1 \n
+	wpn_fort \n
+	ammo_9x18_fmj = 1 \n
+    </supplies>
+#include "gameplay\character_criticals_1.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="agru_zombied_default_1" team_default = "1">
+	<name>GENERATE_NAME_stalker</name>
+	<icon>icon_stalker_zombied_2_7</icon>
+	<map_icon x="1" y="0"></map_icon>
+	<bio></bio>
+	<class>agru_zombied</class>
+	<community>zombied</community> 
+	<snd_config>characters_voice\human_02\zombied\</snd_config>
+	<rank>375</rank>
+	<reputation>0</reputation>
+	<visual>actors\stalker_zombied\stalker_zombied_2_7</visual>
+	<crouch_type>0</crouch_type>
+	<supplies>
+	[spawn]\n
+	wpn_binoc \n
+	hand_radio \n
+	wpn_ak74 \n
+	ammo_5.45x39_fmj = 1 \n
+	wpn_fort \n
+	ammo_9x18_fmj = 1 \n
+    </supplies>
+#include "gameplay\character_criticals_1.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="agru_zombied_default_2" team_default = "1">
+	<name>GENERATE_NAME_stalker</name>
+	<icon>icon_stalker_zombied_2_8</icon>
+	<map_icon x="1" y="0"></map_icon>
+	<bio></bio>
+	<class>agru_zombied</class>
+	<community>zombied</community> 
+	<snd_config>characters_voice\human_01\zombied\</snd_config>
+	<rank>375</rank>
+	<reputation>0</reputation>
+	<visual>actors\stalker_zombied\stalker_zombied_2_8</visual>
+	<crouch_type>0</crouch_type>
+	<supplies>
+	[spawn]\n
+	wpn_binoc \n
+	hand_radio \n
+	wpn_spas12 \n
+	ammo_12x76_zhekan = 1 \n
+	wpn_fort \n
+	ammo_9x18_fmj = 1 \n
+    </supplies>
+#include "gameplay\character_criticals_1.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="agru_zombied_default_3" team_default = "1">
+	<name>GENERATE_NAME_stalker</name>
+	<icon>icon_stalker_zombied_2_8</icon>
+	<map_icon x="1" y="0"></map_icon>
+	<bio></bio>
+	<class>agru_zombied</class>
+	<community>zombied</community> 
+	<snd_config>characters_voice\human_01\zombied\</snd_config>
+	<rank>375</rank>
+	<reputation>0</reputation>
+	<visual>actors\stalker_zombied\stalker_zombied_2_8</visual>
+	<crouch_type>0</crouch_type>
+	<supplies>
+	[spawn]\n
+	wpn_binoc \n
+	hand_radio \n
+	wpn_ak74 \n
+	ammo_5.45x39_fmj = 1 \n
+	wpn_fort \n
+	ammo_9x18_fmj = 1 \n
+    </supplies>
+#include "gameplay\character_criticals_1.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="agru_zombied_default_4" team_default = "1">
+	<name>GENERATE_NAME_stalker</name>
+	<icon>icon_stalker_zombied_3_3</icon>
+	<map_icon x="1" y="0"></map_icon>
+	<bio></bio>
+	<class>agru_zombied</class>
+	<community>zombied</community> 
+	<snd_config>characters_voice\human_01\zombied\</snd_config>
+	<rank>625</rank>
+	<reputation>0</reputation>
+	<visual>actors\stalker_zombied\stalker_zombied_3_3</visual>
+	<crouch_type>0</crouch_type>
+	<supplies>
+	[spawn]\n
+	wpn_binoc \n
+	hand_radio \n
+	wpn_spas12 \n
+	ammo_12x76_zhekan = 1 \n
+	wpn_fort \n
+	ammo_9x18_fmj = 1 \n
+    </supplies>
+#include "gameplay\character_criticals_1.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="agru_zombied_default_5" team_default = "1">
+	<name>GENERATE_NAME_stalker</name>
+	<icon>icon_stalker_zombied_3_3</icon>
+	<map_icon x="1" y="0"></map_icon>
+	<bio></bio>
+	<class>agru_zombied</class>
+	<community>zombied</community> 
+	<snd_config>characters_voice\human_01\zombied\</snd_config>
+	<rank>625</rank>
+	<reputation>0</reputation>
+	<visual>actors\stalker_zombied\stalker_zombied_3_3</visual>
+	<crouch_type>0</crouch_type>
+	<supplies>
+	[spawn]\n
+	wpn_binoc \n
+	hand_radio \n
+	wpn_abakan \n
+	ammo_5.45x39_fmj = 1 \n
+	wpn_fort \n
+	ammo_9x18_fmj = 1 \n
+    </supplies>
+#include "gameplay\character_criticals_1.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="agru_zombied_default_6" team_default = "1">
+	<name>GENERATE_NAME_stalker</name>
+	<icon>icon_stalker_zombied_3_4</icon>
+	<map_icon x="1" y="0"></map_icon>
+	<bio></bio>
+	<class>agru_zombied</class>
+	<community>zombied</community> 
+	<snd_config>characters_voice\human_01\zombied\</snd_config>
+	<rank>625</rank>
+	<reputation>0</reputation>
+	<visual>actors\stalker_zombied\stalker_zombied_3_4</visual>
+	<crouch_type>0</crouch_type>
+	<supplies>
+	[spawn]\n
+	wpn_binoc \n
+	hand_radio \n
+	wpn_spas12 \n
+	ammo_12x76_zhekan = 1 \n
+	wpn_fort \n
+	ammo_9x18_fmj = 1 \n
+    </supplies>
+#include "gameplay\character_criticals_1.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="agru_zombied_default_7" team_default = "1">
+	<name>GENERATE_NAME_stalker</name>
+	<icon>icon_stalker_zombied_3_4</icon>
+	<map_icon x="1" y="0"></map_icon>
+	<bio></bio>
+	<class>agru_zombied</class>
+	<community>zombied</community> 
+	<snd_config>characters_voice\human_01\zombied\</snd_config>
+	<rank>625</rank>
+	<reputation>0</reputation>
+	<visual>actors\stalker_zombied\stalker_zombied_3_4</visual>
+	<crouch_type>0</crouch_type>
+	<supplies>
+	[spawn]\n
+	wpn_binoc \n
+	hand_radio \n
+	wpn_abakan \n
+	ammo_5.45x39_fmj = 1 \n
+	wpn_fort \n
+	ammo_9x18_fmj = 1 \n
+    </supplies>
+#include "gameplay\character_criticals_1.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="agru_zombied_default_8" team_default = "1">
+	<name>GENERATE_NAME_stalker</name>
+	<icon>icon_stalker_zombied_4_3</icon>
+	<map_icon x="1" y="0"></map_icon>
+	<bio></bio>
+	<class>agru_zombied</class>
+	<community>zombied</community> 
+	<snd_config>characters_voice\human_01\zombied\</snd_config>
+	<rank>875</rank>
+	<reputation>0</reputation>
+	<visual>actors\stalker_zombied\stalker_zombied_4_3</visual>
+	<crouch_type>0</crouch_type>
+	<supplies>
+	[spawn]\n
+	wpn_binoc \n
+	hand_radio \n
+	wpn_spas12 \n
+	ammo_12x76_zhekan = 1 \n
+	wpn_fort \n
+	ammo_9x18_fmj = 1 \n
+    </supplies>
+#include "gameplay\character_criticals_1.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="agru_zombied_default_9" team_default = "1">
+	<name>GENERATE_NAME_stalker</name>
+	<icon>icon_stalker_zombied_4_3</icon>
+	<map_icon x="1" y="0"></map_icon>
+	<bio></bio>
+	<class>agru_zombied</class>
+	<community>zombied</community> 
+	<snd_config>characters_voice\human_01\zombied\</snd_config>
+	<rank>875</rank>
+	<reputation>0</reputation>
+	<visual>actors\stalker_zombied\stalker_zombied_4_3</visual>
+	<crouch_type>0</crouch_type>
+	<supplies>
+	[spawn]\n
+	wpn_binoc \n
+	hand_radio \n
+	wpn_groza \n
+	ammo_9x39_pab9 = 1 \n
+	wpn_fort \n
+	ammo_9x18_fmj = 1 \n
+    </supplies>
+#include "gameplay\character_criticals_1.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+</xml>

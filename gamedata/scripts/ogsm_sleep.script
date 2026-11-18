@@ -1,0 +1,178 @@
+--------------------- Copyright 2007-2010 xStream, Ab@dDon, DEXXX ---------------------
+-------------------------------------- Модуль сна -------------------------------------
+
+
+local nrg, med, cnt
+
+-- Функции, относящиеся ко сну
+function reduce_need_sleep(time)
+	local tmp = ogsm.load_variable("slp",0)
+	tmp=tmp-time*120
+	if tmp<0 then tmp=0 end
+	ogsm.del_variable("nrg")
+	ogsm.del_variable("smn")
+	ogsm.save_variable("slp",tmp)
+	test_sleep_pp()
+end
+function test_for_need_sleep()
+	if is_sleep_active() == false then
+		ogsm.save_variable("slp",ogsm.load_variable("slp",0)+1)
+		test_sleep_pp()
+	end
+	ogsm.g_start_timer("slp",0,0,6)
+end
+function test_sleep_pp()
+	local tmp=ogsm.load_variable("slp",0)
+	if tmp>360 then
+		main(5+ogsm.load_variable("nrg",0))
+	end
+	if tmp>320 then
+		level.add_pp_effector("sleepy.ppe", 999, true)
+		level.set_pp_effector_factor(999, 5.0)
+	end
+	if tmp<=300 then
+		level.remove_pp_effector(999)
+	end
+end
+function test_for_need_sleep_nrg(oid)
+	if alife():object(oid) == nil then
+		local snd = sound_object([[food\inv_softdrink]])
+		snd:play_no_feedback(db.actor,sound_object.s2d, 0, vector():set(0, 0, 0), 1.0)
+		local n=ogsm.load_variable("nrg",0)
+		if n<3 then
+			ogsm.save_variable("nrg",n+1)
+			ogsm.save_variable("slp",ogsm.load_variable("slp",0)-30+n*10)
+			test_sleep_pp()
+		end
+		ogsm.g_start_timer("men",0,1,0)
+		ogsm.save_variable("smn",1)
+	end
+end
+function test_for_need_sleep_matras(oid)
+	if alife():object(oid) == nil then
+		local enemy = false
+		for a=1,65535 do
+			local obj = level.object_by_id(a)
+			if obj then
+				if ((IsStalker(obj) and ogsm.get_npc_relation(obj,db.actor)=="enemy") or IsMonster(obj))
+				   and obj:position():distance_to(db.actor:position())<40
+					and obj:see(db.actor) then
+						enemy = true
+						break
+				end
+			end
+		end
+		if enemy == true then
+			news_manager.send_tip(db.actor, "Не спать! Опасно тут.", nil, "ogsm", 5000)
+		elseif xr_surge_hide.start_surge then
+			news_manager.send_tip(db.actor, "Нет покоя... Выброс!", nil, "ogsm", 5000)
+		elseif ogsm.load_variable("smn",0) == 1 then
+			news_manager.send_tip(db.actor, "Ну вот зачем я столько стимулятора выпил?!", nil, "ogsm", 5000)
+		else
+			local spwn = ui_cheat.cheat(get_hud())
+			level.start_stop_menu(spwn,true)
+		end
+		ogsm.spawn_item_in_inv("matras")
+	end
+end
+
+
+function sleep_one_hour()
+	main(1)
+end
+function sleep_three_hours()
+	main(3)
+end
+function sleep_nine_hours()
+	main(5)
+end
+function sleep_until_mourning()
+	local current_hour = level.get_time_hours()
+	if current_hour < 5 then
+		main(5 - current_hour)
+	elseif current_hour > 5 then
+		main(29 - current_hour)
+	else
+		main(24)
+	end
+end
+function sleep_unlim(scale)
+	local sleep_time = (1 - db.actor.health)*6
+	main(sleep_time)
+end
+
+function main(scale)
+	reduce_need_sleep(scale)
+	local sleep_ltx = ini_file ("scripts\\actorsleep.ltx")
+	schemes["ar_sleep"] = "ar_sleep"
+	ar_sleep.set_scheme(db.actor, sleep_ltx, "ar_sleep", logic)
+	db.actor:stop_talk()
+	db.actor:hide_weapon()
+	level.disable_input()
+	hp_corrector(scale)
+	starter(scale)
+end
+
+function starter(scale)
+	local factor = scale * 1300
+	game.start_tutorial("time_scaling")
+	level_weathers.update_immediate=true
+	level.set_time_factor(factor)
+end
+
+function dreamer()
+	level.set_time_factor(10)
+	if is_sleep_active() then
+		hp_corrector(0)
+		local dream = dream.sleep_video_name_callback()
+		if dream ~= "" then game.start_tutorial(dream)
+		else game.start_tutorial("without_dream") end
+	end
+end
+
+-- Kirgudu
+function stopper_time_shift()
+	-- в случае, если у нас не сон, а обморок после выброса или ограбления
+	-- сны не смотрим, погоду меняем
+	level.set_time_factor(10)
+	level_weathers.update_immediate = false
+	level_weathers.get_weather_manager():select_weather(true)
+end
+-- Kirgudu
+
+function stopper()
+	level.set_time_factor(10)
+	level_weathers.update_immediate=false
+	ar_sleep.disable_scheme()
+	if db.actor:alive() then
+		level.add_cam_effector("camera_effects\\prison_1.anm", 25, false, "")
+		level.add_pp_effector("sleepy.ppe", 2007, false)
+		level.add_pp_effector("wakeup.ppe", 2008, false)
+		db.actor:restore_weapon()
+		local snd_obj = sound_object([[characters_voice\human_01\stalker\states\breath\breath_2]])
+		snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 15.0)
+		level.add_cam_effector("camera_effects\\hit_back_left.anm", 26, false, "")
+	end
+	level.enable_input()
+end
+
+function hp_corrector(fr)
+	if fr ~= 0 then
+		hp = fr/6 + db.actor.health
+		if hp > 1 then hp = 1 end
+		return
+	elseif db.actor.health > hp then
+		db.actor.health = hp - db.actor.health
+	end
+end
+
+function is_sleep_active()
+	if db.storage[db.actor:id()].active_scheme == "ar_sleep" then
+		return true
+	end
+	return false
+end
+
+
+-------------------------------------- Модуль сна -------------------------------------
+--------------------- Copyright 2007-2010 xStream, Ab@dDon, DEXXX ---------------------

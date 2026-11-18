@@ -1,0 +1,589 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<xml>
+
+<specific_character id="lim_cs_commander_default" team_default = "1">
+    <name>GENERATE_NAME_stalker</name>
+    <icon>icon_stalker_nebo_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_cs_commander</class>
+    <community>csky</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\csky\</snd_config>
+    <rank>875</rank>
+    <reputation>0</reputation>
+	<money min="250" max="750" infinitive="0"/>
+    <visual>actors\stalker_nebo\stalker_nebo_1</visual>
+    <supplies>
+	[spawn] \n
+	wpn_groza = 1, scope \n
+	ammo_9x39_pab9 = 1 \n
+	ammo_vog-25 = 1 \n
+	wpn_fort \n
+	ammo_9x18_fmj = 1 \n
+	grenade_f1 = 2 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs_medkits_army.xml"
+    </supplies>
+    <mechanic_mode>1</mechanic_mode>
+#include "gameplay\character_criticals_1.xml"
+    <start_dialog>dm_hello_dialog</start_dialog>
+</specific_character>
+
+
+<specific_character id="lim_wounded_bandit_default_0" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_2</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_wounded_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_2</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_ak74u \n
+	ammo_5.45x39_fmj = 1 \n
+	wpn_hpsa \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_wounded_bandit_default_1" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_2_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_wounded_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_2_1</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_val \n
+	ammo_9x39_sp5 = 1 \n
+	wpn_beretta \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_wounded_bandit_default_2" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_2_2</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_wounded_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_02\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_2_2</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_ak74u \n
+	ammo_5.45x39_fmj = 1 \n
+	wpn_hpsa \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_wounded_bandit_default_3" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_3_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_wounded_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_02\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_3_1</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_val \n
+	ammo_9x39_sp5 = 1 \n
+	wpn_beretta \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_wounded_bandit_default_4" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_3_2</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_wounded_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_3_2</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_ak74u \n
+	ammo_5.45x39_fmj = 1 \n
+	wpn_hpsa \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_wounded_bandit_default_5" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_4_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_wounded_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_4_1</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_val \n
+	ammo_9x39_sp5 = 1 \n
+	wpn_beretta \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_wounded_bandit_default_6" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_4_2</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_wounded_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_02\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_4_2</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_ak74u \n
+	ammo_5.45x39_fmj = 1 \n
+	wpn_hpsa \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_wounded_bandit_default_7" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_2</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_wounded_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_2</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_val \n
+	ammo_9x39_sp5 = 1 \n
+	wpn_beretta \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+
+<specific_character id="lim_enemy_bandit_default_0" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_2</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_enemy_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_2</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_ak74u \n
+	ammo_5.45x39_fmj = 1 \n
+	wpn_hpsa \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_enemy_bandit_default_1" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_2_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_enemy_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_2_1</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_val \n
+	ammo_9x39_sp5 = 1 \n
+	wpn_beretta \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_enemy_bandit_default_2" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_2_2</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_enemy_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_02\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_2_2</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_ak74u \n
+	ammo_5.45x39_fmj = 1 \n
+	wpn_hpsa \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_enemy_bandit_default_3" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_3_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_enemy_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_02\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_3_1</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_val \n
+	ammo_9x39_sp5 = 1 \n
+	wpn_beretta \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_enemy_bandit_default_4" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_3_2</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_enemy_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_3_2</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_ak74u \n
+	ammo_5.45x39_fmj = 1 \n
+	wpn_hpsa \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_enemy_bandit_default_5" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_4_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_enemy_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_4_1</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_val \n
+	ammo_9x39_sp5 = 1 \n
+	wpn_beretta \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_enemy_bandit_default_6" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_4_2</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_enemy_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_02\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_4_2</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_ak74u \n
+	ammo_5.45x39_fmj = 1 \n
+	wpn_hpsa \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_enemy_bandit_default_7" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_2</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_enemy_bandit</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_2</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_val \n
+	ammo_9x39_sp5 = 1 \n
+	wpn_beretta \n
+	ammo_9x19_fmj = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_bandit_minigunner_default_0" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_2_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_bandit_minigunner</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_2_1</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_pkm \n
+	ammo_pkm_100 = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_bandit_minigunner_default_1" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_2_2</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_bandit_minigunner</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_02\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_2_2</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_pkm \n
+	ammo_pkm_100 = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_bandit_minigunner_default_2" team_default = "1">
+    <name>GENERATE_NAME_bandit</name>
+    <icon>icon_stalker_bandit_3_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_bandit_minigunner</class>
+    <community>renegade</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_01\bandit\</snd_config>
+    <rank>625</rank>
+    <reputation>0</reputation>
+	<money min="500" max="2000" infinitive="0"/>
+    <visual>actors\stalker_bandit\stalker_bandit_3_1</visual>
+    <supplies>
+	[spawn] \n
+	device_torch \n
+	wpn_pkm \n
+	ammo_pkm_100 = 1 \n
+#include "gameplay\character_items.xml"
+#include "gameplay\character_food.xml"
+#include "gameplay\character_drugs.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_bridge_minigunner_default_0" team_default = "1">
+    <name>GENERATE_NAME_lieutenant</name>
+    <icon>icon_stalker_soldier_4_1</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_bridge_minigunner</class>
+    <community>army</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\military\</snd_config>
+    <rank>875</rank>
+    <reputation>0</reputation>
+    <visual>actors\stalker_soldier\stalker_soldier_4_1</visual>
+    <supplies>
+	[spawn] \n
+	wpn_binoc \n
+	hand_radio \n
+	wpn_pkm \n
+	ammo_pkm_100 = 1 \n
+#include "gameplay\character_drugs_medkits_army.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+<specific_character id="lim_bridge_minigunner_default_1" team_default = "1">
+    <name>GENERATE_NAME_lieutenant</name>
+    <icon>icon_stalker_soldier_4_2</icon>
+    <map_icon x="1" y="0"></map_icon>
+    <bio></bio>
+    <class>lim_bridge_minigunner</class>
+    <community>army</community> <terrain_sect>stalker_terrain</terrain_sect>
+    <snd_config>characters_voice\human_03\military\</snd_config>
+    <rank>875</rank>
+    <reputation>0</reputation>
+    <visual>actors\stalker_soldier\stalker_soldier_4_2</visual>
+    <supplies>
+	[spawn] \n
+	wpn_binoc \n
+	hand_radio \n
+	wpn_pkm \n
+	ammo_pkm_100 = 1 \n
+#include "gameplay\character_drugs_medkits_army.xml"
+    </supplies>
+#include "gameplay\character_criticals_4.xml"
+#include "gameplay\character_dialogs.xml"
+</specific_character>
+
+</xml>
