@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<sak_off_corpses>
+
+<!-------------------------------Меню Уборщик Локаций--------------------------------------->
+	<background_sak_off_corpses x="472" y="400" width="430" height="380">
+		<texture x="0" y="0" width="350" height="310">ui\ui_sak_off_corpses_menu</texture>
+	</background_sak_off_corpses>
+	
+	<sak_off_corpses_text x="500" y="400" width="117" height="20">
+		<text font="graffiti22" r="255" g="210" b="63">Меню Уборщик Локаций</text>
+	</sak_off_corpses_text>
+
+    <sak_off_corpses x="482" y="415" width="430" height="380">
+        <sak_off_corpses_button x="10" y="15" width="278" height="232" radio="1">
+            <button x="0" y="2" width="32" height="23" id="tab_0">
+                <text font="letterica16">Очистка всех объектов</text>
+            </button>
+            <button x="0" y="25" width="32" height="23" id="tab_1">
+                <text font="letterica16">Трупы персонажей</text>
+            </button>
+            <button x="0" y="46" width="32" height="23" id="tab_2">
+                <text font="letterica16">Трупы мутантов</text>
+            </button>
+            <button x="0" y="69" width="32" height="23" id="tab_3">
+                <text font="letterica16">Оружие</text>
+            </button>
+            <button x="0" y="92" width="32" height="23" id="tab_4">
+                <text font="letterica16">Патроны и гранаты</text>
+            </button>
+            <button x="0" y="115" width="32" height="23" id="tab_5">
+                <text font="letterica16">Броня</text>
+            </button>
+            <button x="0" y="138" width="32" height="23" id="tab_6">
+                <text font="letterica16">Еда</text>
+            </button>
+            <button x="0" y="161" width="32" height="23" id="tab_7">
+                <text font="letterica16">Медикаменты</text>
+            </button>
+            <button x="0" y="184" width="32" height="23" id="tab_8">
+                <text font="letterica16">Артефакты</text>
+            </button>
+        </sak_off_corpses_button>
+		
+        <button_delete x="20" y="227" width="117" height="29">
+            <texture>ui_button_ordinary</texture>
+            <text font="letterica16">Удалить</text>
+        </button_delete>
+		
+        <button_exit x="160" y="227" width="117" height="29">
+            <texture>ui_button_ordinary</texture>
+            <text font="letterica16">Выход</text>
+        </button_exit>
+		
+    </sak_off_corpses>
+</sak_off_corpses>

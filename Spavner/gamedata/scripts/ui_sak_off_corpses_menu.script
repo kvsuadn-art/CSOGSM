@@ -1,0 +1,394 @@
+---------------------------------------------------------------------------------------------------
+--//Меню Уборщик Локаций 
+--//Основано на Уборщике трупов и удаления бесхозного оружия от Сяка 
+---------------------------------------------------------------------------------------------------
+
+-- =========================================================
+-- функция проверка что объект на текущей локации
+-- =========================================================
+local function is_same_level(obj)
+    if not obj or not db.actor then
+        return false
+    end
+
+    if not obj.m_game_vertex_id then
+        return false
+    end
+
+    local actor_vertex = db.actor:game_vertex_id()
+    local obj_vertex = obj.m_game_vertex_id
+
+    if not actor_vertex or not obj_vertex then
+        return false
+    end
+
+    local gg = game_graph()
+
+    if gg:vertex(actor_vertex):level_id() == gg:vertex(obj_vertex):level_id() then
+        return true
+    end
+
+    return false
+end
+
+-- =========================================================
+-- Функция проверка, можно ли безопасно удалить объект
+-- =========================================================
+local function can_release_object(obj, actor_pos)
+    if not obj or not actor_pos or not obj.position then
+        return false
+    end
+
+    local o_pos = obj.position
+    if not o_pos then
+        return false
+    end
+
+    local dx = o_pos.x - actor_pos.x
+    local dy = o_pos.y - actor_pos.y
+    local dz = o_pos.z - actor_pos.z
+
+    local dist_sq = dx*dx + dy*dy + dz*dz
+    local height_diff = math.abs(dy)
+
+    if dist_sq < (5.7 * 5.7) and height_diff < 5.7 then
+        return false
+    end
+
+    return true
+end
+
+-- ==========================================
+-- Функция безопасное удаление объекта
+-- ==========================================
+local function safe_release(obj)
+    if not obj then return end
+    local id = obj.id or obj:id()
+    if alife() and alife():object(id) then
+        alife():release(obj, true)
+    elseif level.object_by_id and level.object_by_id(id) then
+        level.remove_object(id)
+    end
+end
+
+-- ==============================================
+-- Функция проверка, является ли объект бронёй
+-- ==============================================
+local function is_outfit(name)
+    for i = 1, #god_tbl.god_outfits_table do
+        if string.find(name, god_tbl.god_outfits_table[i]) then
+            return true
+        end
+    end
+    return false
+end
+
+class "sak_off_corpses" (CUIScriptWnd)
+
+function sak_off_corpses:__init() super()
+	self:InitControls()
+	self:InitCallBacks()
+end
+
+function sak_off_corpses:InitControls()
+	local xml = CScriptXmlInit()
+	self:SetWndRect(Frect():set(0,0,1024,768))
+	xml:ParseFile("ui_sak_off_corpses_menu.xml")
+	xml:InitStatic ("background_sak_off_corpses", self)
+	xml:InitStatic ("sak_off_corpses_text",       self)
+	self.sak_off_corpses = xml:InitFrame("sak_off_corpses", self)
+	self.sak_off_corpses_button = xml:InitTab("sak_off_corpses:sak_off_corpses_button", self.sak_off_corpses)
+	self:Register(self.sak_off_corpses_button, "sak_off_corpses_button")
+	self:Register(xml:Init3tButton("sak_off_corpses:button_delete", self.sak_off_corpses), "button_delete")
+	self:Register(xml:Init3tButton("sak_off_corpses:button_exit", self.sak_off_corpses), "button_exit")
+	
+    local last_tab = 0
+    local st = db.storage[db.actor:id()]
+    
+    if st and st.pstor then
+        local v = st.pstor["sak_last_tab"]
+        if type(v) == "number" then
+            last_tab = v
+        end
+    end
+    
+    local id = "tab_" .. tostring(last_tab)
+    
+    self.sak_off_corpses_button:SetActiveTab(id)
+
+end
+
+function sak_off_corpses:InitCallBacks()
+	self:AddCallback("sak_off_corpses_button", ui_events.TAB_CHANGED, self.off_corpses_tab_changed, self)
+	self:AddCallback("button_delete", ui_events.BUTTON_CLICKED, self.button_delete_button_clicked, self)
+	self:AddCallback("button_exit", ui_events.BUTTON_CLICKED, self.button_exit_clicked, self)
+end
+
+function sak_off_corpses:off_corpses_tab_changed()
+    local id = self.sak_off_corpses_button:GetActiveId() or "tab_0"
+    local i = tonumber(string.match(id, "%d+")) or 0
+
+    local st = db.storage[db.actor:id()]
+    if st then
+        if type(st.pstor) ~= "table" then
+            st.pstor = {}
+        end
+        st.pstor["sak_last_tab"] = i
+    end
+
+    if i == 0 then
+    elseif i == 1 then          -- Действие при активации переключателся с идентификатором Все объекты
+    elseif i == 2 then          -- Действие при активации переключателся с идентификатором Трупы персонажей
+    elseif i == 3 then          -- Действие при активации переключателся с идентификатором Трупы мутантов
+    elseif i == 4 then          -- Действие при активации переключателся с идентификатором Патроны и гранаты
+    elseif i == 5 then          -- Действие при активации переключателся с идентификатором Броня 
+    elseif i == 6 then          -- Действие при активации переключателся с идентификатором Еда 
+    elseif i == 7 then          -- Действие при активации переключателся с идентификатором Медикаменты
+    elseif i == 8 then          -- Действие при активации переключателся с идентификатором Артефакты 
+    end
+end
+
+function sak_off_corpses:button_delete_button_clicked()
+    if not self:check_game() then return end
+
+    local id = self.sak_off_corpses_button:GetActiveId() or "tab_0"
+    local index = tonumber(string.match(id, "%d+")) or 0
+
+    if index == 0 then
+        self:remove_all_objects() -- Все объекты
+    elseif index == 1 then
+        self:remove_dead_npcs() -- Трупы персонажей
+    elseif index == 2 then
+        self:remove_dead_mutants() -- Трупы мутантов
+    elseif index == 3 then
+        self:remove_weapons() -- Оружие
+    elseif index == 4 then
+        self:remove_ammo() -- Патроны и гранаты
+    elseif index == 5 then
+        self:remove_outfits() -- Броня
+    elseif index == 6 then
+        self:remove_food() -- Еда
+    elseif index == 7 then
+        self:remove_medicines() -- Медикаменты
+    elseif index == 8 then
+        self:remove_artifacts() -- Артефакты
+    end
+end
+
+--------------------------------------------
+--  УДАЛЕНИЕ ОБЪЕКТОВ
+--------------------------------------------
+
+-- Все объекты
+function sak_off_corpses:remove_all_objects()
+    self:remove_dead_npcs()
+    self:remove_dead_mutants()
+    self:remove_weapons()
+    self:remove_ammo()
+    self:remove_outfits()
+    self:remove_food()
+    self:remove_medicines()
+    self:remove_artifacts()
+    news_manager.send_tip(db.actor, "Очистка всех объектов завершена", nil, nil, 5000)
+end
+
+-- Трупы персонажей
+function sak_off_corpses:remove_dead_npcs()
+    local count = 0
+    for id = 1, 65535 do
+        local obj = alife():object(id)
+        if obj and is_same_level(obj) and IsStalker(obj) and not obj:alive() then
+            safe_release(obj)
+            count = count + 1
+        end
+    end
+    news_manager.send_tip(db.actor, "Удалено трупов персонажей: " .. count, nil, nil, 5000)
+end
+
+-- Трупы мутантов
+function sak_off_corpses:remove_dead_mutants()
+    local count = 0
+    for id = 1, 65535 do
+        local obj = alife():object(id)
+        if obj and is_same_level(obj) and IsMonster(obj) and not obj:alive() then
+            safe_release(obj)
+            count = count + 1
+        end
+    end
+    news_manager.send_tip(db.actor, "Удалено трупов мутантов: " .. count, nil, nil, 5000)
+end
+
+-- Оружие
+function sak_off_corpses:remove_weapons()
+    if not self:check_game() then return end
+    local actor = db.actor
+    local a_pos = actor and actor:position()
+    if not a_pos then return end
+    local count = 0
+    local skipped = 0
+    for id = 1, 65535 do
+        local obj = alife():object(id)
+        if obj and is_same_level(obj) and obj.parent_id == 65535 and string.find(obj:name(), "wpn_") then
+            if can_release_object(obj, a_pos) then
+                safe_release(obj)
+                count = count + 1
+            else
+                skipped = skipped + 1
+            end
+        end
+    end
+    news_manager.send_tip(db.actor,"Удалено оружия: " .. count .. " | Пропущено: " .. skipped, nil, nil, 5000)
+end
+
+-- Патроны и гранаты
+function sak_off_corpses:remove_ammo()
+    if not self:check_game() then return end
+    local actor = db.actor
+    local a_pos = actor and actor:position()
+    if not a_pos then return end
+    local count = 0
+    local skipped = 0
+    for id = 1, 65535 do
+        local obj = alife():object(id)
+        if obj and is_same_level(obj) and obj.parent_id == 65535 and (
+            string.find(obj:name(), "ammo_") or
+            string.find(obj:name(), "grenade_")
+        ) then
+            if can_release_object(obj, a_pos) then
+                safe_release(obj)
+                count = count + 1
+            else
+                skipped = skipped + 1
+            end
+        end
+    end
+    news_manager.send_tip(db.actor,"Удалено патронов и гранат: " .. count .. " | Пропущено: " .. skipped, nil, nil, 5000)
+end
+
+-- Броня
+function sak_off_corpses:remove_outfits()
+    if not self:check_game() then return end
+    local actor = db.actor
+    local a_pos = actor and actor:position()
+    if not a_pos then return end
+    local count = 0
+    local skipped = 0
+    for id = 1, 65535 do
+        local obj = alife():object(id)
+       if obj and is_same_level(obj) and obj.parent_id == 65535 and is_outfit(obj:name()) then
+            if can_release_object(obj, a_pos) then
+                safe_release(obj)
+                count = count + 1
+            else
+                skipped = skipped + 1
+            end
+        end
+    end
+    news_manager.send_tip(db.actor,"Удалено брони: " .. count .. " | Пропущено: " .. skipped, nil, nil, 5000)
+end
+
+-- Еда
+function sak_off_corpses:remove_food()
+    if not self:check_game() then return end
+    local actor = db.actor
+    local a_pos = actor and actor:position()
+    if not a_pos then return end
+    local count = 0
+    local skipped = 0
+    for id = 1, 65535 do
+        local obj = alife():object(id)
+       if obj and is_same_level(obj) and obj.parent_id == 65535 and (
+            string.find(obj:name(), "bread") or
+            string.find(obj:name(), "kolbasa") or
+            string.find(obj:name(), "conserva") or
+            string.find(obj:name(), "vodka") or
+            string.find(obj:name(), "energy_drink")
+        ) then
+            if can_release_object(obj, a_pos) then
+                safe_release(obj)
+                count = count + 1
+            else
+                skipped = skipped + 1
+            end
+        end
+    end
+    news_manager.send_tip(db.actor,"Удалено еды: " .. count .. " | Пропущено: " .. skipped, nil, nil, 5000)
+end
+
+-- Медикаменты
+function sak_off_corpses:remove_medicines()
+    if not self:check_game() then return end
+    local actor = db.actor
+    local a_pos = actor and actor:position()
+    if not a_pos then return end
+    local count = 0
+    local skipped = 0
+    for id = 1, 65535 do
+        local obj = alife():object(id)
+        if obj and is_same_level(obj) and obj.parent_id == 65535 and (
+            string.find(obj:name(), "medkit") or
+            string.find(obj:name(), "antirad") or
+            string.find(obj:name(), "bandage")
+        ) then
+            if can_release_object(obj, a_pos) then
+                safe_release(obj)
+                count = count + 1
+            else
+                skipped = skipped + 1
+            end
+        end
+    end
+    news_manager.send_tip(db.actor,"Удалено медикаментов: " .. count .. " | Пропущено: " .. skipped, nil, nil, 5000)
+end
+
+-- Артефакты
+function sak_off_corpses:remove_artifacts()
+    if not self:check_game() then return end
+    local actor = db.actor
+    local a_pos = actor and actor:position()
+    if not a_pos then return end
+    local count = 0
+    local skipped = 0
+    for id = 1, 65535 do
+        local obj = alife():object(id)
+        if obj and is_same_level(obj) and obj.parent_id == 65535 and string.find(obj:name(), "af_") then
+            if can_release_object(obj, a_pos) then
+                safe_release(obj)
+                count = count + 1
+            else
+                skipped = skipped + 1
+            end
+        end
+    end
+    news_manager.send_tip(db.actor,"Удалено артефактов: " .. count .. " | Пропущено: " .. skipped, nil, nil, 5000)
+end
+
+-- =======================
+--   Служебные функции
+-- =======================
+function sak_off_corpses:check_game()
+    local check = false
+    if level.present() and (db.actor ~= nil) and db.actor:alive() then
+        check = true
+    end
+    return check
+end
+
+function sak_off_corpses:button_exit_clicked()
+    if self:check_game() then
+        self:GetHolder():start_stop_menu(self, true)
+        local console = get_console()
+        console:execute("main_menu off")
+    end
+end
+
+function sak_off_corpses:OnKeyboard(dik, keyboard_action)
+    CUIScriptWnd.OnKeyboard(self, dik, keyboard_action)
+    if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+        if dik == DIK_keys.DIK_ESCAPE then
+            self:button_exit_clicked()
+        end
+    end
+    return true
+end
+

@@ -1,0 +1,307 @@
+===========================Тайники==============================
+[inventory_box_1]
+GroupControlSection		= spawn_group
+discovery_dependency 		= 
+$spawn 				= "devices\inventory box"
+class				= O_INVBOX
+cform				= skeleton
+visual				= dynamics\box\box_metall_01.ogf
+script_binding      		= bind_physic_object.init
+
+[inventory_box_2]
+GroupControlSection		= spawn_group
+discovery_dependency 		= 
+$spawn 				= "devices\inventory box"
+class				= O_INVBOX
+cform				= skeleton
+visual 								= dynamics\devices\dev_rukzak\dev_rukzak.ogf
+script_binding      		= bind_physic_object.init
+
+[inventory_box_3]
+GroupControlSection		= spawn_group
+discovery_dependency 		= 
+$spawn 				= "devices\inventory box"
+class				= O_INVBOX
+cform				= skeleton
+visual				= dynamics\box\expl_dinamit.ogf
+script_binding      		= bind_physic_object.init
+
+=======================Бочка (Слабая)=============================================
+[god_explosive_barrel_low]:identity_immunities,delayed_action_fuse,default_weapon_params
+
+GroupControlSection	= spawn_group
+discovery_dependency =
+$spawn 				= "weapons\explosive\barrel_low"
+$prefetch			= 16
+class				= II_EXPLO
+cform				= skeleton
+visual				= dynamics\balon\bochka_fuel.ogf
+description		    = 
+inv_name			= 
+inv_name_short		=
+inv_weight			= 0
+
+
+;вещь невозможно подобрать
+can_take			= false
+
+
+cost			    = 0
+;-------------------------------------------------------------------------------
+blast				= 1.50
+blast_r				= 8
+blast_impulse		= 250
+;delete
+blast_impulse_factor = 1
+
+
+frags				= 5
+frags_r				= 15
+frag_hit			= 0.75
+frag_hit_impulse	= 150
+
+hit_type_blast		= explosion
+hit_type_frag		= burn
+
+up_throw_factor		= 1.0
+;-------------------------------------------------------------------------------
+wm_size                  = 0.1
+
+explode_particles		 = explosions\explosion_barrel
+
+light_color		         = 1.9,1.4,0.5
+light_range		         = 14.0
+light_time 		         = 0.85
+
+;трассы от осколков
+fragment_speed				= 100		;скорость осколков (м/с)
+
+explode_duration		 = 5		;подолжительность взрыва (с)
+
+;wallmarks
+wallmark_section		 = explosion_marks
+;звуки
+snd_explode = weapons\f1_explode
+immunities_sect			= god_explosive_barrel_low_immunities_sect
+
+;time_to_explode			= 0.f
+
+[god_explosive_barrel_low_immunities_sect]
+;коэффициенты для попаданий различными типами хитов
+burn_immunity			= 1
+strike_immunity			= 1
+shock_immunity			= 1
+wound_immunity			= 1
+radiation_immunity		= 1
+telepatic_immunity		= 1
+chemical_burn_immunity	= 1
+explosion_immunity		= 1
+fire_wound_immunity		= 5
+
+=======================Бочка=============================================
+[god_explosive_barrel]:identity_immunities,delayed_action_fuse,default_weapon_params
+
+GroupControlSection	= spawn_group
+discovery_dependency =
+$spawn 				= "weapons\explosive\barrel"
+$prefetch			= 16
+class				= II_EXPLO
+cform				= skeleton
+visual				= dynamics\balon\bochka_fuel.ogf
+inv_name			= 
+inv_name_short		=
+description		    = 
+inv_weight			= 0
+
+
+;вещь невозможно подобрать
+can_take			= false
+
+cost				= 0
+;-------------------------------------------------------------------------------
+blast				= 1.50
+blast_r				= 8
+blast_impulse		= 250
+;delete
+blast_impulse_factor = 1
+
+
+frags				= 5
+frags_r				= 15
+frag_hit			= 0.75
+frag_hit_impulse	= 150
+
+hit_type_blast		= explosion
+hit_type_frag		= burn
+
+up_throw_factor		= 1.0
+;-------------------------------------------------------------------------------
+wm_size                  = 0.1
+
+explode_particles		 = explosions\explosion_barrel
+
+light_color		         = 1.9,1.4,0.5
+light_range		         = 14.0
+light_time 		         = 0.85
+
+;трассы от осколков
+fragment_speed				= 100		;скорость осколков (м/с)
+
+explode_duration		 = 5		;подолжительность взрыва (с)
+
+
+;звуки
+snd_explode = weapons\f1_explode
+immunities_sect			= god_explosive_barrel_immunities_sect
+;wallmarks
+wallmark_section		= explosion_marks
+
+[god_explosive_barrel_immunities_sect]
+;коэффициенты для попаданий различными типами хитов
+burn_immunity			= 0.0
+strike_immunity			= 1
+shock_immunity			= 1
+wound_immunity			= 1
+radiation_immunity		= 1
+telepatic_immunity		= 1
+chemical_burn_immunity	= 1
+explosion_immunity		= 1
+fire_wound_immunity		= 0.7
+
+=======================Канистра=============================================
+[god_explosive_mobiltank]:identity_immunities,delayed_action_fuse,default_weapon_params
+
+GroupControlSection	= spawn_group
+discovery_dependency =
+$spawn 				= "weapons\explosive\mobiltank"
+$prefetch			= 16
+class				= II_EXPLO
+cform				= skeleton
+visual				= dynamics\balon\kanistra.ogf
+inv_name			= 
+inv_name_short		=
+description		    = 
+inv_weight			= 0
+
+;вещь невозможно подобрать
+can_take			= false
+
+cost				= 0
+;-------------------------------------------------------------------------------
+blast				= 1.50
+blast_r				= 8
+blast_impulse		= 250
+;delete
+blast_impulse_factor = 1
+
+
+frags				= 5
+frags_r				= 15
+frag_hit			= 0.75
+frag_hit_impulse	= 150
+
+hit_type_blast		= explosion
+hit_type_frag		= burn
+
+up_throw_factor		= 1.0
+;-------------------------------------------------------------------------------
+wm_size                  = 0.1
+
+explode_particles		 = explosions\explosion_mobiltank
+
+light_color		         = 1.9,1.2,0.5
+light_range		         = 30.0
+light_time 		         = 1
+
+;трассы от осколков
+fragment_speed				= 100		;скорость осколков (м/с)
+
+explode_duration		 = 5		;подолжительность взрыва (с)
+
+
+;звуки
+snd_explode = weapons\f1_explode
+immunities_sect			= god_explosive_mobiltank_immunities_sect
+;wallmarks
+wallmark_section		= explosion_marks
+
+[god_explosive_mobiltank_immunities_sect]
+;коэффициенты для попаданий различными типами хитов
+burn_immunity			= 0.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 1.0
+radiation_immunity		= 1.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 1.0
+fire_wound_immunity		= 0.7
+
+=======================Балон=============================================
+
+[god_explosive_fuelcan]:identity_immunities,delayed_action_fuse,default_weapon_params
+
+GroupControlSection	= spawn_group
+discovery_dependency =
+$spawn 				= "weapons\explosive\fuelcan"
+$prefetch			= 16
+class				= II_EXPLO
+cform				= skeleton
+visual		 		= dynamics\balon\balon_01.ogf
+inv_name			= 
+inv_name_short		=
+description		    = 
+inv_weight			= 0
+
+
+;вещь невозможно подобрать
+can_take			= false
+
+cost				= 0
+;-------------------------------------------------------------------------------
+blast				= 1.50
+blast_r				= 8
+blast_impulse		= 250
+;delete
+blast_impulse_factor = 1
+
+
+frags				= 5
+frags_r				= 15
+frag_hit			= 0.75
+frag_hit_impulse	= 150
+
+hit_type_blast		= explosion
+hit_type_frag		= burn
+
+up_throw_factor		= 1.0
+;-------------------------------------------------------------------------------
+wm_size                  = 0.1
+
+explode_particles		 = explosions\explosion_fuelcan
+
+light_color		         = 1.9,1.3,0.5
+light_range		         = 30.0
+light_time 		         = 1.5
+
+;трассы от осколков
+fragment_speed				= 100
+
+explode_duration		 = 5		;подолжительность взрыва (с)
+;wallmarks
+wallmark_section		= explosion_marks
+;звуки
+snd_explode = weapons\f1_explode
+immunities_sect			= god_explosive_fuelcan_immunities_sect
+
+[god_explosive_fuelcan_immunities_sect]
+;коэффициенты для попаданий различными типами хитов
+burn_immunity			= 0.0
+strike_immunity			= 1.0
+shock_immunity			= 1.0
+wound_immunity			= 1.0
+radiation_immunity		= 1.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 1.0
+fire_wound_immunity		= 0.7

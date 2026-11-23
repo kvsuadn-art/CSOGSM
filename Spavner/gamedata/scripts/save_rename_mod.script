@@ -1,0 +1,47 @@
+--[[------------------------------------------------------------------------------------
+	 Save Rename Mod
+	 Каждое быстрое сохранение перезаписываетс¤ в "резерв" с именем в формате:
+	 Резервное сохранение <им¤ пользовател¤>_<название локации>.sav
+	 Author: naxac
+--]]------------------------------------------------------------------------------------
+
+local usr_name = user_name()
+local svname = usr_name.."_quicksave.sav"
+local txname = usr_name.."_quicksave.dds"
+local tmr = nil
+local backup_index = 1
+
+function on_save()
+    tmr = time_global() + 1000
+end
+
+function update(time)
+    if tmr and tmr < time then
+        tmr = nil
+        create_backup()
+    end
+end
+
+function create_backup()
+    local fs = getFS()
+    if not fs:exist("$game_saves$", svname) then return end
+
+    local tech_name = level.name() 
+    local loc_name = game.translate_string(tech_name)
+
+    local new_fname
+    repeat
+        new_fname = string.format("Резервное сохранение %s_%s_%02d", usr_name, loc_name, backup_index)
+        backup_index = backup_index + 1
+    until not fs:exist("$game_saves$", new_fname..".sav")
+
+    local f1 = fs:update_path("$game_saves$", svname)
+    local f2 = fs:update_path("$game_saves$", new_fname..".sav")
+    fs:file_copy(f1, f2)
+
+    if fs:exist("$game_saves$", txname) then
+        f1 = fs:update_path("$game_saves$", txname)
+        f2 = fs:update_path("$game_saves$", new_fname..".dds")
+        fs:file_copy(f1, f2)
+    end
+end

@@ -1,0 +1,2226 @@
+-- Оружие
+god_weapons_table = {
+"wpn_knife",
+"wpn_pm",
+"wpn_pm_minigame",
+"wpn_pb",
+"wpn_fort",
+"wpn_hpsa",
+"wpn_beretta",
+"wpn_beretta_minigame",
+"wpn_walther",
+"wpn_sig220",
+"wpn_sig550_minigame",
+"wpn_colt1911",
+"wpn_usp",
+"wpn_desert_eagle",
+"wpn_desert_eagle_up",
+"wpn_bm16",
+"wpn_toz34",
+"wpn_wincheaster1300",
+"wpn_spas12",
+"wpn_mp5",
+"wpn_mp5_minigame",
+"wpn_ak74",
+"wpn_ak74_minigame",
+"wpn_ak74u",
+"wpn_ak74u_minigame",
+"wpn_abakan",
+"wpn_l85",
+"wpn_sig550",
+"wpn_groza",
+"wpn_val",
+"wpn_val_minigame",
+"wpn_vintorez",
+"wpn_svu",
+"wpn_svd",
+"wpn_rg-6",
+"wpn_rpg7",
+"wpn_g36",
+"wpn_fn2000",
+"wpn_pkm",
+"wpn_gauss",
+"wpn_gauss_aes",
+"wpn_lr300",
+"wpn_lr300_minigame"
+}
+
+-- Аммунициция
+god_ammo_table = {
+"ammo_9x18_fmj",
+"ammo_9x18_pmm",
+"ammo_9x19_fmj",
+"ammo_9x19_pbp",
+"ammo_11.43x23_fmj",
+"ammo_11.43x23_hydro",
+"ammo_5.45x39_fmj",
+"ammo_5.45x39_ap",
+"ammo_5.56x45_ss190",
+"ammo_5.56x45_ap",
+"ammo_pkm_100",
+"ammo_7.62x54_7h14",
+"ammo_gauss",
+"ammo_9x39_pab9",
+"ammo_9x39_ap",
+"ammo_12x70_buck",
+"ammo_12x76_dart",
+"ammo_12x76_zhekan",
+"ammo_og-7b",
+"ammo_vog-25p",
+"ammo_vog-25",
+"ammo_m209",
+"ammo_minigame",
+"grenade_f1",
+"grenade_rgd5",
+"grenade_gd-05"
+}
+
+-- Броня
+god_outfits_table = {
+"novice_outfit",
+"stalker_outfit",
+"bandit_outfit",
+"cs_light_outfit",
+"cs_heavy_outfit",
+"svoboda_light_outfit",
+"svoboda_heavy_outfit",
+"svoboda_exo_outfit",
+"dolg_outfit",
+"dolg_heavy_outfit",
+"scientific_outfit",
+"specops_outfit",
+"exo_outfit",
+"military_outfit"
+}
+
+-- Еда 
+god_food_table = {
+"bread",
+"kolbasa",
+"conserva",
+"vodka",
+"energy_drink"
+}
+
+-- Медикаменты
+god_medicines_table = {
+"medkit",
+"medkit_army",
+"medkit_scientic",
+"bandage",
+"antirad"
+}
+
+-- Артефакты
+god_artefacts_table = {
+"af_medusa",
+"af_cristall_flower",
+"af_night_star",
+"af_vyvert",
+"af_gravi",
+"af_gold_fish",
+"af_cristall",
+"af_fireball",
+"af_dummy_glassbeads",
+"af_eye",
+"af_fire",
+"af_blood",
+"af_mincer_meat",
+"af_soul",
+"af_fuzz_kolobok",
+"af_baloon",
+"af_glass",
+"af_electra_sparkler",
+"af_electra_flash",
+"af_electra_moonlight",
+"af_dummy_battery",
+"af_dummy_dummy",
+"af_ice"
+}
+
+-- Персонажи
+god_stalker_table = {
+{"sim_default_csky_0", "Чистое Небо (Новичок)"},
+{"sim_default_csky_1", "Чистое Небо (Опытный)"},
+{"sim_default_csky_2", "Чистое Небо (Профи)"},
+{"sim_default_csky_3", "Чистое Небо (Ветеран)"},
+{"sim_default_csky_4", "Чистое Небо (Мастер)"},
+{"sim_default_stalker_0", "Сталкер (Новичок)"},
+{"sim_default_stalker_1", "Сталкер (Опытный)"},
+{"sim_default_stalker_2", "Сталкер (Профи)"},
+{"sim_default_stalker_3", "Сталкер (Ветеран)"},
+{"sim_default_stalker_4", "Сталкер (Мастер)"},
+{"sim_default_duty_0", "Долг (Новичок)"},
+{"sim_default_duty_1", "Долг (Опытный)"},
+{"sim_default_duty_2", "Долг (Профи)"},
+{"sim_default_duty_3", "Долг (Ветеран)"},
+{"sim_default_duty_4", "Долг (Мастер)"},
+{"sim_default_freedom_0", "Свобода (Новичок)"},
+{"sim_default_freedom_1", "Свобода (Опытный)"},
+{"sim_default_freedom_2", "Свобода (Профи)"},
+{"sim_default_freedom_3", "Свобода (Ветеран)"},
+{"sim_default_freedom_4", "Свобода (Мастер)"},
+{"sim_default_monolith_0", "Монолит (Новичок)"},
+{"sim_default_monolith_1", "Монолит (Опытный)"},
+{"sim_default_monolith_2", "Монолит (Профи)"},
+{"sim_default_monolith_3", "Монолит (Ветеран)"},
+{"sim_default_monolith_4", "Монолит (Мастер)"},
+{"sim_default_bandit_0", "Бандит (Новичок)"},
+{"sim_default_bandit_1", "Бандит (Опытный)"},
+{"sim_default_bandit_2", "Бандит (Профи)"},
+{"sim_default_bandit_3", "Бандит (Ветеран)"},
+{"sim_default_bandit_4", "Бандит (Мастер)"},
+{"sim_default_renegade_0", "Ренегат (Новичок)"},
+{"sim_default_renegade_1", "Ренегат (Опытный)"},
+{"sim_default_renegade_2", "Ренегат (Профи)"},
+{"sim_default_military_0", "Военный (Новичок)"},
+{"sim_default_military_1", "Военный (Опытный)"},
+{"sim_default_military_2", "Военный (Профи)"},
+{"sim_default_military_3", "Военный (Ветеран)"},
+{"sim_default_military_4", "Военный (Мастер)"},
+{"sim_default_killer_0", "Наёмник (Новичок)"},
+{"sim_default_killer_1", "Наёмник (Опытный)"},
+{"sim_default_killer_2", "Наёмник (Профи)"},
+{"sim_default_killer_3", "Наёмник (Ветеран)"},
+{"sim_default_killer_4", "Наёмник (Мастер)"},
+{"sm_yan_wave_zombie_1", "Зомби №1"},
+{"sm_yan_wave_zombie_2", "Зомби №2"},
+{"sm_yan_wave_zombie_3", "Зомби №3"},
+{"sm_yan_wave_zombie_4", "Зомби №4"},
+{"sm_yan_wave_zombie_5", "Зомби №5"},
+{"sm_yan_wave_zombie_6", "Зомби №6"},
+{"sm_yan_wave_zombie_7", "Зомби №7"},
+{"sm_yan_wave_zombie_8", "Зомби №8"},
+{"sm_yan_wave_zombie_9", "Зомби №9"},
+{"sm_yan_wave_zombie_10", "Зомби №10"},
+{"sm_yan_wave_zombie_11", "Зомби №11"},
+{"sm_yan_wave_zombie_12", "Зомби №12"},
+{"sm_yan_wave_zombie_13", "Зомби №13"},
+{"sm_yan_wave_zombie_20", "Зомби №21"},
+{"sm_yan_wave_zombie_21", "Зомби №22"}
+}
+
+-- Мутанты
+god_mob_table = {
+{"bloodsucker_marsh",           "Болотный монстр"},
+{"bloodsucker_redforest",       "Кровосос (Рыжий Лес)"},
+{"bloodsucker_fast",            "Кровосос (Быстрый)"},
+{"bloodsucker_jumper",          "Кровосос (Прыгун)"},
+{"bloodsucker_mil",             "Кровосос (Военные склады)"},
+{"bloodsucker_night_king",      "Кровосос (Ночной король)"},
+{"boar_weak",                   "Кабан (Слабый)"},
+{"boar_normal",                 "Кабан (Средний)"},
+{"boar_strong",                 "Кабан (Сильный)"},
+{"m_controller_normal",         "Контролёр"},
+{"m_controller_normal_fat",     "Контролёр (Толстый)"},
+{"m_controller_old",            "Контролёр (Старый)"},
+{"m_controller_old_fat",        "Контролёр (Старый и толстый)"},
+{"controller_tubeman",          "Контролёр (Тунельный)"},
+{"dog_weak",                    "Пёс (Слабый)"},
+{"dog_normal",                  "Пёс (Средний)"},
+{"dog_strong",                  "Пёс (Сильный)"},
+{"flesh_weak",                  "Плоть (Слабый)"},
+{"flesh_normal",                "Плоть (Средний)"},
+{"flesh_strong",                "Плоть (Сильный)"},
+{"gigant_normal",               "Псевдогигант (Средний)"},
+{"gigant_strong",               "Псевдогигант (Сильный)"},
+{"m_poltergeist_normal_flame",  "Полтергейст (Пламя)"},
+{"m_poltergeist_strong_flame",  "Полтергейст (Пламя-Сильный)"},
+{"m_poltergeist_normal_tele",   "Полтергейст (Телекинетик)"},
+{"pseudodog_weak",              "Чернобыльский пёс (Слабый)"},
+{"pseudodog_normal",            "Чернобыльский пёс (Средний)"},
+{"pseudodog_strong",            "Чернобыльский пёс (Сильный)"},
+{"psy_dog",                     "ПсиПёс"},
+{"psy_dog_radar",               "ПсиПёс (Радар)"},
+{"psy_dog_phantom",             "ПсиПёс (Фантом)"},
+{"snork_weak",                  "Снорк (Слабый)"},
+{"snork_normal",                "Снорк (Средний)"},
+{"snork_strong",                "Снорк (Сильный)"},
+{"m_rat_e",                     "Крыса (Съедобная)"},
+{"zombie_weak",                 "Зомби (Слабый)"},
+{"zombie_normal",               "Зомби (Средний)"},
+{"zombie_strong",               "Зомби (Сильный)"},
+{"zombie_ghost",                "Призрачный Зомби (Сильный)"},
+{"burer_weak",                  "Бюрер (Слабый)"},
+{"burer_normal",                "Бюрер (Средний)"},
+{"burer_strong",                "Бюрер (Сильный)"},
+{"cat_weak",                    "Кошка (Слабый)"},
+{"cat_normal",                  "Кошка (Средний)"},
+{"cat_strong",                  "Кошка (Сильный)"},
+{"fracture_weak",             	"Излом (Слабый)"},
+{"fracture_normal",             "Излом (Средний)"},
+{"fracture_strong",             "Излом (Сильный)"},
+{"chimera_weak",                "Химера (Слабый)"},
+{"chimera_normal",              "Химера (Средний)"},
+{"chimera_strong",              "Химера (Сильный)"}
+}
+
+-- Локации
+god_level_table = {
+
+{
+level = "marsh",
+name  = "База Чистого Неба",
+position = {-178.632, 0.153, -296.581},
+level_vertex = 51847,
+game_vertex = 135
+},
+
+{
+level = "marsh",
+name  = "Лидер Чистого Неба",
+position = {-174.955, 1.833, -274.873},
+level_vertex = 54266,
+game_vertex = 143
+},
+
+{
+level = "marsh",
+name  = "Бармен Чистого Неба",
+position = {-134.646, 1.348, -277.274},
+level_vertex = 78753,
+game_vertex = 139
+},
+
+{
+level = "marsh",
+name  = "Торговец Чистого Неба",
+position = {-178.879, 0.820, -318.800},
+level_vertex = 51353,
+game_vertex = 140
+},
+
+{
+level = "marsh",
+name  = "Механик Чистого Неба",
+position = {-136.750, 2.565, -306.871},
+level_vertex = 77674,
+game_vertex = 136
+},
+
+{
+level = "marsh",
+name  = "Форпост Вышка",
+position = {-279.735, 15.234, 23.192},
+level_vertex = 6889,
+game_vertex = 152
+},
+
+{
+level = "marsh",
+name  = "Насосная Станция",
+position = {-6.257, 3.359, 12.193},
+level_vertex = 135981,
+game_vertex = 36
+},
+
+{
+level = "marsh",
+name  = "Рыбацкий Хутор",
+position = {26.455, 3.030, -238.911},
+level_vertex = 152439,
+game_vertex = 2
+},
+
+{
+level = "marsh",
+name  = "Смотровая Вышка",
+position = {113.337, 16.095, -150.192},
+level_vertex = 203039,
+game_vertex = 9
+},
+
+{
+level = "marsh",
+name  = "Лысый Остров",
+position = {135.473, 0.562, -54.223},
+level_vertex = 217022,
+game_vertex = 14
+},
+
+{
+level = "marsh",
+name  = "Старая Церковь",
+position = {291.381, 0.142, -160.629},
+level_vertex = 325418,
+game_vertex = 222
+},
+
+{
+level = "marsh",
+name  = "Южный Хутор",
+position = {507.436, 2.308, -168.445},
+level_vertex = 485180,
+game_vertex = 62
+},
+
+{
+level = "marsh",
+name  = "Механизаторский Двор",
+position = {421.630, 3.099, 257.190},
+level_vertex = 418291,
+game_vertex = 125
+},
+
+{
+level = "marsh",
+name  = "Северный Хутор",
+position = {593.295, 2.785, 435.275},
+level_vertex = 520740,
+game_vertex = 134
+},
+
+{
+level = "marsh",
+name  = "Стоянка Под Насыпью",
+position = {146.710, 1.800, 489.763},
+level_vertex = 223198,
+game_vertex = 89
+},
+
+{
+level = "marsh",
+name  = "Руины Деревни",
+position = {-41.961, 1.607, 285.955},
+level_vertex = 118677,
+game_vertex = 76
+},
+
+{
+level = "marsh",
+name = "Сгоревший Хутор",
+position = {273.722, 3.897, 61.023},
+level_vertex = 311883,
+game_vertex = 108
+},
+
+{
+level = "marsh",
+name  = "Лодочный Привал",
+position = {133.444, 0.701, 43.504},
+level_vertex = 215836,
+game_vertex = 31
+},
+
+{
+level = "marsh",
+name  = "Лодочная Станция",
+position = {-184.305, 1.109, 400.430},
+level_vertex = 48970,
+game_vertex = 80
+},
+
+{
+level = "marsh",
+name  = "Землянка Под Железнодорожным Мостом",
+position = {-180.798, 2.201, 536.379},
+level_vertex = 50878,
+game_vertex = 80
+},
+
+{
+level = "escape",
+name  = "Бункер Сидоровича",
+position = {-245.908, -24.807, -133.988},
+level_vertex = 14374,
+game_vertex = 488
+},
+
+{
+level = "escape",
+name  = "Деревня Новичков",
+position = {-196.474, -19.939, -140.324},
+level_vertex = 54945,
+game_vertex = 569
+},
+
+{
+level = "escape",
+name  = "АТП",
+position = {95.156, -7.154, -17.696},
+level_vertex = 423834,
+game_vertex = 665
+},
+
+{
+level = "escape",
+name  = "Тоннель Переход В Темную Долину",
+position = {354.670, 15.015, -32.126},
+level_vertex = 620159,
+game_vertex = 480
+},
+
+{
+level = "escape",
+name  = "Военный Блокпост",
+position = {-153.385, -29.485, -375.960},
+level_vertex = 98611,
+game_vertex = 582
+},
+
+{
+level = "escape",
+name  = "Костёр Под Деревом",
+position = {-218.511, -33.073, -241.851},
+level_vertex = 36244,
+game_vertex = 626
+},
+
+{
+level = "escape",
+name  = "Тоннель Переход На Болота",
+position = {-268.864, -21.685, -278.405},
+level_vertex = 4255,
+game_vertex = 473
+},
+
+{
+level = "escape",
+name  = "Элеватор",
+position = {-6.329, 2.463, 61.332},
+level_vertex = 293362,
+game_vertex = 590
+},
+
+{
+level = "escape",
+name  = "Блокпост Под Мостом",
+position = {59.424, 1.916, 133.092},
+level_vertex = 378315,
+game_vertex = 578
+},
+
+{
+level = "escape",
+name  = "Костёр У Моста",
+position = {-78.677, -2.039, 109.198},
+level_vertex = 195613,
+game_vertex = 510
+},
+
+{
+level = "escape",
+name  = "Стоянка Под Мостом",
+position = {-58.940, -1.093, 198.612},
+level_vertex = 227038,
+game_vertex = 574
+},
+
+{
+level = "escape",
+name  = "Костёр В Лесу",
+position = {-136.072, 4.703, 225.605},
+level_vertex = 119462,
+game_vertex = 514
+},
+
+{
+level = "escape",
+name  = "Переход На Болота",
+position = {-188.912, 19.987, 231.688},
+level_vertex = 61965,
+game_vertex = 474
+},
+
+{
+level = "escape",
+name  = "Стоянка В Ложбине",
+position = {-154.627, -2.126, 306.071},
+level_vertex = 97573,
+game_vertex = 682
+},
+
+{
+level = "escape",
+name  = "Ферма База Нейтралов",
+position = {10.881, 0.273, 273.605},
+level_vertex = 316767,
+game_vertex = 520
+},
+
+{
+level = "escape",
+name  = "Лидер На База Нейтралов",
+position = {9.713, 0.871, 255.569},
+level_vertex = 314915,
+game_vertex = 557
+},
+
+{
+level = "escape",
+name  = "Торговец На Базе Нейтралов",
+position = {-9.803, 0.871, 292.251},
+level_vertex = 288892,
+game_vertex = 562
+},
+
+{
+level = "escape",
+name  = "Механик На Базе Нейтралов",
+position = {-3.974, 0.869, 294.427},
+level_vertex = 296453,
+game_vertex = 562
+},
+
+{
+level = "escape",
+name  = "Развалины Хутора",
+position = {133.493, -0.326, 312.201},
+level_vertex = 466688,
+game_vertex = 657
+},
+
+{
+level = "escape",
+name  = "Дальний Блокпост",
+position = {14.766, 16.105, 670.166},
+level_vertex = 321936,
+game_vertex = 683
+},
+
+{
+level = "garbage",
+name  = "Блокпост-Приёмник",
+position = {37.611, 0.458, -298.692},
+level_vertex = 197505,
+game_vertex = 261
+},
+
+{
+level = "garbage",
+name  = "Стоянка На Тропе",
+position = {264.769, -8.787, -119.269},
+level_vertex = 350787,
+game_vertex = 264
+},
+
+{
+level = "garbage",
+name  = "Обломки Крана",
+position = {76.342, 0.169, -150.382},
+level_vertex = 232769,
+game_vertex = 272
+},
+
+{
+level = "garbage",
+name  = "Лагерь Кладоискателей",
+position = {80.017, 3.676, -17.972},
+level_vertex = 235910,
+game_vertex = 254
+},
+
+{
+level = "garbage",
+name  = "Волчий Кут",
+position = {272.616, -7.774, 1.426},
+level_vertex = 353158,
+game_vertex = 276
+},
+
+{
+level = "garbage",
+name  = "Переход В Темную Долину",
+position = {288.413, 12.751, -78.832},
+level_vertex = 355843,
+game_vertex = 373
+},
+
+{
+level = "garbage",
+name  = "Кладбище Техники",
+position = {-43.802, -1.366, -215.824},
+level_vertex = 131095,
+game_vertex = 391
+},
+
+{
+level = "garbage",
+name  = "Кладбище Техники Вышка",
+position = {-44.262, 15.853, -193.717},
+level_vertex = 131123,
+game_vertex = 258
+},
+
+{
+level = "garbage",
+name  = "Стоянка За Концлагерем",
+position = {-135.017, 0.611, -273.732},
+level_vertex = 70846,
+game_vertex = 356
+},
+
+{
+level = "garbage",
+name  = "Стоянка Между Холмами",
+position = {-226.153, -8.427, -137.598},
+level_vertex = 10774,
+game_vertex = 377
+},
+
+{
+level = "garbage",
+name  = "Депо",
+position = {-63.293, 0.814, 9.504},
+level_vertex = 121151,
+game_vertex = 302
+},
+
+{
+level = "garbage",
+name  = "Депо Крыша",
+position = {-109.866, 19.058, 10.746},
+level_vertex = 92907,
+game_vertex = 329
+},
+
+{
+level = "garbage",
+name  = "Торговец В Депо",
+position = {-99.168, 0.708, -1.629},
+level_vertex = 101253,
+game_vertex = 330
+},
+
+{
+level = "garbage",
+name  = "Бармен В Депо",
+position = {-102.429, 1.559, -28.063},
+level_vertex = 99315,
+game_vertex = 329
+},
+
+{
+level = "garbage",
+name  = "Механик В Депо",
+position = {-109.391, 0.774, 21.336},
+level_vertex = 94114,
+game_vertex = 329
+},
+
+{
+level = "garbage",
+name  = "Баррикады",
+position = {-203.859, 0.433, -25.332},
+level_vertex = 21292,
+game_vertex = 294
+},
+
+{
+level = "garbage",
+name  = "Переход На НИИ «Агропром»",
+position = {-280.277, 2.266, -23.348},
+level_vertex = 1131,
+game_vertex = 382
+},
+
+{
+level = "garbage",
+name  = "Барахолка",
+position = {98.597, 3.662, 161.949},
+level_vertex = 251030,
+game_vertex = 359
+},
+
+{
+level = "garbage",
+name  = "Барахолка Подвал",
+position = {108.002, -5.677, 157.720},
+level_vertex = 257974,
+game_vertex = 247
+},
+
+{
+level = "garbage",
+name  = "Защитный Блокпост",
+position = {247.207, 0.511, 157.028},
+level_vertex = 344721,
+game_vertex = 286
+},
+
+{
+level = "garbage",
+name  = "Северный Блокпост",
+position = {36.960, 0.472, 229.077},
+level_vertex = 197370,
+game_vertex = 289
+},
+
+{
+level = "darkvalley",
+name  = "Крайний Блокпост",
+position = {-162.118, 1.863, -183.168},
+level_vertex = 7231,
+game_vertex = 788
+},
+
+{
+level = "darkvalley",
+name  = "Лагерь Под Оврагом",
+position = {-51.851, -2.310, -139.544},
+level_vertex = 111943,
+game_vertex = 793
+},
+
+{
+level = "darkvalley",
+name  = "Чахлая Стоянка",
+position = {-134.073, 4.711, -27.979},
+level_vertex = 25253,
+game_vertex = 755
+},
+
+{
+level = "darkvalley",
+name  = "Холл Завода",
+position = {119.487, 0.153, -254.417},
+level_vertex = 288773,
+game_vertex = 812
+},
+
+{
+level = "darkvalley",
+name  = "Остановка",
+position = {53.859, 0.043, -229.539},
+level_vertex = 217121,
+game_vertex = 907
+},
+
+{
+level = "darkvalley",
+name  = "Старый Вагончик",
+position = {137.876, 0.465, -194.537},
+level_vertex = 307265,
+game_vertex = 760
+},
+
+{
+level = "darkvalley",
+name  = "Стоянка Под Склоном",
+position = {163.945, -2.980, -107.181},
+level_vertex = 336068,
+game_vertex = 747
+},
+
+{
+level = "darkvalley",
+name  = "Северные Баррикады",
+position = {63.670, 0.038, -110.039},
+level_vertex = 227253,
+game_vertex = 749
+},
+
+{
+level = "darkvalley",
+name  = "Диспетчерская АЗС",
+position = {95.383, 0.699, -10.671},
+level_vertex = 263079,
+game_vertex = 791
+},
+
+{
+level = "darkvalley",
+name  = "База Свободы",
+position = {48.172, -0.045, 13.003},
+level_vertex = 211735,
+game_vertex = 853
+},
+
+{
+level = "darkvalley",
+name  = "Комендант Группировки Свободы",
+position = {17.976, 0.432, -14.275},
+level_vertex = 183477,
+game_vertex = 854
+},
+
+{
+level = "darkvalley",
+name  = "Торговец Свободы",
+position = {34.900, 3.591, -3.912},
+level_vertex = 199206,
+game_vertex = 846
+},
+
+{
+level = "darkvalley",
+name  = "Бармен Свободы",
+position = {41.956, 0.257, 38.158},
+level_vertex = 205555,
+game_vertex = 795
+},
+
+{
+level = "darkvalley",
+name  = "Механик Свободы",
+position = {-15.127, 0.278, 35.355},
+level_vertex = 151950,
+game_vertex = 845
+},
+
+{
+level = "darkvalley",
+name  = "Лидер Свободы",
+position = {17.491, 6.210, -41.364},
+level_vertex = 182765,
+game_vertex = 848
+},
+
+{
+level = "darkvalley",
+name  = "Лагерь На Болоте",
+position = {-19.764, -4.071, -285.442},
+level_vertex = 147545,
+game_vertex = 765
+},
+
+{
+level = "darkvalley",
+name  = "Остров",
+position = {44.224, -4.780, -376.696},
+level_vertex = 207239,
+game_vertex = 767
+},
+
+{
+level = "darkvalley",
+name  = "Лагерь Среди Камней",
+position = {116.674, 4.350, -424.243},
+level_vertex = 285856,
+game_vertex = 769
+},
+
+{
+level = "darkvalley",
+name  = "Баррикада У Моста",
+position = {-65.789, -1.322, -369.427},
+level_vertex = 95162,
+game_vertex = 804
+},
+
+{
+level = "darkvalley",
+name  = "Полевой Лагерь",
+position = {-144.892, -1.463, -322.659},
+level_vertex = 17038,
+game_vertex = 802
+},
+
+{
+level = "darkvalley",
+name  = "Голая Стоянка",
+position = {-156.447, 0.126, -384.818},
+level_vertex = 10338,
+game_vertex = 777
+},
+
+{
+level = "darkvalley",
+name  = "Стоянка На Ферме",
+position = {-115.539, 0.757, -503.354},
+level_vertex = 42292,
+game_vertex = 805
+},
+
+{
+level = "darkvalley",
+name  = "Блокпост У Фермы",
+position = {-46.641, 0.432, -515.705},
+level_vertex = 117198,
+game_vertex = 782
+},
+
+{
+level = "agroprom",
+name  = "Дорога На Свалку",
+position = {234.780, 0.312, -6.261},
+level_vertex = 347096,
+game_vertex = 1090
+},
+
+{
+level = "agroprom",
+name  = "Стоянка На Холме",
+position = {237.460, 22.799, -111.062},
+level_vertex = 348856,
+game_vertex = 1093
+},
+
+{
+level = "agroprom",
+name  = "Временный Лагерь",
+position = {230.650, 0.550, -252.834},
+level_vertex = 343823,
+game_vertex = 1066
+},
+
+{
+level = "agroprom",
+name  = "Блокпост У Норы",
+position = {79.921, -0.713, -236.241},
+level_vertex = 216685,
+game_vertex = 1143
+},
+
+{
+level = "agroprom",
+name  = "Переход На Болота",
+position = {-0.120, -3.425, -330.568},
+level_vertex = 216685,
+game_vertex = 1143
+},
+
+{
+level = "agroprom",
+name  = "Развилка",
+position = {98.814, 0.499, -44.075},
+level_vertex = 233985,
+game_vertex = 1118
+},
+
+{
+level = "agroprom",
+name  = "Баррикады У Вагона",
+position = {148.841, -0.053, 42.686},
+level_vertex = 277584,
+game_vertex = 1154
+},
+
+{
+level = "agroprom",
+name  = "Тупик Тоннеля",
+position = {256.807, -0.051, 69.902},
+level_vertex = 150910,
+game_vertex = 1058
+},
+
+{
+level = "agroprom",
+name  = "Каменное Кольцо",
+position = {65.994, 15.278, 145.319},
+level_vertex = 205514,
+game_vertex = 1120
+},
+
+{
+level = "agroprom",
+name  = "Восточный Блокпост",
+position = {60.505, -0.200, 24.402},
+level_vertex = 201047,
+game_vertex = 1185
+},
+
+{
+level = "agroprom",
+name  = "Лагерь Сталкеров",
+position = {8.297, -0.001, 9.832},
+level_vertex = 158850,
+game_vertex = 1207
+},
+
+{
+level = "agroprom",
+name  = "Торговец В Лагере Сталкеров",
+position = {-3.904, 2.499, 14.979},
+level_vertex = 147292,
+game_vertex = 1207
+},
+
+{
+level = "agroprom",
+name  = "Механик В Лагере Сталкеров",
+position = {-2.303, 2.499, 5.702},
+level_vertex = 149281,
+game_vertex = 1207
+},
+
+{
+level = "agroprom",
+name  = "Задний Выход",
+position = {-42.221, -0.201, -2.306},
+level_vertex = 117820,
+game_vertex = 1131
+},
+
+{
+level = "agroprom",
+name  = "Укрытие Из Камней",
+position = {-127.837, 10.798, 45.015},
+level_vertex = 58141,
+game_vertex = 1128
+},
+
+{
+level = "agroprom",
+name  = "Лагерь На Болоте",
+position = {-195.746, 1.775, 119.610},
+level_vertex = 20166,
+game_vertex = 1174
+},
+
+{
+level = "agroprom",
+name  = "Переход На Янтарь",
+position = {-228.691, 14.119, 214.508},
+level_vertex = 7141,
+game_vertex = 1059
+},
+
+{
+level = "agroprom",
+name  = "Старая Стоянка",
+position = {-205.443, 2.346, -10.045},
+level_vertex = 16671,
+game_vertex = 1134
+},
+
+{
+level = "agroprom",
+name  = "Блокпост На Дороге",
+position = {24.243, 0.351, -146.740},
+level_vertex = 172908,
+game_vertex = 1112
+},
+
+{
+level = "agroprom",
+name  = "Стоянка На Обрыве",
+position = {-12.671, 7.526, -81.966},
+level_vertex = 140147,
+game_vertex = 1099
+},
+
+{
+level = "agroprom",
+name  = "Переход В Подземелье Агропрома",
+position = {-82.742, 10.791, -108.389},
+level_vertex = 88656,
+game_vertex = 1063
+},
+
+{
+level = "agroprom",
+name  = "Лагерь У Базы",
+position = {-146.365, 6.334, -89.853},
+level_vertex = 45955,
+game_vertex = 1077
+},
+
+{
+level = "agroprom",
+name  = "Восточный Вход",
+position = {-107.798, -0.202, -182.094},
+level_vertex = 71249,
+game_vertex = 1103
+},
+
+{
+level = "agroprom",
+name  = "База Долга",
+position = {-139.631, -0.202, -185.706},
+level_vertex = 50317,
+game_vertex = 1170
+},
+
+{
+level = "agroprom",
+name  = "Торговец Долга",
+position = {-151.897, 1.102, -171.949},
+level_vertex = 42648,
+game_vertex = 1104
+},
+
+{
+level = "agroprom",
+name  = "Механик Долга",
+position = {-131.078, 4.999, -199.268},
+level_vertex = 55934,
+game_vertex = 1168
+},
+
+{
+level = "agroprom",
+name  = "Лидер Долга",
+position = {-144.366, 10.016, -199.616},
+level_vertex = 47199,
+game_vertex = 1168
+},
+
+{
+level = "agroprom",
+name  = "Северный Вход",
+position = {-191.093, -0.200, -138.838},
+level_vertex = 22543,
+game_vertex = 1102
+},
+
+{
+level = "agroprom_underground",
+name  = "Вход Из Норы",
+position = {82.751, -20.443, -183.800},
+level_vertex = 1579,
+game_vertex = 1523
+},
+
+{
+level = "agroprom_underground",
+name  = "Второй Уровень",
+position = {117.758, -7.728, -62.463},
+level_vertex = 4018,
+game_vertex = 1513
+},
+
+{
+level = "agroprom_underground",
+name  = "Большой Зал",
+position = {110.628, -2.252, -22.413},
+level_vertex = 3723,
+game_vertex = 1513
+},
+
+{
+level = "agroprom_underground",
+name  = "Третий Уровень",
+position = {58.815, -5.664, 99.120},
+level_vertex = 1062,
+game_vertex = 1515
+},
+
+{
+level = "agroprom_underground",
+name  = "Тайник Стрелка",
+position = {34.908, 6.357, 76.011},
+level_vertex = 350,
+game_vertex = 1517
+},
+
+{
+level = "agroprom_underground",
+name  = "Переход На Агропром",
+position = {25.360, 15.699, 30.985},
+level_vertex = 498,
+game_vertex = 1522
+},
+
+{
+level = "yantar",
+name  = "Блокпост",
+position = {182.300, 4.668, -249.230},
+level_vertex = 143823,
+game_vertex = 1233
+},
+
+{
+level = "yantar",
+name  = "Проходная Стоянка",
+position = {100.114, -9.098, -223.881},
+level_vertex = 106958,
+game_vertex = 1231
+},
+
+{
+level = "yantar",
+name  = "Трансформаторная Будка",
+position = {88.049, 1.528, -137.157},
+level_vertex = 102259,
+game_vertex = 1237
+},
+
+{
+level = "yantar",
+name  = "Тайный Вход",
+position = {4.204, 1.151, -145.432},
+level_vertex = 63058,
+game_vertex = 1286
+},
+
+{
+level = "yantar",
+name  = "Ангар",
+position = {34.119, 0.305, -62.717},
+level_vertex = 75809,
+game_vertex = 1246
+},
+
+{
+level = "yantar",
+name  = "Ангар Крыша",
+position = {45.329, 9.633, -54.701},
+level_vertex = 81503,
+game_vertex = 1273
+},
+
+{
+level = "yantar",
+name  = "Задворки Завода",
+position = {9.638, 7.173, -11.667},
+level_vertex = 65271,
+game_vertex = 1247
+},
+
+{
+level = "yantar",
+name  = "Переход В Рыжий Лес",
+position = {-20.073, 0.439, 2.264},
+level_vertex = 52264,
+game_vertex = 1217
+},
+
+{
+level = "yantar",
+name  = "Выход Из Трубы",
+position = {150.450, -8.566, -120.656},
+level_vertex = 137043,
+game_vertex = 1265
+},
+
+{
+level = "yantar",
+name  = "Низина Артефактов",
+position = {167.511, -7.686, -94.906},
+level_vertex = 141987,
+game_vertex = 1239
+},
+
+{
+level = "yantar",
+name  = "Проходная Завода",
+position = {104.531, 0.255, -38.084},
+level_vertex = 109505,
+game_vertex = 1270
+},
+
+{
+level = "yantar",
+name  = "Дальний Рубеж",
+position = {138.519, -0.872, 43.755},
+level_vertex = 130819,
+game_vertex = 1244
+},
+
+{
+level = "yantar",
+name  = "Лагерь Учёных",
+position = {26.006, -11.880, -246.643},
+level_vertex = 71781,
+game_vertex = 1229
+},
+
+{
+level = "yantar",
+name  = "Бункер Учёных",
+position = {32.013, -11.732, -272.398},
+level_vertex = 74704,
+game_vertex = 1312
+},
+
+{
+level = "yantar",
+name  = "Переход На НИИ «Агропром»",
+position = {-67.935, -2.051, -348.512},
+level_vertex = 33519,
+game_vertex = 1212
+},
+
+{
+level = "yantar",
+name  = "Остров На Болоте",
+position = {-56.308, -12.230, -255.191},
+level_vertex = 38662,
+game_vertex = 1228
+},
+
+{
+level = "yantar",
+name  = "Выворотень",
+position = {-170.355, 4.651, -166.490},
+level_vertex = 6187,
+game_vertex = 1226
+},
+
+{
+level = "red_forest",
+name  = "Переход На Янтарь",
+position = {-12.187, 0.831, -429.749},
+level_vertex = 55948,
+game_vertex = 963
+},
+
+{
+level = "red_forest",
+name  = "Сталкерская Лёжка",
+position = {-16.053, -2.458, -282.943},
+level_vertex = 52301,
+game_vertex = 1047
+},
+
+{
+level = "red_forest",
+name  = "Ведьмин Круг",
+position = {-34.852, -2.111, -217.352},
+level_vertex = 37261,
+game_vertex = 981
+},
+
+{
+level = "red_forest",
+name  = "Тёмный Яр",
+position = {193.407, -0.521, -306.309},
+level_vertex = 124788,
+game_vertex = 977
+},
+
+{
+level = "red_forest",
+name  = "Переход На Свалку",
+position = {255.854, -1.470, -310.790},
+level_vertex = 153312,
+game_vertex = 967
+},
+
+{
+level = "red_forest",
+name  = "Логово Мутанта",
+position = {181.846, -0.330, -229.222},
+level_vertex = 119467,
+game_vertex = 1052
+},
+
+{
+level = "red_forest",
+name  = "Чёртова Стоянка",
+position = {197.086, -7.950, -120.842},
+level_vertex = 126914,
+game_vertex = 994
+},
+
+{
+level = "red_forest",
+name  = "Лихая Тропа «Танк Т-64»",
+position = {237.337, -7.555, 65.713},
+level_vertex = 145866,
+game_vertex = 996
+},
+
+{
+level = "red_forest",
+name  = "Лежбище Кровососа",
+position = {-74.140, 0.407, -138.525},
+level_vertex = 15323,
+game_vertex = 986
+},
+
+{
+level = "red_forest",
+name  = "Казармы В Шахте",
+position = {-76.086, 2.181, -54.688},
+level_vertex = 14687,
+game_vertex = 1037
+},
+
+{
+level = "red_forest",
+name  = "Шахта",
+position = {-154.561, 2.176, -32.582},
+level_vertex = 5328,
+game_vertex = 993
+},
+
+{
+level = "red_forest",
+name  = "Лагерь У Капера",
+position = {2.941, -0.168, -45.473},
+level_vertex = 67624,
+game_vertex = 989
+},
+
+{
+level = "red_forest",
+name  = "Шахтный Копер",
+position = {27.584, 4.014, 25.078},
+level_vertex = 80563,
+game_vertex = 1033
+},
+
+{
+level = "red_forest",
+name  = "Лагерь У Дороги",
+position = {-73.785, 0.257, 51.216},
+level_vertex = 15697,
+game_vertex = 990
+},
+
+{
+level = "red_forest",
+name  = "Переход На Военные Склады",
+position = {-51.872, 0.000, 101.146},
+level_vertex = 27072,
+game_vertex = 961
+},
+
+{
+level = "red_forest",
+name  = "Мост В Лиманск",
+position = {-116.556, 0.275, -270.562},
+level_vertex = 7997,
+game_vertex = 1013
+},
+
+{
+level = "red_forest",
+name  = "Переход В Лиманск",
+position = {-179.971, 0.137, -284.198},
+level_vertex = 3004,
+game_vertex = 1012
+},
+
+{
+level = "military",
+name  = "Переход В Рыжий Лес",
+position = {-406.162, -13.816, 401.084},
+level_vertex = 731,
+game_vertex = 1507
+},
+
+{
+level = "military",
+name  = "Дальняя Укрепточка",
+position = {-355.659, -13.948, 390.649},
+level_vertex = 5459,
+game_vertex = 1386
+},
+
+{
+level = "military",
+name  = "Стоянка В Низине",
+position = {-266.561, -15.161, 368.465},
+level_vertex = 67155,
+game_vertex = 1336
+},
+
+{
+level = "military",
+name  = "Лагерь В Камнях",
+position = {-243.934, -3.042, 423.231},
+level_vertex = 84544,
+game_vertex = 1465
+},
+
+{
+level = "military",
+name  = "Дальний Хутор",
+position = {-176.999, -16.050, 378.105},
+level_vertex = 136035,
+game_vertex = 1373
+},
+
+{
+level = "military",
+name  = "Бронепост",
+position = {-135.229, -18.710, 303.809},
+level_vertex = 172344,
+game_vertex = 1372
+},
+
+{
+level = "military",
+name  = "Кривая Балка",
+position = {-98.325, -19.950, 228.705},
+level_vertex = 204642,
+game_vertex = 1332
+},
+
+{
+level = "military",
+name  = "Упавший Вертолёт",
+position = {-39.037, -18.610, 357.844},
+level_vertex = 254439,
+game_vertex = 1330
+},
+
+{
+level = "military",
+name  = "Перекресток",
+position = {-32.337, -24.316, 266.320},
+level_vertex = 260316,
+game_vertex = 1328
+},
+
+{
+level = "military",
+name  = "Барьер",
+position = {49.481, -19.764, 340.135},
+level_vertex = 330469,
+game_vertex = 1419
+},
+
+{
+level = "military",
+name  = "Лагерь Сталкеров",
+position = {97.231, -0.827, 308.901},
+level_vertex = 365258,
+game_vertex = 1324
+},
+
+{
+level = "military",
+name  = "Привал На Плитах",
+position = {25.628, -15.153, 231.051},
+level_vertex = 312323,
+game_vertex = 1370
+},
+
+{
+level = "military",
+name  = "Грузовик На Перекрёстке",
+position = {-11.359, -16.949, 158.555},
+level_vertex = 279346,
+game_vertex = 1333
+},
+
+{
+level = "military",
+name  = "Задворки Армейской Базы",
+position = {-6.522, -6.165, 80.609},
+level_vertex = 284048,
+game_vertex = 1424
+},
+
+{
+level = "military",
+name  = "Заброшенная Армейская База",
+position = {-11.708, -8.551, -24.037},
+level_vertex = 278566,
+game_vertex = 1446
+},
+
+{
+level = "military",
+name  = "Спортплощадка",
+position = {-53.909, -6.811, -29.788},
+level_vertex = 241837,
+game_vertex = 1447
+},
+
+{
+level = "military",
+name  = "Вышка На Армейской Базе",
+position = {-71.446, 8.366, -29.499},
+level_vertex = 227557,
+game_vertex = 1447
+},
+
+{
+level = "military",
+name  = "Разрушенный Трансформатор",
+position = {-88.362, -13.073, 46.706},
+level_vertex = 213201,
+game_vertex = 1398
+},
+
+{
+level = "military",
+name  = "Заброшенный Тоннель",
+position = {79.956, -13.207, 50.723},
+level_vertex = 352824,
+game_vertex = 1394
+},
+
+{
+level = "military",
+name  = "Сторожка",
+position = {-341.033, -20.317, 307.538},
+level_vertex = 13046,
+game_vertex = 1410
+},
+
+{
+level = "military",
+name  = "Деревня Кровососов",
+position = {-286.766, -22.575, 221.790},
+level_vertex = 51481,
+game_vertex = 1486
+},
+
+{
+level = "military",
+name  = "Привал Наёмников",
+position = {-324.449, -22.321, 218.369},
+level_vertex = 23234,
+game_vertex = 1376
+},
+
+{
+level = "military",
+name  = "Водонапорная Башня",
+position = {-243.897, -21.807, 290.750},
+level_vertex = 84406,
+game_vertex = 1411
+},
+
+{
+level = "military",
+name  = "Укрепточка На Остановке",
+position = {-132.175, -22.162, 130.664},
+level_vertex = 174658,
+game_vertex = 1354
+},
+
+{
+level = "military",
+name  = "Дорога Между Холмами",
+position = {-235.208, -21.901, 102.498},
+level_vertex = 90392,
+game_vertex = 1450
+},
+
+{
+level = "military",
+name  = "Брошенный Хутор",
+position = {-225.633, -12.655, 44.347},
+level_vertex = 97825,
+game_vertex = 1451
+},
+
+{
+level = "military",
+name  = "Вход На Армейские Склады",
+position = {-296.397, -25.058, 76.407},
+level_vertex = 44189,
+game_vertex = 1452
+},
+
+{
+level = "military",
+name  = "Переход На Свалку",
+position = {-326.311, -25.777, 53.430},
+level_vertex = 22124,
+game_vertex = 1315
+},
+
+{
+level = "limansk",
+name  = "Двор",
+position = {-15.938, 1.502, -318.306},
+level_vertex = 17054,
+game_vertex = 1524
+},
+
+{
+level = "limansk",
+name  = "Тупик",
+position = {35.841, -0.059, -284.800},
+level_vertex = 45467,
+game_vertex = 1542
+},
+
+{
+level = "limansk",
+name  = "Дом На Развилке",
+position = {-21.906, -5.000, -257.671},
+level_vertex = 14191,
+game_vertex = 1526
+},
+
+{
+level = "limansk",
+name  = "Двор С Террасой",
+position = {-45.564, -4.995, -188.391},
+level_vertex = 4532,
+game_vertex = 1529
+},
+
+{
+level = "limansk",
+name  = "Баррикады В Тупике",
+position = {-39.914, -4.999, -150.375},
+level_vertex = 6475,
+game_vertex = 1531
+},
+
+{
+level = "limansk",
+name  = "Сквер У Гаражей",
+position = {17.802, -1.966, -49.098},
+level_vertex = 35594,
+game_vertex = 1534
+},
+
+{
+level = "limansk",
+name  = "Дом На Холме",
+position = {23.599, -3.001, 36.323},
+level_vertex = 38974,
+game_vertex = 1538
+},
+
+{
+level = "limansk",
+name  = "Укрытие У Моста",
+position = {-69.460, -7.001, 56.487},
+level_vertex = 356,
+game_vertex = 1550
+},
+
+{
+level = "limansk",
+name  = "Стоянка У Электрощитовой",
+position = {-21.214, -3.981, 155.935},
+level_vertex = 14842,
+game_vertex = 1553
+},
+
+{
+level = "limansk",
+name  = "Лагерь На Стройке",
+position = {13.002, 12.971, 170.084},
+level_vertex = 33244,
+game_vertex = 1554
+},
+
+{
+level = "limansk",
+name  = "Дорога К Пожарке",
+position = {40.493, 3.298, 243.290},
+level_vertex = 48351,
+game_vertex = 1556
+},
+
+{
+level = "limansk",
+name  = "Переход В Заброшенный Госпиталь",
+position = {60.450, 3.300, 351.276},
+level_vertex = 55228,
+game_vertex = 1559
+},
+
+{
+level = "hospital",
+name  = "Вход",
+position = {-86.915, 33.135, 778.514},
+level_vertex = 3568,
+game_vertex = 1614
+},
+
+{
+level = "hospital",
+name  = "Первый Зал",
+position = {-86.376, 32.016, 748.912},
+level_vertex = 3791,
+game_vertex = 1580
+},
+
+{
+level = "hospital",
+name  = "Второй Зал",
+position = {-75.845, 31.957, 676.350},
+level_vertex = 7096,
+game_vertex = 1593
+},
+
+{
+level = "hospital",
+name  = "Третий Зал",
+position = {-97.458, 24.886, 609.238},
+level_vertex = 594,
+game_vertex = 1602
+},
+
+{
+level = "hospital",
+name  = "Переход На ЧАЭС",
+position = {-76.652, 19.928, 567.410},
+level_vertex = 6552,
+game_vertex = 1617
+},
+
+{
+level = "stancia_2",
+name  = "Вход",
+position = {248.399, 0.069, 441.718},
+level_vertex = 120983,
+game_vertex = 1568
+},
+
+{
+level = "stancia_2",
+name  = "Теплотрасса",
+position = {80.785, 16.755, 305.538},
+level_vertex = 35885,
+game_vertex = 1566
+}
+
+}
+
+-- Погода
+god_weather_table = {
+{"[default]",      "Стандартная (Динамическая)"},
+{"default_clear",  "Стандартная (Ясная)"},
+{"default_cloudy", "Стандартная (Облачно)"},
+{"default_rain",   "Стандартная (Дождь)"},
+{"default_thunder","Стандартная (Гроза)"},
+{"indoor",         "В помещении"},
+{"map",            "Для съёмки карты ПДА"},
+{"night",          "Ночь (Интро)"},
+{"stancia2",       "ЧАЭС"},
+{"sun_shafts",     "Лучи света"},
+{"old_version_weather", "Старая версия погоды"},
+{"full_fx_surge_day", "Полный эффект Выброса"},
+{"fx_surge_day_1", "Выброс (1)"},
+{"fx_surge_day_2", "Выброс (2)"},
+{"fx_surge_day_3", "Выброс (3)"},
+{"fx_surge_day_3_stancia",   "Выброс (ЧАЭС)"},
+{"fx_surge_day_stancia_demo_1", "Выброс (ЧАЭС) Демо 1"},
+{"fx_surge_day_stancia_demo_2", "Выброс (ЧАЭС) Демо 2"},
+{"marsh_fx_surge_day_1", "Выброс (Болота)"}
+}
+
+-- Аномалии
+god_anom_table = {
+{"zone_buzz_weak",           "Холодец (Слабый)"},
+{"zone_buzz_average",        "Холодец (Средний)"},
+{"zone_buzz_strong",         "Холодец (Сильный)"},
+{"zone_gravi_zone_weak",     "Воронка (Слабый)"},
+{"zone_gravi_zone_average",  "Воронка (Средний)"},
+{"zone_gravi_zone_strong",   "Воронка (Сильный)"},
+{"zone_mincer_weak",         "Карусель (Слабый)"},
+{"zone_mincer_average",      "Карусель (Средний)"},
+{"zone_mincer_strong",       "Карусель (Сильный)"},
+{"zone_mine_acidic_weak",    "Туман (Слабый)"},
+{"zone_mine_acidic_average", "Туман (Средний)"},
+{"zone_mine_acidic_strong",  "Туман (Сильный)"},
+{"zone_field_thermal_weak",   "Жара (Слабый)"},
+{"zone_field_thermal_average","Жара (Средний)"},
+{"zone_field_thermal_strong", "Жара (Сильный)"},
+{"zone_mosquito_bald_weak",  "Трамплин (Слабый)"},
+{"zone_mosquito_bald_average", "Трамплин (Средний)"},
+{"zone_mosquito_bald_strong",  "Трамплин (Сильный)"},
+{"zone_radioactive_weak",      "Радиация (Слабый)"},
+{"zone_radioactive_average",   "Радиация (Средний)"},
+{"zone_radioactive_strong",    "Радиация (Сильный)"},
+{"zone_witches_galantine_weak",   "Электра (Слабый)"},
+{"zone_witches_galantine_average","Электра (Средний)"},
+{"zone_witches_galantine_strong", "Электра (Сильный)"},
+{"zone_zharka_static_weak",   "Жарка (Слабый)"},
+{"zone_zharka_static_average","Жарка (Средний)"},
+{"zone_zharka_static_strong", "Жарка (Сильный)"},
+{"zone_mine_field",           "Мина"},
+{"zone_death",                "Зона смерти"},
+{"zone_sarcofag",             "Зона Саркофага"},
+{"zone_teleport_out",         "Телепорт (Выход)"},
+{"zone_teleport",             "Телепорт"},
+{"zone_rusty_hair",           "Ржавые волосы"}
+}
+
+-- Прочее
+god_other_table = {
+"detector_simple",
+"detector_advanced",
+"detector_elite",  					   
+"guitar_a"
+}
+
+-- Группировки
+god_community_table = {
+{"actor", "Игрок"},
+{"actor_bandit", "Игрок (Бандит)"},
+{"actor_dolg","Игрок (Долг)"},
+{"actor_freedom", "Игрок (Свобода)"},
+{"actor_stalker", "Игрок (Сталкер)"},
+{"actor_csky", "Игрок (Чистое Небо)"},
+{"arena_enemy", "Наёмник арены"},
+{"bandit", "Бандит"},
+{"csky", "Чистое Небо"},
+{"dolg", "Долг"},
+{"ecolog", "Эколог"},
+{"freedom", "Свобода"},
+{"killer", "Наёмник"},
+{"army", "Военный"},
+{"monolith", "Монолит"},
+{"monster", "Мутант"},
+{"stalker", "Сталкер"},
+{"trader", "Торговец"},
+{"zombied", "Зомбированый"},
+{"renegade", "Ренегат"}
+}
+
+-- Видеоролики
+god_vid_table = {
+{"god_intro_logo", "Интро GSC"},
+{"god_intro_logo_retro", "Интро GSC (Старое)"},
+{"god_start_game", "Начало Игры"},
+{"god_end_game",   "Концовка Игры"}
+}
+
+-- Музыка
+god_music_table = {
+{"Меню", [[music\wasteland2]]},
+{"Зона"        , [[music\credits]]}, 
+{"Битва на ЧАЭС" , [[music\combat\aes_main]]},
+{"База Долга 1" , [[ambient\special\duty_base_radio_1]]},
+{"База Долга 2" , [[ambient\special\duty_base_radio_2]]},
+{"База Свободы" , [[ambient\special\freedom_base_radio_1]]},
+{"База Бандитов" , [[ambient\special\garbage_bandits_radio_1]]},
+{"База Чистого Неба 1" , [[ambient\special\marsh_radio_1]]},
+{"База Чистого Неба 2" , [[ambient\special\marsh_radio_2]]},
+{"Гитара 1" , [[music\guitar_1]]},
+{"Гитара 2" , [[music\guitar_2]]},
+{"Гитара 3" , [[music\guitar_3]]},
+{"Гитара 4" , [[music\guitar_4]]},
+{"Гитара 5" , [[music\guitar_5]]},
+{"Гитара 6" , [[music\guitar_6]]},
+{"Гитара 7" , [[music\guitar_7]]},
+{"Гитара 8" , [[music\guitar_8]]},
+{"Гитара 9" , [[music\guitar_9]]},
+{"Гитара 10" , [[music\guitar_10]]},
+{"Гитара 11" , [[music\guitar_11]]}
+}
+
+-- Анекдоты
+god_jokes_table = {
+{"Анекдот 1 (Сталкеры)", [[god_jokes\stalker_jokes\joke_1]]},
+{"Анекдот 2 (Сталкеры)", [[god_jokes\stalker_jokes\joke_2]]},
+{"Анекдот 3 (Сталкеры)", [[god_jokes\stalker_jokes\joke_3]]},
+{"Анекдот 4 (Сталкеры)", [[god_jokes\stalker_jokes\joke_4]]},
+{"Анекдот 5 (Сталкеры)", [[god_jokes\stalker_jokes\joke_5]]},
+{"Анекдот 6 (Сталкеры)", [[god_jokes\stalker_jokes\joke_6]]},
+{"Анекдот 7 (Сталкеры)", [[god_jokes\stalker_jokes\joke_7]]},
+{"Анекдот 8 (Сталкеры)", [[god_jokes\stalker_jokes\joke_8]]},
+{"Анекдот 9 (Сталкеры)", [[god_jokes\stalker_jokes\joke_9]]},
+{"Анекдот 10 (Сталкеры)", [[god_jokes\stalker_jokes\joke_10]]},
+{"Анекдот 11 (Сталкеры)", [[god_jokes\stalker_jokes\joke_11]]},
+{"Анекдот 12 (Сталкеры)", [[god_jokes\stalker_jokes\joke_12]]},
+{"Анекдот 13 (Сталкеры)", [[god_jokes\stalker_jokes\joke_13]]},
+{"Анекдот 14 (Сталкеры)", [[god_jokes\stalker_jokes\joke_14]]},
+{"Анекдот 15 (Сталкеры)", [[god_jokes\stalker_jokes\joke_15]]},
+{"Анекдот 16 (Сталкеры)", [[god_jokes\stalker_jokes\joke_16]]},
+{"Анекдот 17 (Сталкеры)", [[god_jokes\stalker_jokes\joke_17]]},
+{"Анекдот 18 (Сталкеры)", [[god_jokes\stalker_jokes\joke_18]]},
+{"Анекдот 19 (Сталкеры)", [[god_jokes\stalker_jokes\joke_19]]},
+{"Анекдот 20 (Сталкеры)", [[god_jokes\stalker_jokes\joke_20]]},
+{"Анекдот 21 (Сталкеры)", [[god_jokes\stalker_jokes\joke_21]]},
+{"Анекдот 22 (Сталкеры)", [[god_jokes\stalker_jokes\joke_22]]},
+{"Анекдот 23 (Сталкеры)", [[god_jokes\stalker_jokes\joke_23]]},
+{"Анекдот 24 (Сталкеры)", [[god_jokes\stalker_jokes\joke_24]]},
+{"Анекдот 25 (Сталкеры)", [[god_jokes\stalker_jokes\joke_25]]},
+{"Анекдот 26 (Сталкеры)", [[god_jokes\stalker_jokes\joke_26]]},
+{"Анекдот 27 (Сталкеры)", [[god_jokes\stalker_jokes\joke_27]]},
+{"Анекдот 28 (Сталкеры)", [[god_jokes\stalker_jokes\joke_28]]},
+{"Анекдот 29 (Сталкеры)", [[god_jokes\stalker_jokes\joke_29]]},
+{"Анекдот 30 (Сталкеры)", [[god_jokes\stalker_jokes\joke_30]]},
+{"Анекдот 31 (Сталкеры)", [[god_jokes\stalker_jokes\joke_31]]},
+{"Анекдот 32 (Сталкеры)", [[god_jokes\stalker_jokes\joke_32]]},
+{"Анекдот 33 (Сталкеры)", [[god_jokes\stalker_jokes\joke_33]]},
+{"Анекдот 34 (Сталкеры)", [[god_jokes\stalker_jokes\joke_34]]},
+{"Анекдот 35 (Сталкеры)", [[god_jokes\stalker_jokes\joke_35]]},
+{"Анекдот 36 (Сталкеры)", [[god_jokes\stalker_jokes\joke_36]]},
+{"Анекдот 37 (Сталкеры)", [[god_jokes\stalker_jokes\joke_37]]},
+{"Анекдот 38 (Сталкеры)", [[god_jokes\stalker_jokes\joke_38]]},
+{"Анекдот 39 (Сталкеры)", [[god_jokes\stalker_jokes\joke_39]]},
+{"Анекдот 40 (Сталкеры)", [[god_jokes\stalker_jokes\joke_40]]},
+{"Анекдот 41 (Сталкеры)", [[god_jokes\stalker_jokes\joke_41]]},
+{"Анекдот 42 (Сталкеры)", [[god_jokes\stalker_jokes\joke_42]]},
+{"Анекдот 43 (Сталкеры)", [[god_jokes\stalker_jokes\joke_43]]},
+{"Анекдот 44 (Сталкеры)", [[god_jokes\stalker_jokes\joke_44]]},
+{"Анекдот 45 (Сталкеры)", [[god_jokes\stalker_jokes\joke_45]]},
+{"Анекдот 1 (Бандиты)", [[god_jokes\bandit_jokes\joke_1]]},
+{"Анекдот 2 (Бандиты)", [[god_jokes\bandit_jokes\joke_2]]},
+{"Анекдот 3 (Бандиты)", [[god_jokes\bandit_jokes\joke_3]]},
+{"Анекдот 4 (Бандиты)", [[god_jokes\bandit_jokes\joke_4]]},
+{"Анекдот 5 (Бандиты)", [[god_jokes\bandit_jokes\joke_5]]},
+{"Анекдот 6 (Бандиты)", [[god_jokes\bandit_jokes\joke_6]]},
+{"Анекдот 7 (Бандиты)", [[god_jokes\bandit_jokes\joke_7]]},
+{"Анекдот 8 (Бандиты)", [[god_jokes\bandit_jokes\joke_8]]},
+{"Анекдот 9 (Бандиты)", [[god_jokes\bandit_jokes\joke_9]]},
+{"Анекдот 10 (Бандиты)", [[god_jokes\bandit_jokes\joke_10]]},
+{"Анекдот 11 (Бандиты)", [[god_jokes\bandit_jokes\joke_11]]},
+{"Анекдот 1 (Военные)", [[god_jokes\military_jokes\joke_1]]},
+{"Анекдот 2 (Военные)", [[god_jokes\military_jokes\joke_2]]},
+{"Анекдот 3 (Военные)", [[god_jokes\military_jokes\joke_3]]},
+{"Анекдот 1 (Долг)", [[god_jokes\dolg_jokes\joke_1]]},
+{"Анекдот 2 (Долг)", [[god_jokes\dolg_jokes\joke_2]]},
+{"Анекдот 3 (Долг)", [[god_jokes\dolg_jokes\joke_3]]},
+{"Анекдот 4 (Долг)", [[god_jokes\dolg_jokes\joke_4]]},
+{"Анекдот 5 (Долг)", [[god_jokes\dolg_jokes\joke_5]]},
+{"Анекдот 6 (Долг)", [[god_jokes\dolg_jokes\joke_6]]},
+{"Анекдот 7 (Долг)", [[god_jokes\dolg_jokes\joke_7]]},
+{"Анекдот 8 (Долг)", [[god_jokes\dolg_jokes\joke_8]]},
+{"Анекдот 9 (Долг)", [[god_jokes\dolg_jokes\joke_9]]},
+{"Анекдот 10 (Долг)", [[god_jokes\dolg_jokes\joke_10]]},
+{"Анекдот 11 (Долг)", [[god_jokes\dolg_jokes\joke_11]]},
+{"Анекдот 12 (Долг)", [[god_jokes\dolg_jokes\joke_12]]},
+{"Анекдот 13 (Долг)", [[god_jokes\dolg_jokes\joke_13]]},
+{"Анекдот 14 (Долг)", [[god_jokes\dolg_jokes\joke_14]]},
+{"Анекдот 15 (Долг)", [[god_jokes\dolg_jokes\joke_15]]},
+{"Анекдот 1 (Свобода)", [[god_jokes\freedom_jokes\joke_1]]},
+{"Анекдот 2 (Свобода)", [[god_jokes\freedom_jokes\joke_2]]},
+{"Анекдот 3 (Свобода)", [[god_jokes\freedom_jokes\joke_3]]},
+{"Анекдот 4 (Свобода)", [[god_jokes\freedom_jokes\joke_4]]},
+{"Анекдот 5 (Свобода)", [[god_jokes\freedom_jokes\joke_5]]},
+{"Анекдот 6 (Свобода)", [[god_jokes\freedom_jokes\joke_6]]},
+{"Анекдот 7 (Свобода)", [[god_jokes\freedom_jokes\joke_7]]},
+{"Анекдот 8 (Свобода)", [[god_jokes\freedom_jokes\joke_8]]},
+{"Анекдот 9 (Свобода)", [[god_jokes\freedom_jokes\joke_9]]},
+{"Анекдот 10 (Свобода)", [[god_jokes\freedom_jokes\joke_10]]},
+{"Анекдот 11 (Свобода)", [[god_jokes\freedom_jokes\joke_11]]},
+{"Анекдот 12 (Свобода)", [[god_jokes\freedom_jokes\joke_12]]},
+{"Анекдот 13 (Свобода)", [[god_jokes\freedom_jokes\joke_13]]},
+{"Анекдот 1 (Наёмники)", [[god_jokes\killer_jokes\joke_1]]},
+{"Анекдот 2 (Наёмники)", [[god_jokes\killer_jokes\joke_2]]},
+{"Анекдот 3 (Наёмники)", [[god_jokes\killer_jokes\joke_3]]},
+{"Анекдот 4 (Наёмники)", [[god_jokes\killer_jokes\joke_4]]},
+{"Анекдот 5 (Наёмники)", [[god_jokes\killer_jokes\joke_5]]},
+{"Анекдот 6 (Наёмники)", [[god_jokes\killer_jokes\joke_6]]},
+{"Анекдот 7 (Наёмники)", [[god_jokes\killer_jokes\joke_7]]},
+}
+
+-- Квестовые предметы 
+god_info_table ={
+"red_quest_tank_minigun",
+"esc_quest_akm47",
+"wpn_ak74_up",
+"wpn_ak74_up2",
+"wpn_abakan_up2",
+"wpn_colt1911_up2",
+"wpn_lr300_up2",
+"wpn_fort_up",
+"wpn_sig550_up2",
+"wpn_vintorez_up",
+"wpn_pm_9x19",
+"wpn_pm_up",
+"stalker_outfit_up_stalk",
+"af_compass",
+"device_pda_fang",
+"esc_trader_habar",
+"device_pda_military",
+"device_pda_old",
+"device_pda_garbage_traitor",
+"device_pda_comendant",
+"device_pda_freedom",
+"device_pda_bloodsucker",
+"device_pda_digger",
+"mar_quest_wpn_pm_1",
+"mar_quest_wpn_ak74u_1",
+"mar_quest_af_cristall_flower_1",
+"mar_quest_scout_pda",
+"mar_quest_novice_outfit_1",
+"mil_quest_af_fuzz_kolobok",
+"mil_device_pda_lost_squard",
+"esc_device_pda_driver",
+"agr_pda_for_secret_trader",
+"agr_map_animals",
+"red_forest_pda_map",
+"red_forest_pda_map_2",
+"agr_mechanic_pda",
+"flesh_up_ac_mp5",
+"flesh_up_bd_mp5",
+"flesh_up_a_novice_outfit",
+"flesh_up_ac_wincheaster1300",
+"flesh_up_bd_wincheaster1300",
+"flesh_up_ac_ak74u",
+"flesh_up_fh_scientific_outfit",
+"flesh_up_aceg_scientific_outfit",
+"flesh_up_bdfh_scientific_outfit",
+"flesh_up_ab_svu",
+"flesh_up_cd_svu",
+"flesh_up_abcd_svu",
+"flesh_up_ab_pkm",
+"flesh_up_cd_pkm",
+"flesh_up_abcd_pkm",
+"flesh_up_ac_desert_eagle",
+"flesh_up_bd_desert_eagle",
+"flesh_up_ac_spas12"
+}
+
+-- Оружейные Аддоны
+god_wpn_addons_table = {
+"wpn_addon_scope", 
+"wpn_addon_scope_susat", 
+"wpn_addon_silencer",
+"wpn_addon_grenade_launcher",
+"wpn_addon_grenade_launcher_m203"
+}
+
+-- Автомобили
+god_car_table = {
+{"veh_niva_g","Нива (Военная)"},
+{"veh_niva_w", "Нива (Гражданская)"},
+{"veh_zaz", "Запарожец"},
+{"veh_uaz", "ВАЗ"},
+{"veh_kamaz", "Камаз"},
+{"veh_tr13", "Трактор"},
+{"veh_btr", "БТР"},
+}
+
+-- Придметы Декора   
+god_decor_items_table = {
+{"inventory_box_1", "Металлическая Коробка (Тайник)"},
+{"inventory_box_2", "Небольшой Рюкзак (Тайник)"},
+{"inventory_box_3", "Деревянный ящик от динамита (Тайник)"},
+{"god_explosive_barrel_low", "Бочка (Слабая)"},
+{"god_explosive_barrel", "Бочка"},
+{"god_explosive_mobiltank", "Канистра"},
+{"god_explosive_fuelcan", "Балон"}
+}
+
+-- Иконки Персонажей  
+god_npc_icons_table = {
+sim_default_csky_0      = "ui_npc_u_nebo_1", 
+sim_default_csky_1      = "ui_npc_u_nebo_1",
+sim_default_csky_2      = "ui_npc_u_nebo_2",  
+sim_default_csky_3      = "ui_npc_u_nebo_3", 
+sim_default_csky_4      = "ui_npc_u_neutral_4", 
+sim_default_stalker_0   = "ui_npc_u_neutral_1", 
+sim_default_stalker_1   = "ui_npc_u_neutral_2_mask", 
+sim_default_stalker_2   = "ui_npc_u_neutral_2", 
+sim_default_stalker_3   = "ui_npc_u_neutral_3",
+sim_default_stalker_4   = "ui_npc_u_neutral_4", 
+sim_default_duty_0      = "ui_npc_u_dolg_1", 
+sim_default_duty_1      = "ui_npc_u_dolg_2", 
+sim_default_duty_2      = "ui_npc_u_dolg_2_mask", 
+sim_default_duty_3      = "ui_npc_u_dolg_3", 
+sim_default_duty_4      = "ui_npc_u_dolg_4", 
+sim_default_freedom_0   = "ui_npc_u_freedom_1",
+sim_default_freedom_1   = "ui_npc_u_freedom_2", 
+sim_default_freedom_2   = "ui_npc_u_freedom_2_mask",
+sim_default_freedom_3   = "ui_npc_u_freedom_3", 
+sim_default_freedom_4   = "ui_npc_u_freedom_4", 
+sim_default_monolith_0  = "ui_npc_u_monolith_1", 
+sim_default_monolith_1  = "ui_npc_u_monolith_2", 
+sim_default_monolith_2  = "ui_npc_u_monolith_2",
+sim_default_monolith_3  = "ui_npc_u_monolith_3", 
+sim_default_monolith_4  = "ui_npc_u_monolith_4", 
+sim_default_bandit_0    = "ui_npc_u_bandit_1", 
+sim_default_bandit_1    = "ui_npc_u_bandit_3", 
+sim_default_bandit_2    = "ui_npc_u_bandit_3_mask", 
+sim_default_bandit_3    = "ui_npc_u_bandit_2",
+sim_default_bandit_4    = "ui_npc_u_bandit_2", 
+sim_default_renegade_0  = "ui_npc_u_bandit_1", 
+sim_default_renegade_1  = "ui_npc_u_bandit_3", 
+sim_default_renegade_2  = "ui_npc_u_bandit_4", 
+sim_default_military_0  = "ui_npc_u_soldier_1", 
+sim_default_military_1  = "ui_npc_u_soldier_1", 
+sim_default_military_2  = "ui_npc_u_soldier_2",
+sim_default_military_3  = "ui_npc_u_soldier_3", 
+sim_default_military_4  = "ui_npc_u_soldier_4", 
+sim_default_killer_0    = "ui_npc_u_merc_2", 
+sim_default_killer_1    = "ui_npc_u_merc_2",
+sim_default_killer_2    = "ui_npc_u_merc_2", 
+sim_default_killer_3    = "ui_npc_u_merc_2",
+sim_default_killer_4    = "ui_npc_u_merc_4", 
+sm_yan_wave_zombie_1    = "ui_npc_u_zombied_1",
+sm_yan_wave_zombie_2    = "ui_npc_u_zombied_2",
+sm_yan_wave_zombie_3    = "ui_npc_u_zombied_3",
+sm_yan_wave_zombie_4    = "ui_npc_u_zombied_4",
+sm_yan_wave_zombie_5    = "ui_npc_u_zombied_3",
+sm_yan_wave_zombie_6    = "ui_npc_u_zombied_1", 
+sm_yan_wave_zombie_7    = "ui_npc_u_zombied_2", 
+sm_yan_wave_zombie_8    = "ui_npc_u_zombied_3", 
+sm_yan_wave_zombie_9    = "ui_npc_u_zombied_1", 
+sm_yan_wave_zombie_10   = "ui_npc_u_zombied_4", 
+sm_yan_wave_zombie_11   = "ui_npc_u_zombied_2",
+sm_yan_wave_zombie_12   = "ui_npc_u_zombied_3", 
+sm_yan_wave_zombie_13   = "ui_npc_u_zombied_2", 
+sm_yan_wave_zombie_20   = "ui_npc_u_zombied_4", 
+sm_yan_wave_zombie_21   = "ui_npc_u_zombied_1"
+}

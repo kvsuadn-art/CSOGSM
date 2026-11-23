@@ -1,0 +1,2480 @@
+-- File:        UI_god_DIALOG.SCRIPT
+-- Description: Cheat Dialog for STALKER
+
+local mode -- Режим спауна
+local eng = [[qwertyuiop[]asdfghjkl;'zxcvbnm,./QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?!@#$%^&*()-_+=\| 0123456789]]
+local rus = [[йцукенгшщзхъфывапролджэячсмитьбю.ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,!"№;%:?*()-_+=\/ 0123456789]]
+
+local translit_tbl = {}   -- eng -> rus
+local reversed_tbl  = {}   -- rus -> eng (обратная)
+for i = 1, math.min(#eng, #rus) do
+    local e = eng:sub(i,i)
+    local r = rus:sub(i,i)
+    translit_tbl[e] = r
+    reversed_tbl[r] = e
+end
+
+local function translit_char(c)
+    return translit_tbl[c] or c
+end
+
+
+local RU_LOWER = {
+    ["А"]="а", ["Б"]="б", ["В"]="в", ["Г"]="г", ["Д"]="д", ["Е"]="е", ["Ё"]="ё", ["Ж"]="ж",
+    ["З"]="з", ["И"]="и", ["Й"]="й", ["К"]="к", ["Л"]="л", ["М"]="м", ["Н"]="н", ["О"]="о",
+    ["П"]="п", ["Р"]="р", ["С"]="с", ["Т"]="т", ["У"]="у", ["Ф"]="ф", ["Х"]="х", ["Ц"]="ц",
+    ["Ч"]="ч", ["Ш"]="ш", ["Щ"]="щ", ["Ъ"]="ъ", ["Ы"]="ы", ["Ь"]="ь", ["Э"]="э", ["Ю"]="ю", ["Я"]="я",
+}
+
+local function clean_name(s)
+    if not s then return "" end
+    s = string.gsub(s, "c%[[^%]]+%]", "")
+    return s
+end
+local function lower_any(s)
+    if not s then return "" end
+    s = clean_name(s)
+    s = string.lower(s) -- латиница в нижний регистр
+    s = string.gsub(s, "[А-ЯЁ]", function(ch) return RU_LOWER[ch] or ch end) -- кириллица в нижний
+    return s
+end
+
+local function is_checked(ctrl)
+    if not ctrl then return false end
+    if ctrl.GetCheck then return ctrl:GetCheck() == true end
+    if ctrl.IsChecked then return ctrl:IsChecked() == true end
+    return false
+end
+
+class "god_item" (CUIListItemEx)
+
+function god_item:__init() super()
+	self.item_name		= "itemname"
+	
+	local ca = 255
+	local cr = 216
+	local cg = 186
+	local cb = 140
+	
+	self.dn					= CUIStatic	()
+	self.dn:SetAutoDelete	(true)
+	self:AttachChild		(self.dn)
+	self.dn:SetWndRect		(Frect():set(0,0,280,22))
+	self.dn:SetFont			(GetFontLetterica18Russian())
+	self.dn:SetTextColor	(ca,cr,cg,cb)
+
+	self.name				= CUIStatic	()
+	self.name:SetAutoDelete	(true)
+	self:AttachChild		(self.name)
+	self.name:SetWndRect	(Frect():set(290,0,250+110,22))
+	self.name:SetText		(sect)
+	self.name:SetFont		(GetFontLetterica16Russian())
+	self.name:SetTextColor	(ca,cr,cg,cb)
+end
+
+
+class "god_dialog" (CUIScriptWnd)
+
+function god_dialog:__init() super()
+   self:InitControls()
+   self:InitCallBacks()
+   self.lang_mode        = true
+   self.lang_mode_point  = true
+   self.last_text        = ""
+   self.current_page     = 1
+   self.total_pages      = 2 
+   self:ShowPage(self.current_page)   
+end
+              
+local time_factor_desc_by_num = {
+				[0] = "Реальное",
+				[1] = "Игровое",
+				[2] = "Ускоренное",
+				[3] = "Быстрое",
+				[4] = "Очень быстрое",
+				[5] = "Мгновенное"
+				}
+
+local RU_coeff = 1000
+local time_factor, actor_money
+
+function god_dialog:InitControls()
+	self:SetWndRect			(Frect():set(0,0,1024,768))
+	
+	local xml			= CScriptXmlInit()
+	xml:ParseFile			("ui_mm_god_dlg.xml")
+
+	local ctrl			= CUIWindow()
+
+	xml:InitStatic			("background",					self)
+	
+	local frame = xml:InitFrame("background_two",           self)
+	
+	xml:InitStatic          ("god_comand_text",             self)
+	
+	xml:InitStatic         ("other_text",                  self)
+	
+	xml:InitStatic         ("jump_text",                   self)
+	
+	xml:InitStatic         ("meters_text",                 self)
+	
+	xml:InitStatic         ("rank_text",                   self)
+	
+	
+	xml:InitWindow			("god_item:main",0,ctrl)
+	self.god_item_main_sz	= vector2():set(ctrl:GetWidth(),ctrl:GetHeight())
+
+	xml:InitWindow			("god_item:dn",0,ctrl)
+	self.god_item_dn_sz	= vector2():set(ctrl:GetWidth(),ctrl:GetHeight())
+
+	xml:InitWindow			("god_item:name",0,ctrl)
+	self.god_item_name_sz	= vector2():set(ctrl:GetWidth(),ctrl:GetHeight())
+
+	self.btn_form		= xml:InitStatic("btn_form",			self)
+	self.form			= xml:InitStatic("form",			self)
+
+	xml:InitStatic		("form:caption",				self.form)
+	
+	-- Поле поиска
+	self.search_edit_box = xml:InitEditBox("form:search_edit_box", self.form)
+	
+	btn = xml:Init3tButton("form:btn_clear",          self.form)
+	self:Register(btn, "button_clear")
+	
+	self.btn_lang = xml:Init3tButton("form:btn_lang", self.form)
+	self.btn_lang:SetText("РУС")
+	self:Register(self.btn_lang, "button_lang")
+	
+	-- чекбокс "Искать везде"
+    self.search_all = xml:InitCheck("form:check_search_all", self.form)
+    self._search_all_prev = is_checked(self.search_all)
+
+	ctrl = xml:Init3tButton	("form:btn_music_stop",	self.form)
+	self:Register			(ctrl, "button_music_stop")
+ 
+	self.cap_timefactor 		= xml:InitStatic("form:cap_timefactor",		self.form)
+
+	self.cap_timefactor_currently	= xml:InitStatic("form:cap_timefactor_currently", self.form)
+	if level.present() then time_factor = level.get_time_factor() else time_factor = 10 end
+
+	self.cap_timefactor_desc	= xml:InitStatic("form:cap_timefactor_desc",	self.form)
+	self:RefreshTimeFactorDisplay()
+
+    btn				= xml:Init3tButton("form:btn_timeplus",		self.form)
+	self:Register			(btn, "button_timeplus")
+	
+	btn				= xml:Init3tButton("form:btn_timeminus",	self.form)
+	self:Register			(btn, "button_timeminus")
+	
+	btn				= xml:Init3tButton("form:btn_time_normal",	self.form)
+	self:Register			(btn, "button_time_normal")
+	
+	self.teb = xml:InitEditBox("form:time_edit_box", self.form)
+	self.teb:SetText("")
+
+	self.cap_spawn	 		    = xml:InitStatic("form:cap_spawn",		        self.form)
+	
+	self.cap_rubel	 		     = xml:InitStatic("form:cap_rubel",		        self.form)
+	
+	self.cap_rubel_currently	= xml:InitStatic("form:cap_rubel_currently",	self.form)
+
+	self.spin = xml:InitEditBox("form:spin_spawn", self.form)
+	self.spin:SetText("0")
+	
+	self.count = xml:InitEditBox("form:count_spawn", self.form)
+	self.count:SetText("1")
+	
+	xml:InitStatic          ("form:count_text",           self.form)
+	
+	btn		            = xml:Init3tButton("btn_portal",		    self)
+	self:Register			(btn, "button_portal")
+	self.btn_portal = btn
+	
+	btn		        = xml:Init3tButton("form:btn_add_money",self.form)
+	self:Register			(btn, "button_add_money")
+	
+	btn		        = xml:Init3tButton("form:btn_remove_money",self.form)
+	self:Register			(btn, "button_remove_money")
+	
+    self:Register(xml:InitEditBox("form:money_edit_box", self.form),"money_edit_box")
+	
+	xml:InitStatic("form:money_rub_text", self.form)
+	
+	if db.actor ~= nil then actor_money = db.actor:money() else actor_money = 0 end
+	self:RefreshMoneyDisplay()
+	
+	btn                          = xml:Init3tButton("btn_nextdlg", self.btn_form)
+    self:Register                       (btn, "btn_nextdlg")
+   self.next_dlg_b = btn
+
+    btn                       = xml:Init3tButton("btn_prevdlg", self.btn_form)
+     self:Register(btn, "btn_prevdlg")
+     self.prev_dlg_b = btn
+	  
+	 -- Лист 1
+    self.btn_wpn       = xml:Init3tButton("btn_wpn", self.btn_form)
+    self:Register(self.btn_wpn, "btn_wpn")
+    
+    self.btn_ammo      = xml:Init3tButton("btn_ammo", self.btn_form)
+    self:Register(self.btn_ammo, "btn_ammo")
+    
+    self.btn_otf       = xml:Init3tButton("btn_otf", self.btn_form)
+    self:Register(self.btn_otf, "btn_otf")
+    
+    self.btn_food      = xml:Init3tButton("btn_food", self.btn_form)
+    self:Register(self.btn_food, "btn_food")
+    
+    self.btn_medicines = xml:Init3tButton("btn_medicines", self.btn_form)
+    self:Register(self.btn_medicines, "btn_medicines")
+    
+    self.btn_art       = xml:Init3tButton("btn_art", self.btn_form)
+    self:Register(self.btn_art, "btn_art")
+    
+    self.btn_stalker   = xml:Init3tButton("btn_stalker", self.btn_form)
+    self:Register(self.btn_stalker, "btn_stalker")
+    
+    self.btn_mob       = xml:Init3tButton("btn_mob", self.btn_form)
+    self:Register(self.btn_mob, "btn_mob")
+    
+    self.btn_level     = xml:Init3tButton("btn_level", self.btn_form)
+    self:Register(self.btn_level, "btn_level")
+    
+    self.btn_weather   = xml:Init3tButton("btn_weather", self.btn_form)
+    self:Register(self.btn_weather, "btn_weather")
+	
+
+    -- Лист 2
+    self.btn_anom          = xml:Init3tButton("btn_anom", self.btn_form)
+    self:Register(self.btn_anom, "btn_anom")
+    self.btn_anom:Show(false)
+    
+    self.btn_other        = xml:Init3tButton("btn_other", self.btn_form)
+    self:Register(self.btn_other, "btn_other")
+    self.btn_other:Show(false)
+    
+    self.btn_squads        = xml:Init3tButton("btn_squads", self.btn_form)
+    self:Register(self.btn_squads, "btn_squads")
+    self.btn_squads:Show(false)
+    
+    self.btn_war           = xml:Init3tButton("btn_war", self.btn_form)
+    self:Register(self.btn_war, "btn_war")
+    self.btn_war:Show(false)
+    
+    self.btn_music         = xml:Init3tButton("btn_music", self.btn_form)
+    self:Register(self.btn_music, "btn_music")
+    self.btn_music:Show(false)
+    
+    self.btn_jokes         = xml:Init3tButton("btn_jokes", self.btn_form)
+    self:Register(self.btn_jokes, "btn_jokes")
+    self.btn_jokes:Show(false)
+    
+    self.btn_objects       = xml:Init3tButton("btn_objects", self.btn_form)
+    self:Register(self.btn_objects, "btn_objects")
+    self.btn_objects:Show(false)
+    
+    self.btn_wpn_addons    = xml:Init3tButton("btn_wpn_addons", self.btn_form)
+    self:Register(self.btn_wpn_addons, "btn_wpn_addons")
+    self.btn_wpn_addons:Show(false)
+    
+    self.btn_car           = xml:Init3tButton("btn_car", self.btn_form)
+    self:Register(self.btn_car, "btn_car")
+    self.btn_car:Show(false)
+	
+	self.btn_decor_items   = xml:Init3tButton("btn_decor_items", self.btn_form)
+    self:Register(self.btn_decor_items, "btn_decor_items")
+    self.btn_decor_items:Show(false)
+	
+    local cb = xml:InitCheck("form:check_wt", self.form)
+    self:Register(cb, "check_wt")
+    self.wt_cb = cb  
+    
+    local disable_dynamic = god.load_var("weather_state", false)
+    self.wt_cb:SetCheck(disable_dynamic)
+	
+	btn = xml:Init3tButton("btn_hud", self)
+    self:Register(btn, "button_hud")
+    self.hud_btn = btn
+    
+    if self.hud_btn and db.actor then
+        if god.load_var("hud_state", true) == true then
+            self.hud_btn:SetText("Отключить Худ")
+        else
+            self.hud_btn:SetText("Включить Худ")
+        end
+    end
+
+	btn	                     = xml:Init3tButton("btn_replenish_health",   self)
+	self:Register			(btn, "button_replenish_health")
+	self.btn_replenish_health = btn 
+	
+	btn				         = xml:Init3tButton("btn_get_money",		   self)
+	self:Register			(btn, "button_get_money")
+	self.btn_get_money = btn 
+	
+	btn				         = xml:Init3tButton("btn_equipment_repair",   self)
+	self:Register		    (btn, "button_equipment_repair")
+	self.btn_equipment_repair = btn
+
+    btn				         = xml:Init3tButton("btn_cleaner_menu",   self)
+	self:Register		    (btn, "button_cleaner_menu")
+	self.btn_cleaner_menu = btn 	
+	
+	local edit_jump_forward = xml:InitEditBox("jump_forward_edit_box",    self)
+    self:Register(edit_jump_forward, "jump_forward_edit_box")
+    self.jump_forward_edit_box = edit_jump_forward  
+	
+	btn				         = xml:Init3tButton("btn_jump_forward",   self)
+	self:Register		    (btn, "button_jump_forward")
+	self.btn_jump_forward = btn
+	
+	btn				         = xml:Init3tButton("btn_jump_return",   self)
+	self:Register		    (btn, "button_jump_return")
+	self.btn_jump_return = btn
+	
+	local edit_rank = xml:InitEditBox("rank_edit_box", self)
+    self:Register(edit_rank, "rank_edit_box")
+    self.rank_edit_box = edit_rank 
+
+	btn				         = xml:Init3tButton("btn_rank_add",   self)
+	self:Register		    (btn, "button_rank_add")
+	self.btn_rank_add = btn
+	
+	btn				         = xml:Init3tButton("btn_rank_sub",   self)
+	self:Register		    (btn, "button_rank_sub")
+	self.btn_rank_sub = btn
+      
+	xml:InitFrame			("form:list_frame",self.form)
+
+	self.list_box			= xml:InitList("form:list",			self.form)
+	self.list_box:ShowSelectedItem	(true)
+	self:Register			(self.list_box, "list_window")
+
+	btn				= xml:Init3tButton("form:btn_spawnitem",	self.form)
+	self:Register			(btn, "button_spawnitem")
+    self.btn_sp = btn
+
+    ctrl				= xml:Init3tButton("form:btn_close",		self.form)	
+	self:Register			(ctrl, "button_close")
+
+	self.message_box		= CUIMessageBoxEx()
+	self:Register			(self.message_box,"message_box")
+
+    --- Меню телепортации --
+    self.dialog = xml:InitStatic("dialog", self)
+	self.dialog:Show(false)
+    xml:InitStatic              ("dialog:capt_title",     self.dialog)
+	xml:InitStatic				("dialog:lbl_coords",     self.dialog)
+	xml:InitStatic				("dialog:lbl_point_name", self.dialog)
+
+
+	
+    --- поля	
+    self.edit_coord_x     = xml:InitEditBox("dialog:edit_coord_x", self.dialog)
+    self:Register(self.edit_coord_x, "edit_coord_x")
+    
+    self.edit_coord_y     = xml:InitEditBox("dialog:edit_coord_y", self.dialog)
+    self:Register(self.edit_coord_y, "edit_coord_y")
+    
+    self.edit_coord_z     = xml:InitEditBox("dialog:edit_coord_z", self.dialog) 
+    self:Register(self.edit_coord_z, "edit_coord_z")
+    
+    self.edit_point_name  = xml:InitEditBox("dialog:edit_point_name", self.dialog) 
+    self:Register(self.edit_point_name, "edit_point_name")
+    
+   --- кнопки
+   self:Register(xml:Init3tButton("dialog:btn_take_from_list",       self.dialog), "btn_take_from_list")
+   self:Register(xml:Init3tButton("dialog:btn_get_actor_pos",        self.dialog), "btn_get_actor_pos")
+   self:Register(xml:Init3tButton("dialog:btn_save_point",           self.dialog), "btn_save_point")
+   self:Register(xml:Init3tButton("dialog:btn_delete_point",         self.dialog), "btn_delete_point")
+   self:Register(xml:Init3tButton("dialog:btn_teleport",             self.dialog), "btn_teleport")
+   self:Register(xml:Init3tButton("dialog:btn_exit",                 self.dialog), "btn_exit")
+   self:Register(xml:Init3tButton("dialog:btn_clear_name_point",     self.dialog), "btn_clear_name_point")
+   
+   self.btn_lang_point = xml:Init3tButton("dialog:btn_lang_point", self.dialog)
+   self.btn_lang_point:SetText("РУС")
+   self:Register(self.btn_lang_point, "btn_lang_point")
+   
+   -- Описание
+   self.descWnd = xml:InitFrame("description", self)
+   self.scroll_v = xml:InitScrollView("description:scroll_v", self.descWnd)
+   
+   
+   local pst = db.storage[db.actor:id()].pstor
+   local state = false
+   if pst and type(pst["descWndVisible"]) == "boolean" then
+       state = pst["descWndVisible"]
+   end
+
+   self.descWndVisible = state
+   self.descWnd:Show(self.descWndVisible)
+   
+   local ctrl = xml:Init3tButton("description:btn_description", self)
+   self:Register(ctrl, "button_description")
+	
+	self.pict = CUIStatic()
+	self.pict:SetWindowName("pict")
+	self.pict:SetAutoDelete(true)
+	self.pict:SetWndRect(Frect():set(20,95,300,150))
+	self.descWnd:AttachChild(self.pict)
+	
+	self.cost = xml:InitStatic("description:cost_wnd", self.descWnd)
+	
+	self.weight = xml:InitStatic("description:weight_wnd", self.descWnd)
+	
+	ctrl = xml:InitStatic("description:templ_item", self.scroll_v)
+	self.descr = xml:InitStatic("description:descr_list", ctrl)
+	
+	-- Режим Бога
+	self.god_comand = xml:InitFrame("god_comand", self)
+	
+	self.god_mode_full = xml:InitCheck("god_comand:god_mode_full", self.god_comand)
+    self:Register(self.god_mode_full, "god_mode_full")
+	
+	self.god_mode = xml:InitCheck("god_comand:god_mode", self.god_comand)
+    self:Register(self.god_mode, "god_mode")
+
+    self.unlimited_ammo_mode = xml:InitCheck("god_comand:unlimited_ammo_mode", self.god_comand)
+    self:Register(self.unlimited_ammo_mode, "unlimited_ammo_mode")
+
+    self.strongman_mode = xml:InitCheck("god_comand:strongman_mode", self.god_comand)
+    self:Register(self.strongman_mode, "strongman_mode")
+
+    local console = get_console()
+    if console then
+        local god_val     = console:get_string("g_god")
+        local ammo_val    = console:get_string("g_unlimitedammo")
+        local run_val     = console:get_string("g_strongman")
+
+         self.god_mode:SetCheck(god_val == "on")
+         self.unlimited_ammo_mode:SetCheck(ammo_val == "on")
+         self.strongman_mode:SetCheck(run_val == "on")
+
+        self:update_full_check()
+    end
+	
+end
+
+function god_dialog:InitCallBacks()
+    self:AddCallback("button_add_money",	ui_events.BUTTON_CLICKED,		self.OnButton_add_money_clicked,	       self)
+	self:AddCallback("button_remove_money",	ui_events.BUTTON_CLICKED,		self.OnButton_remove_money_clicked,	       self) 
+	self:AddCallback("button_time_normal",	ui_events.BUTTON_CLICKED,		self.OnButton_time_normal_clicked,	       self)
+	self:AddCallback("button_timeplus",	    ui_events.BUTTON_CLICKED,		self.OnButton_time_plus_clicked,	       self)
+	self:AddCallback("button_timeminus",	ui_events.BUTTON_CLICKED,		self.OnButton_time_minus_clicked,	       self)
+	self:AddCallback("button_spawnitem",	ui_events.BUTTON_CLICKED,		self.OnButton_spawnitem_clicked,	       self)
+	self:AddCallback("button_music_stop",   ui_events.BUTTON_CLICKED,       self.OnButton_music_stop_clicked,	       self)
+	self:AddCallback("check_wt",            ui_events.BUTTON_CLICKED,       self.OnCheck_wt_clicked,                   self)
+	self:AddCallback("button_close",	    ui_events.BUTTON_CLICKED,		self.OnButton_close_clicked,		       self)
+                                                                                                                    
+	self:AddCallback("list_window", ui_events.LIST_ITEM_CLICKED, 			  self.OnListItemClicked,		           self)
+	self:AddCallback("list_window", ui_events.WINDOW_LBUTTON_DB_CLICK,		  self.OnButton_spawnitem_clicked,	       self)
+
+
+    self:AddCallback("btn_nextdlg", ui_events.BUTTON_CLICKED,                  self.OnBtnNext,                           self)
+    self:AddCallback("btn_prevdlg", ui_events.BUTTON_CLICKED,                  self.OnBtnPrev,                           self)
+	
+	self:AddCallback("button_description",      ui_events.BUTTON_CLICKED,       self.OnBtnShowDescr,                    self)
+	
+	self:AddCallback("button_clear",		    ui_events.BUTTON_CLICKED,	    self.OnBtnClearText,		            self)
+	self:AddCallback("button_lang",		        ui_events.BUTTON_CLICKED,		self.OnBtnChangeLanguage,	            self)
+	
+	self:AddCallback("button_portal",           ui_events.BUTTON_CLICKED,		self.OnButton_portal_clicked,	        self)
+	self:AddCallback("button_hud",              ui_events.BUTTON_CLICKED,       self.OnButton_hud_clicked,              self)
+	self:AddCallback("button_replenish_health", ui_events.BUTTON_CLICKED,		self.OnButton_replenish_health_clicked,	self)
+	self:AddCallback("button_get_money",        ui_events.BUTTON_CLICKED,		self.OnButton_get_money_clicked,	    self)
+	self:AddCallback("button_equipment_repair", ui_events.BUTTON_CLICKED,		self.OnButton_equipment_repair_clicked,	self)
+	self:AddCallback("button_cleaner_menu",	    ui_events.BUTTON_CLICKED,		self.OnButton_cleaner_menu_clicked,		self)
+	self:AddCallback("button_jump_forward",     ui_events.BUTTON_CLICKED,       self.jump_forward_clicked,              self)
+	self:AddCallback("button_jump_return",      ui_events.BUTTON_CLICKED,       self.OnButton_jump_return_clicked,      self)
+    self:AddCallback("button_rank_add",	        ui_events.BUTTON_CLICKED,		self.rank_add_clicked,	                self)
+	self:AddCallback("button_rank_sub",	        ui_events.BUTTON_CLICKED,		self.rank_sub_clicked,	                self)
+     
+	self:AddCallback("btn_wpn",	ui_events.BUTTON_CLICKED,		    self.OnButton_wpn_clicked,	                        self)
+	self:AddCallback("btn_ammo",	ui_events.BUTTON_CLICKED,		self.OnButton_ammo_clicked,	                        self)
+	self:AddCallback("btn_otf",	    ui_events.BUTTON_CLICKED,		self.OnButton_otf_clicked,	                        self)
+	self:AddCallback("btn_food",	ui_events.BUTTON_CLICKED,		self.OnButton_food_clicked,	                        self)
+	self:AddCallback("btn_medicines",	ui_events.BUTTON_CLICKED,   self.OnButton_medicines_clicked,                    self)
+	self:AddCallback("btn_art",	ui_events.BUTTON_CLICKED,		    self.OnButton_art_clicked,	                        self)
+	self:AddCallback("btn_stalker", ui_events.BUTTON_CLICKED,		self.OnButton_stlk_clicked,	                        self)
+    self:AddCallback("btn_mob", ui_events.BUTTON_CLICKED,		    self.OnButton_mob_clicked,	                        self)
+	self:AddCallback("btn_level", ui_events.BUTTON_CLICKED,		self.OnButton_level_clicked,	                        self)
+	self:AddCallback("btn_weather", ui_events.BUTTON_CLICKED,		self.OnButton_weather_clicked,	                    self)
+    self:AddCallback("btn_anom", ui_events.BUTTON_CLICKED,		    self.OnButton_anom_clicked,	                        self)
+    self:AddCallback("btn_squads", ui_events.BUTTON_CLICKED,		self.OnButton_squads_clicked,	                    self)
+    self:AddCallback("btn_other", ui_events.BUTTON_CLICKED,         self.OnButton_other_clicked,	                    self)
+    self:AddCallback("btn_war", ui_events.BUTTON_CLICKED,		    self.OnButton_vid_clicked,	                        self)
+    self:AddCallback("btn_music",       ui_events.BUTTON_CLICKED,	self.OnButton_music_clicked,	                    self)
+	self:AddCallback("btn_jokes",       ui_events.BUTTON_CLICKED,	self.OnButton_jokes_clicked,	                    self)
+    self:AddCallback("btn_objects",	ui_events.BUTTON_CLICKED,		self.OnButton_objects_clicked,	                    self)
+    self:AddCallback("btn_wpn_addons", ui_events.BUTTON_CLICKED,	self.OnButton_wpn_addons_clicked,	                self)
+    self:AddCallback("btn_car", ui_events.BUTTON_CLICKED,		    self.OnButton_car_clicked,	                        self)
+	self:AddCallback("btn_decor_items", ui_events.BUTTON_CLICKED,   self.OnButton_decor_items_clicked,	                self)
+   
+    self:AddCallback("btn_take_from_list",         ui_events.BUTTON_CLICKED, self.OnButton_take_from_list_clicked,      self)
+    self:AddCallback("btn_get_actor_pos",          ui_events.BUTTON_CLICKED, self.OnButton_get_actor_pos_clicked,       self)
+    self:AddCallback("btn_save_point",             ui_events.BUTTON_CLICKED, self.OnButton_save_point_clicked,          self)
+    self:AddCallback("btn_delete_point",           ui_events.BUTTON_CLICKED, self.OnButton_delete_point_clicked,        self)
+    self:AddCallback("btn_teleport",               ui_events.BUTTON_CLICKED, self.OnButton_teleport_point_clicked,      self)
+    self:AddCallback("btn_exit",                   ui_events.BUTTON_CLICKED, self.OnButton_exit_point_clicked,          self)
+    
+    self:AddCallback("btn_lang_point",              ui_events.BUTTON_CLICKED, self.OnButton_lang_name_point_clicked,    self)
+    self:AddCallback("btn_clear_name_point",	    ui_events.BUTTON_CLICKED, self.OnButton_clear_name_point_clicked,	self)
+    
+    self.teleportFile = "gamedata\\configs\\misc\\god_teleports_coordinats.ltx"
+	
+	self:AddCallback("god_mode_full",        ui_events.BUTTON_CLICKED, self.god_mode_full_button_clicked,               self)
+    self:AddCallback("god_mode",             ui_events.BUTTON_CLICKED, self.god_mode_button_clicked,                    self)
+    self:AddCallback("unlimited_ammo_mode",  ui_events.BUTTON_CLICKED, self.unlimited_ammo_mode_button_clicked,         self)
+    self:AddCallback("strongman_mode",       ui_events.BUTTON_CLICKED, self.strongman_mode_button_clicked,              self)
+end
+
+-- Описание
+function god_dialog:OnBtnShowDescr()
+    self.descWndVisible = not self.descWndVisible
+    self.descWnd:Show(self.descWndVisible)
+
+    local st = db.storage[db.actor:id()]
+    if st then
+        if type(st.pstor) ~= "table" then st.pstor = {} end
+        st.pstor["descWndVisible"] = self.descWndVisible
+    end
+end
+
+-- Отключить динамическую погоду
+function god_dialog:OnCheck_wt_clicked()
+    if not db.actor then return end
+
+    local disable_dynamic = self.wt_cb:GetCheck()
+
+    god.save_var("weather_state", disable_dynamic)
+
+    local last_weather = god.load_var("god_weather_type", "default")
+
+    if disable_dynamic then
+        level.set_weather(last_weather, false)
+    else
+        level.set_weather(last_weather, true)
+    end
+end
+
+-- Остановить (муз)
+function god_dialog:OnButton_music_stop_clicked()
+  if db.actor then
+    local s =  ui_god_dialog.last_music
+    if s~=nil then
+      s:stop()
+      ui_god_dialog.last_music = nil
+    end
+  end
+end
+
+----------------------------------------------------------------------------------------------------
+-- Меню телепортации 2.0
+----------------------------------------------------------------------------------------------------
+-- Открыть меню телепортации
+function god_dialog:OnButton_portal_clicked()
+    local teleportFile = "gamedata\\configs\\misc\\god_teleports_coordinats.ltx"
+
+    if not self.dialog then
+        printf("ERROR: dialog not initialized")
+        return
+    end
+
+    if self.list_box then
+        self.list_box:RemoveAll()
+    end
+
+    self.dialog:Show(true)
+    self.god_comand:Show(false)
+    self.btn_portal:Show(false)
+    self.hud_btn:Show(false)
+    self.btn_replenish_health:Show(false)
+    self.btn_get_money:Show(false)
+    self.btn_equipment_repair:Show(false)
+	self.btn_cleaner_menu:Show(false)
+    self.jump_forward_edit_box:Show(false)
+    self.btn_jump_forward:Show(false)
+    self.btn_jump_return:Show(false)
+    self.rank_edit_box:Show(false)
+    self.btn_rank_add:Show(false)
+    self.btn_rank_sub:Show(false)
+
+    mode = "tlp"
+	
+	god.del_level_changer()
+
+    if self.search_all then
+        self.search_all:SetCheck(false)
+        self.search_all:Enable(false)
+    end
+
+    local file = io.open(teleportFile, "r")
+    if not file then
+        printf("No teleport file found: %s", teleportFile)
+        return
+    end
+
+    for line in file:lines() do
+        local parts = str_explode("|", line)
+        if #parts >= 4 then
+            local name = parts[1]
+            local x = parts[2]
+            local y = parts[3]
+            local z = parts[4]
+
+            local coord_text = string.format("%s, %s, %s", x, y, z)
+
+            self:AddItemToList(name, coord_text, "tlp", line)
+        end
+    end
+
+    file:close()
+end
+
+-- Взять из списка
+function god_dialog:OnButton_take_from_list_clicked()
+    if not self.list_box or self.list_box:GetSize() == 0 then return end
+
+    local idx = self.list_box:GetSelectedItem()
+    if idx == -1 then return end
+
+    local item = self.list_box:GetItem(idx)
+    if not item then return end
+
+    local raw = item.raw
+    if not raw then return end
+
+    local parts = str_explode("|", raw)
+
+    self.edit_point_name:SetText(parts[1] or "")
+    self.edit_coord_x:SetText(parts[2] or "")
+    self.edit_coord_y:SetText(parts[3] or "")
+    self.edit_coord_z:SetText(parts[4] or "")
+end
+
+-- Позиция ГГ
+function god_dialog:OnButton_get_actor_pos_clicked()
+    local pos = db.actor:position()
+	
+    self.edit_coord_x:SetText(string.format("%.3f", pos.x))
+    self.edit_coord_y:SetText(string.format("%.3f", pos.y))
+    self.edit_coord_z:SetText(string.format("%.3f", pos.z))
+end
+
+-- Сохранить точку
+function god_dialog:OnButton_save_point_clicked()
+    local name = tostring(self.edit_point_name:GetText())
+    if name == "" then return end
+
+    local pos = db.actor:position()
+
+    local x = pos.x
+    local y = pos.y
+    local z = pos.z
+
+    local level_name = level.name()
+    local gv = db.actor:game_vertex_id()
+    local lv = db.actor:level_vertex_id()
+
+    local file = io.open(self.teleportFile, "a")
+    if file then
+        file:write(string.format("%s|%.3f|%.3f|%.3f|%s|%d|%d\n", name, x, y, z, level_name, gv, lv))
+          
+        file:close()
+    end
+
+    self:OnButton_portal_clicked()
+end
+
+-- Удалить точку
+function god_dialog:OnButton_delete_point_clicked()
+    if not self.list_box or self.list_box:GetSize() == 0 then return end
+
+    local idx = self.list_box:GetSelectedItem()
+    if idx == -1 then return end
+
+    local item = self.list_box:GetItem(idx)
+    if not item then return end
+
+    local raw = item.raw
+    if not raw then return end
+
+    local lines = {}
+    for line in io.lines(self.teleportFile) do
+        if line ~= raw then
+            table.insert(lines, line)
+        end
+    end
+
+    local f = io.open(self.teleportFile, "w")
+    if f then
+        for _, l in ipairs(lines) do
+            f:write(l .. "\n")
+        end
+        f:close()
+    end
+
+    self:OnButton_portal_clicked()
+end
+
+-- Телепорт
+function god_dialog:OnButton_teleport_point_clicked()
+    local x = tonumber(self.edit_coord_x:GetText())
+    local y = tonumber(self.edit_coord_y:GetText())
+    local z = tonumber(self.edit_coord_z:GetText())
+    if not x or not y or not z then return end
+
+    local pos = vector():set(x, y, z)
+
+    local idx = self.list_box:GetSelectedItem()
+    if idx == -1 then return end
+
+    local item = self.list_box:GetItem(idx)
+    if not item then return end
+
+    local raw = item.raw
+    if not raw then return end
+
+    local parts = str_explode("|", raw)
+
+    local level_name = parts[5] or level.name()
+
+    level.add_pp_effector("teleport.ppe", 2006, false)
+
+    self:OnButton_close_clicked()
+	self:ResetTeleportState()
+
+    if level_name == level.name() then
+        db.actor:set_actor_position(pos)
+    else
+        local gv2 = db.actor:game_vertex_id()
+        local pos2 = db.actor:position()
+        local target_gv = tonumber(parts[6]) or gv2
+
+        local lc = god.spawn_lc(gv2, pos2, level_name, pos, 1, target_gv)
+        god.del_level_changer()
+    end
+end
+
+-- Переключения раскладки РУС/ENG
+function god_dialog:OnButton_lang_name_point_clicked()
+	self.lang_mode_point = not self.lang_mode_point
+	self.btn_lang_point:SetText(self.lang_mode_point and "РУС" or "ENG")
+end
+
+function god_dialog:OnChangeEditText_point()
+    if self._changing_text then return end
+    self._changing_text = true
+
+    local text = self.edit_point_name:GetText() or ""
+    local len_l = #self.last_text
+    local len_t = #text
+    local s = ""
+
+    for i = 1, len_t do
+        local ch = text:sub(i,i)
+        local prev = self.last_text:sub(i,i)
+
+        if i > len_l or ch ~= prev then
+            if self.lang_mode_point then
+                if translit_tbl[ch] then
+                    s = s .. translit_tbl[ch]
+                else
+                    local eng = reversed_tbl[ch]
+                    if eng and translit_tbl[eng] then
+                        s = s .. translit_tbl[eng]
+                    else
+                        s = s .. ch
+                    end
+                end
+            else
+                if reversed_tbl[ch] then
+                    s = s .. reversed_tbl[ch]
+                else
+                    s = s .. ch
+                end
+            end
+        else
+            s = s .. prev
+        end
+    end
+
+    self.last_text = s
+
+    if self.edit_point_name:GetText() ~= s then
+        self.edit_point_name:SetText(s)
+    end
+
+    self.was_found = -1
+    self._changing_text = nil
+end
+
+-- Удалить текст из поля имени точки
+function god_dialog:OnButton_clear_name_point_clicked()
+	self.edit_point_name:SetText("")
+	self.was_found = -1
+end
+
+-- Закрыть меню
+function god_dialog:OnButton_exit_point_clicked()
+    if self.dialog then
+	    self.list_box:RemoveAll()
+		god.del_level_changer()
+        self.dialog:Show(false)
+	    self.god_comand:Show(true)
+	    self.btn_portal:Show(true)
+	    self.hud_btn:Show(true)
+	    self.btn_replenish_health:Show(true)
+	    self.btn_get_money:Show(true)
+	    self.btn_equipment_repair:Show(true)
+		self.btn_cleaner_menu:Show(true)
+	    self.jump_forward_edit_box:Show(true)
+	    self.btn_jump_forward:Show(true)
+	    self.btn_jump_return:Show(true)
+        self.rank_edit_box:Show(true)
+	    self.btn_rank_add:Show(true)
+	    self.btn_rank_sub:Show(true)
+		self:ResetTeleportState()
+    end
+end
+
+-- Сброс состояния меню телепортов и восстановление чекбокса поиска
+function god_dialog:ResetTeleportState()
+    if self.search_all then
+        self.search_all:Enable(true)
+        if self._prev_search_all_state ~= nil then
+            self.search_all:SetCheck(self._prev_search_all_state)
+            self._prev_search_all_state = nil
+        end
+    end
+
+    mode = nil
+end
+
+-- Отключить Худ
+function god_dialog:OnButton_hud_clicked()
+    if not db.actor then return end
+
+    local hud_state = god.load_var("hud_state", true)
+
+    if hud_state == true then
+        level.hide_indicators_safe()
+        god.save_var("hud_state", false)
+        self.hud_btn:SetText("Включить Худ")
+    else
+        level.show_indicators()
+        god.save_var("hud_state", true)
+        self.hud_btn:SetText("Отключить Худ")
+    end
+end
+
+-- Пополнить Здоровья
+function god_dialog:OnButton_replenish_health_clicked()
+              db.actor.health = 0.99
+			  db.actor.bleeding = 0.99
+              db.actor.power = 0.99
+              db.actor.psy_health = 0.99
+              db.actor.radiation = -1.0
+			  db.actor.satiety = 0.99
+			  local snd = sound_object([[detectors\contact_1]])
+		      snd:play(db.actor, 0, sound_object.s2d)
+end
+
+-- Получить 1000000 RU.
+function god_dialog:OnButton_get_money_clicked()
+		if db.actor then
+		dialogs.relocate_money(db.actor,1000000,"in")
+		local snd = sound_object([[detectors\contact_1]])
+	    snd:play(db.actor, 0, sound_object.s2d)
+      end
+end
+
+-- Починить Снаряжение
+function god_dialog:OnButton_equipment_repair_clicked()
+        god.equipment_repair()
+end
+
+-- Меню Уборщик Локаций 
+function god_dialog:OnButton_cleaner_menu_clicked()
+          if level.present() and (db.actor ~= nil) and db.actor:alive() then
+              
+          if self.spawn_dlg == nil then
+              self.spawn_dlg = ui_sak_off_corpses_menu.sak_off_corpses()
+          end
+      
+          self:GetHolder():start_stop_menu(self.spawn_dlg, false)
+          self:Show(false)
+
+     end
+end
+
+----------------------
+--//Прыжок  Вперёд
+---------------------
+function god_dialog:jump_forward_clicked()
+    if not db.actor then return end
+
+    local edit_box = self:GetEditBox("jump_forward_edit_box")
+
+    local text = edit_box:GetText()
+    if string.len(text) > 3 then
+        text = string.sub(text, 1, 3) 
+        edit_box:SetText(text)
+    end
+
+    local val = tonumber(text)
+    if val == nil then
+        local snd1 = sound_object([[detectors\contact_2]])
+        snd1:play(db.actor, 0, sound_object.s2d)
+        return
+    end
+
+    if val > 999 then
+        val = 999
+        edit_box:SetText("999")
+    end
+
+    db.actor:set_actor_position(device().cam_pos:add(device().cam_dir:mul(val)))
+    news_manager.send_tip(db.actor, "Прыжок вперёд на: " .. val .. " метров", nil, nil, 5)
+end
+
+-----------------------------------------------------------------------
+--//Возврат на поверхность геометрии
+-----------------------------------------------------------------------
+function god_dialog:OnButton_jump_return_clicked() 
+	local pos_lvid = level.vertex_position(db.actor:level_vertex_id())
+	db.actor:set_actor_position(pos_lvid)
+    local snd = sound_object([[detectors\contact_1]])
+    snd:play(db.actor, 0, sound_object.s2d)
+end
+
+---------------
+--//Ранг
+---------------
+-- Добавить Ранг
+function god_dialog:rank_add_clicked()
+    if not db.actor then return end
+
+    local edit_box = self:GetEditBox("rank_edit_box")
+    local text = edit_box:GetText()
+    local val = tonumber(text)
+
+    if val == nil then
+        local snd1 = sound_object([[detectors\contact_2]])
+        snd1:play(db.actor, 0, sound_object.s2d)
+        return
+    end
+
+    local current_rank = db.actor:character_rank()
+
+    local new_rank = current_rank + val
+    if new_rank < 0 then new_rank = 0 end
+
+    db.actor:set_character_rank(new_rank)
+    news_manager.send_tip(db.actor, "Увеличен ранг на: " .. val .. " (текущий: " .. new_rank .. ")", nil, nil, 20)
+end
+
+-- Отнять Ранг
+function god_dialog:rank_sub_clicked()
+    if not db.actor then return end
+
+    local edit_box = self:GetEditBox("rank_edit_box")
+    local text = edit_box:GetText()
+    local val = tonumber(text)
+
+    if val == nil then
+        local snd1 = sound_object([[detectors\contact_2]])
+        snd1:play(db.actor, 0, sound_object.s2d)
+        return
+    end
+
+    local current_rank = db.actor:character_rank()
+
+    local new_rank = current_rank - val
+    if new_rank < 0 then new_rank = 0 end
+
+    db.actor:set_character_rank(new_rank)
+    news_manager.send_tip(db.actor, "Уменьшен ранг на: " .. val .. " (текущий: " .. new_rank .. ")", nil, nil, 20)
+end
+
+
+-- Оружие
+function god_dialog:OnButton_wpn_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "item"
+    self._search_text_prev = ""
+    self.all_items = {}
+	
+    local tbl = god_tbl.god_weapons_table
+    for _, v in ipairs(tbl) do
+        table.insert(self.all_items, v)
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Аммунициция
+function god_dialog:OnButton_ammo_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "item"
+    self._search_text_prev = ""
+    self.all_items = {}
+	
+    local tbl = god_tbl.god_ammo_table
+    for _, v in ipairs(tbl) do
+        table.insert(self.all_items, v)
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Броня
+function god_dialog:OnButton_otf_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "item"
+    self._search_text_prev = ""
+    self.all_items = {}
+	
+    local tbl = god_tbl.god_outfits_table
+    for _, v in ipairs(tbl) do
+        table.insert(self.all_items, v)
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Еда
+function god_dialog:OnButton_food_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "item"
+    self._search_text_prev = ""
+    self.all_items = {}
+	
+    local tbl = god_tbl.god_food_table
+    for _, v in ipairs(tbl) do
+        table.insert(self.all_items, v)
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Медикаменты
+function god_dialog:OnButton_medicines_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "item"
+    self._search_text_prev = ""
+    self.all_items = {}
+	
+    local tbl = god_tbl.god_medicines_table
+    for _, v in ipairs(tbl) do
+        table.insert(self.all_items, v)
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Артефакты
+function god_dialog:OnButton_art_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "item"
+    self._search_text_prev = ""
+    self.all_items = {}
+	
+    local tbl = god_tbl.god_artefacts_table
+    for _, v in ipairs(tbl) do
+        table.insert(self.all_items, v)
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Персонажи
+function god_dialog:OnButton_stlk_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "npc"
+    self._search_text_prev = ""
+    self._npc_name_by_section = {}
+    self.all_items = {}
+
+	local tbl = god_tbl.god_stalker_table
+    for _, v in ipairs(tbl) do
+        local sect = v[1]
+        local name = v[2] or sect
+        table.insert(self.all_items, sect)
+        self._npc_name_by_section[sect] = name
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Мутанты
+function god_dialog:OnButton_mob_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "npc"
+    self._search_text_prev = ""
+    self._mob_name_by_section = {}
+    self.all_items = {}
+
+	local tbl = god_tbl.god_mob_table
+    for _, v in ipairs(tbl) do
+        local sect = v[1]
+        local name = v[2] or sect
+        table.insert(self.all_items, sect)
+        self._mob_name_by_section[sect] = name
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Локации
+function god_dialog:OnButton_level_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "level"
+    self._search_text_prev = ""
+
+	self:BuildLevelIndexIfNeeded()
+	god.del_level_changer()
+
+    self.all_items = {}
+    for _, pair in ipairs(self._levels_list or {}) do
+        table.insert(self.all_items, pair[1])  
+    end
+
+    if is_checked(self.search_all) then
+        self:EnsureAllByMode()
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Погода
+function god_dialog:OnButton_weather_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "weather"
+    self._search_text_prev = ""
+    self._weather_name_by_section = {}
+    self.all_items = {}
+
+	local tbl = god_tbl.god_weather_table
+    for _, v in ipairs(tbl) do
+        local sect = v[1]
+        local name = v[2] or sect
+        table.insert(self.all_items, sect)
+        self._weather_name_by_section[sect] = name
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Аномалии
+function god_dialog:OnButton_anom_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "anom"
+    self._search_text_prev = ""
+    self._anom_name_by_section = {}
+    self.all_items = {}
+
+	local tbl = god_tbl.god_anom_table
+    for _, v in ipairs(tbl) do
+        local sect = v[1]
+        local name = v[2] or sect
+        table.insert(self.all_items, sect)
+        self._anom_name_by_section[sect] = name
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Прочее 
+function god_dialog:OnButton_other_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "item"
+    self._search_text_prev = ""
+    self.all_items = {}
+	
+    local tbl = god_tbl.god_other_table
+    for _, v in ipairs(tbl) do
+        table.insert(self.all_items, v)
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Группировки
+function god_dialog:OnButton_squads_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "com"
+    self._search_text_prev = ""
+    self._com_name_by_section = {}
+    self.all_items = {}
+
+	local tbl = god_tbl.god_community_table
+    for _, v in ipairs(tbl) do
+        local sect = v[1]
+        local name = v[2] or sect
+        table.insert(self.all_items, sect)
+        self._com_name_by_section[sect] = name
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Видеоролики
+function god_dialog:OnButton_vid_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "vid"
+    self._search_text_prev = ""
+    self._vid_name_by_section = {}
+    self.all_items = {}
+
+	local tbl = god_tbl.god_vid_table
+    for _, v in ipairs(tbl) do
+        local sect = v[1]
+        local name = v[2] or sect
+        table.insert(self.all_items, sect)
+        self._vid_name_by_section[sect] = name
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Музыка
+function god_dialog:OnButton_music_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "snd"
+    self._search_text_prev = ""
+    self._music_name_by_section = {}
+    self.all_items = {}
+
+	local tbl = god_tbl.god_music_table
+    for _, v in ipairs(tbl) do
+        local name = v[1]
+        local sect = v[2]
+        if sect then
+            table.insert(self.all_items, sect)         
+            self._music_name_by_section[sect] = name   
+        end
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Анекдоты
+function god_dialog:OnButton_jokes_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "snd"
+    self._search_text_prev = ""
+    self._jokes_name_by_section = {}
+    self.all_items = {}
+
+	local tbl = god_tbl.god_jokes_table
+    for _, v in ipairs(tbl) do
+        local name = v[1]
+        local sect = v[2]
+        if sect then
+            table.insert(self.all_items, sect)         
+            self._jokes_name_by_section[sect] = name   
+        end
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Квестовые предметы	
+function god_dialog:OnButton_objects_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "item"
+    self._search_text_prev = ""
+    self.all_items = {}
+	
+    local tbl = god_tbl.god_info_table
+    for _, v in ipairs(tbl) do
+        table.insert(self.all_items, v)
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Оружейные Аддоны
+function god_dialog:OnButton_wpn_addons_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "item"
+    self._search_text_prev = ""
+    self.all_items = {}
+	
+    local tbl = god_tbl.god_wpn_addons_table
+    for _, v in ipairs(tbl) do
+        table.insert(self.all_items, v)
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Автомобили
+function god_dialog:OnButton_car_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "npc"
+    self._search_text_prev = ""
+    self._car_name_by_section = {}
+    self.all_items = {}
+
+	local tbl = god_tbl.god_car_table
+    for _, v in ipairs(tbl) do
+        local sect = v[1]
+        local name = v[2] or sect
+        table.insert(self.all_items, sect)
+        self._car_name_by_section[sect] = name
+    end
+    self:OnSearchTextChanged()
+end
+
+-- Предметы Декора
+function god_dialog:OnButton_decor_items_clicked()
+    self:OnButton_exit_point_clicked()
+    mode = "npc"
+    self._search_text_prev = ""
+    self._decor_name_by_section = {}
+    self.all_items = {}
+
+	local tbl = god_tbl.god_decor_items_table
+    for _, v in ipairs(tbl) do
+        local sect = v[1]
+        local name = v[2] or sect
+        table.insert(self.all_items, sect)
+        self._decor_name_by_section[sect] = name
+    end
+    self:OnSearchTextChanged()
+end
+
+-------------------------------------------------------
+function god_dialog:RefreshMoneyDisplay()
+    local money = 0
+    if db.actor ~= nil then money = db.actor:money() end  
+    local am = tostring(money)
+
+    local st_rubles = "st_rubles"
+    local ru = game.translate_string(st_rubles)
+    if ru == st_rubles then ru = "RU" end
+
+    local thsep = game.translate_string("ui_ch_thousand_separator_in_quotes")
+    if string.len(thsep) == 3 then
+        thsep = string.sub(thsep, 2, 2)
+        am = string.gsub(am, ",", thsep) 
+    end
+
+    self.cap_rubel_currently:SetText(am .. " " .. ru)
+end
+
+function god_dialog:RefreshTimeFactorDisplay()
+	local tf = comma_value(time_factor)
+	local thsep = game.translate_string("ui_ch_thousand_separator_in_quotes")
+	if string.len(thsep) == 3 then
+		thsep = string.sub(thsep, 2, 2)
+		tf = string.gsub(tf, ",", thsep)
+	end
+	self.cap_timefactor_currently:SetText(tf .. game.translate_string("x"))
+	local tfd = game.translate_string(time_factor_desc_by_num[tf_exp(time_factor)])
+	self.cap_timefactor_desc:SetText(tfd)
+end
+
+---------------
+--//Время
+---------------
+function god_dialog:OnButton_time_plus_clicked()
+	if db.actor then
+		local tebP = tonumber(self.teb:GetText())
+		if tebP ~= nil then
+			if tebP < 0 then tebP = 0 end
+			t = xr_logic.pstor_retrieve(db.actor, "t", 0)
+			t = t + tebP
+			level.set_time_factor(t)
+			xr_logic.pstor_store(db.actor, "t", t)
+			news_manager.send_tip(db.actor, "%c[25,240,25,25]Таймфактор увеличен до "..t.."", nil, nil, 2000)
+
+		    self:RefreshTimeFactorDisplay()
+		else
+			local snd1 = sound_object([[detectors\contact_2]])
+			snd1:play(db.actor, 0, sound_object.s2d)
+		end
+	end
+end
+
+function OnButton_time_normal_clicked()
+	level.set_time_factor(10)
+	xr_logic.pstor_store(db.actor, "t", 0)
+	news_manager.send_tip(db.actor, "%c[0,0,255,25]Таймфактор стандартный", nil, nil, 2000)
+end
+
+function OnButton_time_minus_clicked()
+	t = xr_logic.pstor_retrieve(db.actor, "t", 0)
+	t = t - k
+	if t <= 0 then
+		OnButton_time_normal_clicked()
+	else
+		level.set_time_factor (t)
+		xr_logic.pstor_store(db.actor, "t", t)
+		news_manager.send_tip(db.actor, "%c[255,240,155,25]Таймфактор уменьшен до "..t.."", nil, nil, 2000)
+	end	
+end
+
+--Стандартное время
+function god_dialog:OnButton_time_normal_clicked()
+    if db.actor then
+        OnButton_time_normal_clicked()   
+        time_factor = 10                 
+        self:RefreshTimeFactorDisplay()
+    end
+end
+
+--Ускорить время
+function god_dialog:OnButton_time_plus_clicked()
+    if db.actor then
+        local tebP = tonumber(self.teb:GetText())
+        if tebP ~= nil then
+            if tebP < 0 then tebP = 0 end
+
+            t = xr_logic.pstor_retrieve(db.actor, "t", 0)
+            t = t + tebP
+            level.set_time_factor(t)
+            xr_logic.pstor_store(db.actor, "t", t)
+            news_manager.send_tip(db.actor, "%c[25,240,25,25]Таймфактор увеличен до "..t.."", nil, nil, 2000)
+
+            time_factor = t                 
+            self:RefreshTimeFactorDisplay()
+        else
+            local snd1 = sound_object([[detectors\contact_2]])
+            snd1:play(db.actor, 0, sound_object.s2d)
+        end
+    end
+end
+
+--Замедлить время
+function god_dialog:OnButton_time_minus_clicked()
+    if db.actor then
+        local tebM = tonumber(self.teb:GetText())
+        if tebM ~= nil then
+            if tebM < 0 then tebM = 0 end
+
+            t = xr_logic.pstor_retrieve(db.actor, "t", 0)
+            t = t - tebM
+            if t <= 0 then
+                OnButton_time_normal_clicked()
+                time_factor = 10                 
+                self:RefreshTimeFactorDisplay() 
+            else
+                level.set_time_factor(t)
+                xr_logic.pstor_store(db.actor, "t", t)
+                news_manager.send_tip(db.actor, "%c[255,240,155,25]Таймфактор уменьшен до "..t.."", nil, nil, 2000)
+
+                time_factor = t                
+                self:RefreshTimeFactorDisplay() 
+            end
+        else
+            local snd1 = sound_object([[detectors\contact_2]])
+            snd1:play(db.actor, 0, sound_object.s2d)
+        end
+    end
+end
+
+---------------
+--//Деньги
+---------------
+--Добавить деньги
+function god_dialog:OnButton_add_money_clicked()
+    if db.actor then
+        edit_box_Br = self:GetEditBox("money_edit_box")
+        mon = tonumber(edit_box_Br:GetText())
+        if mon ~= nil then
+            if mon < 0 then mon = 0 end
+            if mon >= 10000000000 then mon = 999999999 end
+            if db.actor then
+                db.actor:give_money(mon)
+                news_manager.send_tip(db.actor,"Добавлено денег: "..mon, nil, nil, 2000)
+                self:RefreshMoneyDisplay()
+            end
+        else
+            local snd1 = sound_object([[detectors\contact_2]])
+            snd1:play(db.actor, 0, sound_object.s2d)
+        end
+    end
+end
+
+--Отнять деньги
+function god_dialog:OnButton_remove_money_clicked()
+    if db.actor then
+        local actor_money = db.actor:money()
+        edit_box_Br = self:GetEditBox("money_edit_box")
+        mon = tonumber(edit_box_Br:GetText())
+        if mon ~= nil then
+            if mon < 0 then mon = 0 end
+            actor_money = actor_money - mon
+            if actor_money < 0 then actor_money = 0 end
+            if db.actor then
+                local am = actor_money - db.actor:money()
+                db.actor:give_money(am)
+                actor_money = actor_money - mon
+                if actor_money < 0 then actor_money = 0 end
+                news_manager.send_tip(db.actor,"Потеряно денег: "..-am, nil, nil, 2000)
+                self:RefreshMoneyDisplay()
+            end
+        else
+            local snd1 = sound_object([[detectors\contact_2]])
+            snd1:play(db.actor, 0, sound_object.s2d)
+        end
+    end
+end
+
+function god_dialog:OnListItemClicked()
+	if self.list_box:GetSize()==0 then return end
+	
+	local itm_index			= self.list_box:GetSelectedItem()
+	
+	local item			= self.list_box:GetItem(itm_index)
+	
+	self:GetDescription(itm_index)
+end
+
+function god_dialog:OnButton_spawnitem_clicked()
+    if not self.list_box or self.list_box:GetSize() == 0 then return end
+
+    local index = self.list_box:GetSelectedItem()
+    if index == -1 then return end
+
+    local actor = db.actor
+    if not actor then return end
+
+    local item = self.list_box:GetItem(index)
+    if not item or not item.name then return end
+
+    local sect = item.name:GetText()                 
+    local original_mode = item._item_mode or item.mode or mode  
+    local dis = tonumber(self.spin and self.spin:GetText()) or 0
+
+    if sect and not string.find(sect, "***", 1, true) then
+        local snd = sound_object([[detectors\contact_1]])
+        snd:play(actor, 0, sound_object.s2d)
+    end
+
+    local pos = actor:position()
+    local dir = actor:direction()
+
+    local function spawn_item(section, distance, count)
+        count = tonumber(count) or 1
+        if count < 1 then count = 1 end
+        if count > 1000 then count = 1000 end
+
+        local start_pos = actor:position()
+        local fwd = actor:direction()
+        local hx, hz = fwd.x, fwd.z
+        local len = math.sqrt(hx*hx + hz*hz)
+        if len < 1e-3 then hx, hz = 1, 0 else hx, hz = hx/len, hz/len end
+
+        distance = tonumber(distance) or 0
+        if distance == 0 then
+            for i = 1, count do
+                alife():create(section, start_pos, 0, 0, actor:id())
+            end
+        elseif distance == -1 then
+            for i = 1, count do
+                alife():create(section, start_pos, actor:level_vertex_id(), actor:game_vertex_id())
+            end
+        else
+            local p = vector():set(
+                start_pos.x + hx * distance,
+                start_pos.y + 0.2,
+                start_pos.z + hz * distance
+            )
+            for i = 1, count do
+                alife():create(section, p, actor:level_vertex_id(), actor:game_vertex_id())
+            end
+        end
+    end
+
+    if original_mode == "item" then
+        local count = tonumber(self.count and self.count:GetText()) or 1
+        spawn_item(sect, dis, count)
+        return
+    end
+
+    if original_mode == "npc" then
+        local count = tonumber(self.count and self.count:GetText()) or 1
+        if count < 1 then count = 1 end
+        if count > 50 then count = 50 end
+
+        local fwd = actor:direction()
+        local hx, hz = fwd.x, fwd.z
+        local len = math.sqrt(hx*hx + hz*hz)
+        if len < 1e-3 then hx, hz = 1, 0 else hx, hz = hx/len, hz/len end
+
+        local p
+        if dis == -1 then
+            p = vector():set(pos.x, pos.y, pos.z)
+        else
+            local dist = (dis == 0) and 3 or dis
+            p = vector():set(
+                pos.x + hx * dist,
+                pos.y + 0.2,
+                pos.z + hz * dist
+            )
+        end
+
+        for i = 1, count do
+            alife():create(sect, p, actor:level_vertex_id(), actor:game_vertex_id())
+        end
+        return
+    end
+
+    if original_mode == "com" then
+        actor:set_character_community(sect, 0, 0)
+        return
+    end
+
+    if original_mode == "snd" then
+        local s = sound_object(sect)
+        if ui_god_dialog.last_music then
+            ui_god_dialog.last_music:stop()
+        end
+        s:play_at_pos(actor, vector():set(0,0,0), 0, sound_object.s2d)
+        ui_god_dialog.last_music = s
+        return
+    end
+
+    if original_mode == "anom" then
+        local actor = db.actor
+        if not actor then return end
+
+        local count = tonumber(self.count and self.count:GetText()) or 1
+        if count < 1 then count = 1 end
+        if count > 50 then count = 50 end
+
+        local pos = actor:position()
+        local fwd = actor:direction()
+        local hx, hz = fwd.x, fwd.z
+        local len = math.sqrt(hx*hx + hz*hz)
+        if len < 1e-3 then hx, hz = 1, 0 else hx, hz = hx/len, hz/len end
+
+        local base
+        if dis == -1 then
+            base = vector():set(pos.x, pos.y, pos.z)
+        else
+            local dist = (dis == 0) and 3 or dis
+            base = vector():set(
+                pos.x + hx * dist,
+                pos.y + 0.2,
+                pos.z + hz * dist
+            )
+        end
+
+        for i = 1, count do
+            spawn_anom(sect, base)
+        end
+        return
+    end
+
+    if original_mode == "weather" then
+        local actor = db.actor
+        if not actor then return end
+
+        if string.find(sect, "fx_", 1, true) then
+            level.set_weather_fx(sect)
+            god.save_var("god_weather_fx", true)
+        else
+            level.set_weather(sect, true)
+            god.save_var("god_weather_fx", false)
+        end
+
+        god.save_var("god_weather_type", sect)
+        return
+    end
+
+    if original_mode == "vid" then
+        self:OnButton_close_clicked()
+        xr_effects.run_tutorial(nil, nil, { sect })
+        return
+    end
+	
+	if original_mode == "tlp" then
+        self:OnButton_take_from_list_clicked()
+        return
+    end
+	
+    if original_mode == "level" then
+        local index = self._level_index_by_coords and self._level_index_by_coords[sect]
+        if not index then return end
+        
+        local data = god_tbl.god_level_table[index]
+        if not data then return end
+        
+        local actor = db.actor
+        if not actor then return end
+        
+        local pos2 = actor:position()
+        local target_level = data.level
+        
+        self:OnButton_close_clicked()
+        level.add_pp_effector("teleport.ppe", 2006, false)
+        
+        local pos = vector()
+        pos:set(
+            data.position[1],
+            data.position[2],
+            data.position[3]
+        )
+        
+        if level.name() == target_level then
+            actor:set_actor_position(pos)
+        else
+            local lc = god.spawn_lc(actor:game_vertex_id(), pos2, target_level, pos, 0, data.game_vertex)
+            god.del_level_changer()
+        end
+    
+        return
+    end
+end
+
+---------------------------------------------------------------------------
+
+function tf_exp(num)
+	local tf, exp = tostring(math.floor(num)), 2
+	--for z in string.gmatch(tf, "0") do exp = exp + 1 end 
+	exp = string.len(tf) - 1 if exp > 6 then exp = 6 end
+	return exp
+end
+
+-- from sam_lie
+-- Compatible with Lua 5.0 and 5.1.
+-- Disclaimer : use at own risk especially for hedge fund reports :-)
+
+---============================================================
+-- add comma to separate thousands
+-- 
+function comma_value(amount)
+  local formatted = amount
+  while true do  
+    formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')
+    if (k==0) then
+      break
+    end
+  end
+  return formatted
+end
+
+function god_dialog:OnButton_close_clicked()
+	self:GetHolder():start_stop_menu	(self,false)
+	self.owner:Show						(true)
+	self:ResetTeleportState()
+	if level.present() and db.actor and db.actor:alive() then
+		get_console():execute("main_menu off")
+	end
+end
+
+
+-- Функция кнопки ВПЕРЕД
+function god_dialog:OnBtnNext()
+    if self.current_page < self.total_pages then
+        self.current_page = self.current_page + 1
+        self:ShowPage(self.current_page)
+    end
+end
+
+-- Функция кнопки НАЗАД
+function god_dialog:OnBtnPrev()
+    if self.current_page > 1 then
+        self.current_page = self.current_page - 1
+        self:ShowPage(self.current_page)
+    end
+end
+
+-- Функция отображение нужной страницы
+function god_dialog:ShowPage(page_id)
+    local all = {
+        self.btn_wpn, self.btn_ammo, self.btn_otf, self.btn_food, self.btn_medicines,
+        self.btn_art, self.btn_stalker, self.btn_mob, self.btn_level, self.btn_weather,
+        self.btn_anom, self.btn_squads, self.btn_other, self.btn_war,
+        self.btn_music, self.btn_jokes, self.btn_objects, self.btn_wpn_addons, self.btn_car, self.btn_decor_items
+    }
+    for _, b in ipairs(all) do if b then b:Show(false) end end
+
+    if page_id == 1 then
+        local p1 = {
+            self.btn_wpn, self.btn_ammo, self.btn_otf, self.btn_food, self.btn_medicines,
+            self.btn_art, self.btn_stalker, self.btn_mob, self.btn_level, self.btn_weather
+        }
+        for _, b in ipairs(p1) do if b then b:Show(true) end end
+        if self.prev_dlg_b then self.prev_dlg_b:Enable(false) end
+        if self.next_dlg_b then self.next_dlg_b:Enable(true) end
+
+    elseif page_id == 2 then
+        local p2 = {
+            self.btn_anom, self.btn_squads, self.btn_other, self.btn_war,
+            self.btn_music, self.btn_jokes, self.btn_objects, self.btn_wpn_addons, self.btn_car, self.btn_decor_items
+        }
+        for _, b in ipairs(p2) do if b then b:Show(true) end end
+        if self.prev_dlg_b then self.prev_dlg_b:Enable(true) end
+        if self.next_dlg_b then self.next_dlg_b:Enable(false) end
+    end
+end
+
+function god_dialog:AddItem(text)
+local itm = god_item()
+itm.dn:SetText(text)
+self.list:AddExistingItem(itm)
+end
+
+
+-- функция показа окна
+god_dlg = nil
+function show_god_dialog()
+if not god_dlg then
+god_dlg = god_dialog()
+end
+god_dlg:ShowDialog(true)
+end
+
+
+function god_dialog:AddItem(text)
+local itm = god_item()
+itm.dn:SetText(text)
+self.list:AddExistingItem(itm)
+end
+
+function god_dialog:AddItemToList(item_dispname, item_name, original_mode, raw)
+    local _itm = god_item()
+    _itm.dn:SetText(item_dispname)
+    _itm.name:SetText(item_name)
+	
+	_itm.raw = raw
+
+    -- Запоминаем реальный раздел (важно для спавна при включённом чекбоксе)
+    _itm._item_mode = original_mode or mode
+
+    self:GetListWnd("list_window"):AddItem(_itm)
+end
+
+local kAlt = {[DIK_keys.DIK_LMENU]=true,[DIK_keys.DIK_RMENU]=true}
+local kShift = {[DIK_keys.DIK_LSHIFT]=true,[DIK_keys.DIK_RSHIFT]=true}
+
+function god_dialog:OnKeyboard(dik, keyboard_action)
+    CUIScriptWnd.OnKeyboard(self, dik, keyboard_action)
+
+    local bind = dik_to_bind(dik)
+    if bind == key_bindings.kQUIT then
+        self:OnButton_close_clicked()
+    else
+        if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+
+            if kAlt[dik] then self.alt_pressed = true
+            elseif kShift[dik] then self.shift_pressed = true
+            end
+
+            if (self.shift_pressed and kAlt[dik]) or (self.alt_pressed and kShift[dik]) then
+                self:OnBtnChangeLanguage()
+            end
+
+            if dik == DIK_keys.DIK_DELETE then
+                self:OnBtnClearText()
+            end
+
+            if dik == DIK_keys.DIK_RETURN then
+                self:OnButton_spawnitem_clicked()
+            elseif dik == DIK_keys.DIK_Q then
+                if self.current_page > 1 then
+                    self:OnBtnPrev()
+                end
+            elseif dik == DIK_keys.DIK_E then
+                if self.current_page < self.total_pages then
+                    self:OnBtnNext()
+                end
+            elseif dik == DIK_keys.DIK_TAB then
+                self:OnBtnShowDescr()
+            end
+
+        elseif keyboard_action == ui_events.WINDOW_KEY_RELEASED then
+            if kAlt[dik] then self.alt_pressed = nil
+            elseif kShift[dik] then self.shift_pressed = nil
+            end
+        end
+    end
+
+    return true
+end
+
+
+-- Спауним аномалию
+function spawn_anom(item,pos)
+
+local obj = alife():create(item,pos,db.actor:level_vertex_id(),db.actor:game_vertex_id())
+    if string.find(obj:section_name(), "zone_mine_gravitational") or
+       string.find(obj:section_name(), "field") or 
+       string.find(obj:section_name(), "teleport") or
+       string.find(obj:section_name(), "death") or  
+       string.find(obj:section_name(), "sarcofag") or  
+       string.find(obj:section_name(), "zone_radioactive") then
+     anom.create_anom(obj,3, pos, db.actor:level_vertex_id(), db.actor:game_vertex_id(),"field")
+       else
+     anom.create_anom(obj,3, pos, db.actor:level_vertex_id(), db.actor:game_vertex_id())
+end
+end
+
+function str_explode(div,str,pos1,pos2,clear)
+	local t={}
+	local cpt, pos
+
+	if pos1 == nil then pos1 = 1 end
+	if pos2 == nil then pos2 = pos1 end
+
+	local cpt1 = string.find (str, div, pos1, true)
+	local cpt2 = string.find (str, div, pos2, true)
+
+	if cpt1 and cpt2 then
+
+		if cpt2-cpt1 > 5 then
+			cpt = cpt1
+			pos = pos1
+		else
+			cpt = cpt2
+			pos = pos2
+		end
+
+		repeat
+			if clear then
+				table.insert( t, trim(string.sub(str, 1, cpt-1)) )
+			else
+				table.insert( t, string.sub(str, 1, cpt-1) )
+			end
+			str = string.sub( str, cpt+string.len(div) )
+			cpt = string.find (str, div, pos, true)
+		until cpt==nil
+	end
+	if clear then
+		table.insert(t, trim(str))
+	else
+		table.insert(t, str)
+	end
+	return t
+end
+-----------------------------------------------------------Поиск---------------------------------------------------------------------------------------------------------------------------------
+-- Поиск с поддержкой «искать везде» + имена для всех разделов (включая локации)
+function god_dialog:OnSearchTextChanged()
+    if not self.search_edit_box or not self.list_box then return end
+
+    local function get_item_name(sect)
+        local ini = system_ini()
+        local raw = (ini:line_exist(sect, "inv_name") and ini:r_string(sect, "inv_name")) or sect
+        return game.translate_string(raw)
+    end
+
+    local q = lower_any(self.search_edit_box:GetText() or "")
+	
+	if mode == "tlp" then
+        self.list_box:RemoveAll()
+
+        local file = io.open("gamedata\\configs\\misc\\god_teleports_coordinats.ltx", "r")
+        if not file then return end
+
+        for line in file:lines() do
+            local parts = str_explode("|", line)
+            if #parts >= 7 then
+                local name = parts[1] or ""
+                local x = parts[2] or ""
+                local y = parts[3] or ""
+                local z = parts[4] or ""
+                local level = parts[5] or ""
+
+                local full = lower_any(
+                    name .. " " ..
+                    x .. " " .. y .. " " .. z .. " " ..
+                    level
+                )
+
+                if q == "" or string.find(full, q, 1, true) then
+                    local coord_text = string.format("%s, %s, %s", x, y, z)
+
+                    self:AddItemToList(name, coord_text, "tlp", line)
+                end
+            end
+        end
+
+        file:close()
+        return 
+    end
+	
+    self.list_box:RemoveAll()
+
+    local search_everywhere = is_checked(self.search_all)
+    if search_everywhere then
+        self:EnsureAllByMode()
+    end
+
+    local pool = {}
+    if search_everywhere and type(self.all_by_mode) == "table" then
+        local seen = {}
+        for _, pack in pairs(self.all_by_mode) do
+            if type(pack) == "table" and type(pack.list) == "table" then
+                for _, sect in ipairs(pack.list) do
+                    if sect and not seen[sect] then
+                        table.insert(pool, { sect = sect, mode = pack.mode })
+                        seen[sect] = true
+                    end
+                end
+            end
+        end
+    else
+        if self.all_items then
+            for _, sect in ipairs(self.all_items) do
+                table.insert(pool, { sect = sect, mode = mode })
+            end
+        end
+    end
+
+    for _, entry in ipairs(pool) do
+        local sect = entry.sect
+
+        local name = nil
+
+        if entry.mode == "level" and self._level_name_by_section then
+            local index = self._level_name_by_section[sect]
+            if index and god_tbl.god_level_table[index] then
+                local data = god_tbl.god_level_table[index]
+                name = data.name .. " | " ..
+                    string.format("%.2f %.2f %.2f", 
+                        data.position[1], data.position[2], data.position[3]
+                    )
+            end
+        end
+		
+        name = name or
+            (self._npc_name_by_section     and self._npc_name_by_section[sect])     or
+            (self._mob_name_by_section     and self._mob_name_by_section[sect])     or
+            (self._car_name_by_section     and self._car_name_by_section[sect])     or 
+			(self._decor_name_by_section   and self._decor_name_by_section[sect])   or
+            (self._level_name_by_section   and self._level_name_by_section[sect])   or
+            (self._weather_name_by_section and self._weather_name_by_section[sect]) or
+            (self._anom_name_by_section    and self._anom_name_by_section[sect])    or
+            (self._com_name_by_section     and self._com_name_by_section[sect])     or
+            (self._vid_name_by_section     and self._vid_name_by_section[sect])     or
+            (self._music_name_by_section   and self._music_name_by_section[sect])   or
+            (self._jokes_name_by_section   and self._jokes_name_by_section[sect])   or
+            get_item_name(sect)
+
+        if q == "" or
+           string.find(lower_any(name), q, 1, true) or
+           string.find(lower_any(sect), q, 1, true) then
+           self:AddItemToList(name, sect, entry.mode)
+        end
+    end
+end
+
+-- Унифицированный сбор «всех разделов» для чекбокса
+function god_dialog:EnsureAllByMode()
+    local function safe_collect(tbl, has_names, m)
+        local t, dict = {}, {}
+        if type(tbl) == "table" then
+            if has_names then
+                for _, v in ipairs(tbl) do
+                    local sect = v and v[1]
+                    if sect then
+                        table.insert(t, sect)
+                        dict[sect] = v[2] or sect
+                    end
+                end
+            else
+                for _, sect in ipairs(tbl) do
+                    if sect then table.insert(t, sect) end
+                end
+            end
+        end
+        return { list = t, mode = m, dict = dict }
+    end
+
+    local function safe_collect_name_first(tbl, m)
+        local t, dict = {}, {}
+        if type(tbl) == "table" then
+            for _, v in ipairs(tbl) do
+                local name, sect = v[1], v[2]
+                if sect then
+                    table.insert(t, sect)
+                    dict[sect] = name or sect
+                end
+            end
+        end
+        return { list = t, mode = m, dict = dict }
+    end
+
+    self:BuildLevelIndexIfNeeded()
+
+    self.all_by_mode = {
+        wpn        = safe_collect(god_tbl.god_weapons_table           or {}, false, "item"),
+        ammo       = safe_collect(god_tbl.god_ammo_table              or {}, false, "item"),
+        otf        = safe_collect(god_tbl.god_outfits_table           or {}, false, "item"),
+        food       = safe_collect(god_tbl.god_food_table              or {}, false, "item"),
+		medicines  = safe_collect(god_tbl.god_medicines_table         or {}, false, "item"),
+        art        = safe_collect(god_tbl.god_artefacts_table         or {}, false, "item"),
+        npc        = safe_collect(god_tbl.god_stalker_table           or {}, true,  "npc"),
+        mob        = safe_collect(god_tbl.god_mob_table               or {}, true,  "npc"),
+        car        = safe_collect(god_tbl.god_car_table               or {}, true,  "npc"),
+        decor      = safe_collect(god_tbl.god_decor_items_table       or {}, true,  "npc"), 
+        level      = safe_collect(self._levels_list                   or {}, true,  "level"),
+        weather    = safe_collect(god_tbl.god_weather_table           or {}, true,  "weather"),
+        anom       = safe_collect(god_tbl.god_anom_table              or {}, true,  "anom"),
+        com        = safe_collect(god_tbl.god_community_table         or {}, true,  "com"),
+        other      = safe_collect(god_tbl.god_other_table             or {}, false, "item"),
+        objects    = safe_collect(god_tbl.god_info_table              or {}, false, "item"),
+        wpn_addons = safe_collect(god_tbl.god_wpn_addons_table        or {}, false, "item"),
+        vid        = safe_collect(god_tbl.god_vid_table               or {}, true,  "vid"),
+        music      = safe_collect_name_first(god_tbl.god_music_table  or {}, "snd"),
+        jokes      = safe_collect_name_first(god_tbl.god_jokes_table  or {}, "snd"),
+    }
+
+    self._npc_name_by_section     = self.all_by_mode.npc.dict
+    self._mob_name_by_section     = self.all_by_mode.mob.dict
+    self._car_name_by_section     = self.all_by_mode.car.dict
+    self._decor_name_by_section   = self.all_by_mode.decor.dict 
+    self._level_name_by_section   = self.all_by_mode.level.dict
+    self._weather_name_by_section = self.all_by_mode.weather.dict
+    self._anom_name_by_section    = self.all_by_mode.anom.dict
+    self._com_name_by_section     = self.all_by_mode.com.dict
+    self._vid_name_by_section     = self.all_by_mode.vid.dict
+    self._music_name_by_section   = self.all_by_mode.music.dict
+    self._jokes_name_by_section   = self.all_by_mode.jokes.dict
+end
+
+function god_dialog:OnChangeEditText()
+    if self._changing_text then return end
+    self._changing_text = true
+
+    local text = self.search_edit_box:GetText() or ""
+    local len_l = #self.last_text
+    local len_t = #text
+    local s = ""
+
+    for i = 1, len_t do
+        local ch = text:sub(i,i)
+        local prev = self.last_text:sub(i,i)
+
+        if i > len_l or ch ~= prev then
+            if self.lang_mode then
+                if translit_tbl[ch] then
+                    s = s .. translit_tbl[ch]
+                else
+                    local eng = reversed_tbl[ch]
+                    if eng and translit_tbl[eng] then
+                        s = s .. translit_tbl[eng]
+                    else
+                        s = s .. ch
+                    end
+                end
+            else
+                if reversed_tbl[ch] then
+                    s = s .. reversed_tbl[ch]
+                else
+                    s = s .. ch
+                end
+            end
+        else
+            s = s .. prev
+        end
+    end
+
+    self.last_text = s
+
+    if self.search_edit_box:GetText() ~= s then
+        self.search_edit_box:SetText(s)
+    end
+
+    self.was_found = -1
+    self._changing_text = nil
+end
+
+function god_dialog:Update()
+    CUIScriptWnd.Update(self)
+	
+	if self._changing_text then return end
+	
+    local check = is_checked(self.search_all)
+    if check ~= self._search_all_prev then
+        self._search_all_prev = check
+        self:OnSearchTextChanged()
+    end
+
+    if self.search_edit_box then
+        local text = self.search_edit_box:GetText() or ""
+        if text ~= self._last_search_text then
+            self._last_search_text = text
+            self:OnChangeEditText()
+			
+            self:OnSearchTextChanged()
+        end
+    end
+
+    if self.edit_point_name then
+        local text = self.edit_point_name:GetText() or ""
+        if text ~= self._last_point_text then
+            self._last_point_text = text
+			
+            self:OnChangeEditText_point()
+        end
+    end
+end
+
+function god_dialog:OnBtnClearText()
+	self.search_edit_box:SetText("")
+	self.was_found = -1
+end
+
+function god_dialog:OnBtnChangeLanguage()
+	self.lang_mode = not self.lang_mode
+	self.btn_lang:SetText(self.lang_mode and "РУС" or "ENG")
+end
+
+-- Построение списка локаций
+function god_dialog:BuildLevelIndexIfNeeded()
+    if self._levels_list and self._level_name_by_section and self._level_index_by_coords then
+        return
+    end
+
+    self._levels_list = {}
+    self._level_name_by_section = {}
+    self._level_index_by_coords = {}
+	if god.del_level_changer then god.del_level_changer() end
+
+    for i, data in ipairs(god_tbl.god_level_table or {}) do
+
+        local level_disp = ""
+		
+        if data.game_vertex then
+            local vertex = game_graph():vertex(data.game_vertex)
+            if vertex then
+                local lvl_id = vertex:level_id()
+                level_disp = game.translate_string(
+                    alife():level_name(lvl_id)
+                )
+            end
+        end
+
+        local coords =
+            tostring(data.position[1]) .. " " ..
+            tostring(data.position[2]) .. " " ..
+            tostring(data.position[3])
+
+        local disp = level_disp .. " (" .. data.name .. ")"
+
+        table.insert(self._levels_list, {coords, disp})
+        self._level_name_by_section[coords] = disp
+        self._level_index_by_coords[coords] = i
+    end
+end
+-----------------------------------------------------------Поиск end-----------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------Спавн-меню с расширенным функционалом Версия: 2.2.1  Автор:  naxac ----------------------------------------------------------------------------
+_G.sys_ini = system_ini()
+local translate = game.translate_string
+local string_format = string.format
+local kScreen = math.min( (1024/768) / (device().width/device().height), 1 )
+local function get_inv_name( section, def )
+	if sys_ini:section_exist( section ) and sys_ini:line_exist( section, "inv_name" ) then
+		return translate( sys_ini:r_string_wq( section, "inv_name" ) )
+	end
+	return translate( def )
+end
+
+-- ==========================
+-- Функция получения иконки
+-- ==========================
+function get_icon(section)
+    if god_tbl.god_npc_icons_table[section] then
+        local tex = god_tbl.god_npc_icons_table[section]
+        local ti = GetTextureInfo(tex, "ui\\ui_npc_unique")
+        if ti then
+            local r = ti:get_rect()
+            return Frect():set(r.x1, r.y1, r.x2, r.y2), "ui\\ui_npc_unique"
+        end
+    end
+
+    if sys_ini:section_exist(section) and sys_ini:line_exist(section, "inv_grid_x") then
+        local x = sys_ini:r_u32(section, "inv_grid_x")*50
+        local y = sys_ini:r_u32(section, "inv_grid_y")*50
+        local w = sys_ini:r_u32(section, "inv_grid_width")*50
+        local h = sys_ini:r_u32(section, "inv_grid_height")*50
+        return Frect():set(x, y, x+w, y+h), "ui\\ui_icon_equipment"
+
+    elseif sys_ini:line_exist(section, "icon") then
+        local tex = sys_ini:r_string(section, "icon")
+        if tex then
+            local tex_info
+            local file
+
+            if string.sub(tex, 1, 15) == "ui_npc_monster_" then
+                tex_info = GetTextureInfo(tex, "ui\\ui_npc_monster")
+                file = "ui\\ui_npc_monster"
+            else
+                tex_info = GetTextureInfo(tex, tex)
+                file = tex_info:get_file_name()
+            end
+
+            if tex_info then
+                local r = tex_info:get_rect()
+                return Frect():set(r.x1, r.y1, r.x2, r.y2), file
+            end
+        end
+
+    -- Заглушка
+    else
+        return Frect():set(249, 940, 249+83, 940+47), "ui\\ui_iconsTotal"
+    end
+end
+
+-- ===============================
+-- Функция отображения описания 
+-- ==============================
+function god_dialog:GetDescription(indx)
+    local itm = self.list_box:GetItem(indx)
+    if itm == nil then
+        self.descr:SetText("")
+        self.pict:Show(false)
+        self.cost:SetText("")
+        self.weight:SetText("")
+        return
+    end
+
+    local sect = itm.name:GetText()
+    if not sys_ini:section_exist(sect) then
+        self.descr:SetText("")
+        self.pict:Show(false)
+        self.cost:SetText("")
+        self.weight:SetText("")
+        return
+    end
+
+    -- ==========================
+    -- Получаем иконку
+    -- ==========================
+    local rect, file = get_icon(sect)
+    if rect and file then
+        local pw = ((rect.x2 - rect.x1)/5)*4*kScreen
+        local ph = ((rect.y2 - rect.y1)/5)*4
+        local px = -50 + 210-(pw/2)
+        local py = 40 + 75-(ph/2)
+
+        self.pict:InitTexture(file)
+        self.pict:SetOriginalRect(rect)
+        self.pict:SetWndRect(Frect():set(px, py, px + pw, py + ph))
+        self.pict:SetStretchTexture(true)
+        self.pict:Show(true)
+    else
+        self.pict:Show(false)
+    end
+
+    -- ==============================================
+    -- Получаем описание (только текст description)
+    -- =============================================
+    local description = ""
+    if sys_ini:line_exist(sect, "description") then
+        local str = sys_ini:r_string_wq(sect, "description")
+        if str and str ~= "" then
+            description = translate(str)
+        end
+    end
+    self.descr:SetText(description)
+
+    -- ==========================
+    -- Цена и вес
+    -- ==========================
+    if sys_ini:line_exist(sect, "cost") then
+        self.cost:SetText(string_format("Цена: %d руб.", sys_ini:r_float(sect, "cost")))
+    else
+        self.cost:SetText("")
+    end
+    if sys_ini:line_exist(sect, "inv_weight") then
+        self.weight:SetText(string_format("Вес: %.2f кг.", sys_ini:r_float(sect, "inv_weight")))
+    else
+        self.weight:SetText("")
+    end
+end
+--------------------------------------------------Спавн-меню с расширенным функционалом Версия: 2.2.1  Автор:  naxac end ----------------------------------------------------------------------------
+
+---------------------------------------------------------------------Режим Бога---------------------------------------------------------------------------------------------------------------------------
+
+function god_dialog:god_mode_full_GetCheck()
+    return self.god_mode_full:GetCheck()
+end
+function god_dialog:god_mode_GetCheck()
+    return self.god_mode:GetCheck()
+end
+function god_dialog:unlimited_ammo_mode_GetCheck()
+    return self.unlimited_ammo_mode:GetCheck()
+end
+function god_dialog:strongman_mode_GetCheck()
+    return self.strongman_mode:GetCheck()
+end
+
+
+function god_dialog:update_full_check()
+    if  self.god_mode:GetCheck()
+    and self.unlimited_ammo_mode:GetCheck()
+    and self.strongman_mode:GetCheck()
+    then
+        self.god_mode_full:SetCheck(true)
+    else
+        self.god_mode_full:SetCheck(false)
+    end
+end
+
+-- =======================
+--        Обработчики
+-- =======================
+
+function god_dialog:god_mode_full_button_clicked()
+    if self:god_mode_full_GetCheck() then
+        con("g_god on")
+        con("g_unlimitedammo on")
+        con("g_strongman on")
+   
+        self.god_mode:SetCheck(true)
+        self.unlimited_ammo_mode:SetCheck(true)
+        self.strongman_mode:SetCheck(true)
+    else
+        con("g_god off")
+        con("g_unlimitedammo off")
+        con("g_strongman off")
+ 
+        self.god_mode:SetCheck(false)
+        self.unlimited_ammo_mode:SetCheck(false)
+        self.strongman_mode:SetCheck(false)
+    end
+
+    local snd = sound_object([[detectors\contact_1]])
+    snd:play(db.actor, 0, sound_object.s2d)
+end
+
+function god_dialog:god_mode_button_clicked()
+    if self:god_mode_GetCheck() then
+        con("g_god on")
+    else
+        con("g_god off")
+    end
+    self:update_full_check()
+    local snd = sound_object([[detectors\contact_1]])
+    snd:play(db.actor, 0, sound_object.s2d)
+end
+
+function god_dialog:unlimited_ammo_mode_button_clicked()
+    if self:unlimited_ammo_mode_GetCheck() then
+        con("g_unlimitedammo on")
+    else
+        con("g_unlimitedammo off")
+    end
+    self:update_full_check()
+    local snd = sound_object([[detectors\contact_1]])
+    snd:play(db.actor, 0, sound_object.s2d)
+end
+
+function god_dialog:strongman_mode_button_clicked()
+    if self:strongman_mode_GetCheck() then
+        con("g_strongman on")
+    else
+        con("g_strongman off")
+    end
+    self:update_full_check()
+    local snd = sound_object([[detectors\contact_1]])
+    snd:play(db.actor, 0, sound_object.s2d)
+end
+
+-- =======================
+--   Служебные функции
+-- =======================
+
+function god_dialog:check_game()
+    local check = false
+    if level.present() and (db.actor ~= nil) and db.actor:alive() then
+        check = true
+    end
+    return check
+end
+
+-- ¬Вывод инфы в консоль
+function con(msg)
+get_console():execute(msg)
+end
+--------------------------------------------------------------------Режим Бога End------------------------------------------------------------------------------------------------------------------------
