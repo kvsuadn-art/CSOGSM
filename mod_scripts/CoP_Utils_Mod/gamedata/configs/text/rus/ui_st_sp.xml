@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<string_table>
+	<string id="ui_inv_bad_cond">
+		<text>Эта вещь уже не подлежит ремонту</text>
+	</string>
+	<string id="map_new_spot">
+		<text>Отмечен новый объект на карте:</text>
+	</string>
+	<!--Notepad Tips-->
+	<string id="notepad_tip_location">
+		<text>Заметка о локации:</text>
+	</string>
+	<string id="notepad_tip_mutants">
+		<text>Заметка о мутантах:</text>
+	</string>
+	<string id="notepad_tip_anomaly">
+		<text>Заметка об аномалии:</text>
+	</string>
+	<string id="notepad_tip_community">
+		<text>Заметка об группировке:</text>
+	</string>
+	<!--/Notepad Tips-->
+	<!--Sleep Warning Texts-->
+	<string id="sleep_warning_nosleep">
+		<text>Мне не охота спать.</text>
+	</string>
+	<string id="sleep_warning_af">
+		<text>Перед тем как поспать, необходимо снять с пояса все артефакты, так как это может негативно сказаться на организме во время сна.</text>
+	</string>
+	<string id="sleep_warning_surge">
+		<text>Гул в голове вызванный пси-волной выброса мешает уснуть.</text>
+	</string>
+	<string id="sleep_warning_surge_matras">
+		<text>В этом месте не заснуть. Нужно найти более надежное укрытие, там где можно переждать выброс.</text>
+	</string>
+	<string id="sleep_warning_enemy_matras">
+		<text>Какой сон, враг недалеко.</text>
+	</string>
+	<string id="sleep_warning_energy">
+		<text>Бессоница из-за выпитого энергетика.</text>
+	</string>
+	<string id="pda_btn_enc">
+		<text>Энциклопедия</text>
+	</string>
+	<string id="pda_btn_enc_hint">
+		<text>Открыть энциклопедию</text>
+	</string>
+	<!--/Sleep Warning Texts-->
+	
+	<!-- Debug Into -->
+<string id="sdata_actor_health">
+<text>Жизнь: </text>
+</string>
+<string id="sdata_actor_power">
+<text>Выносливость: </text>
+</string>
+<string id="sdata_actor_radiation">
+<text>Радиация: </text>
+</string>
+<string id="sdata_actor_satiety">
+<text>Сытость: </text>
+</string>
+<string id="sdata_actor_drinky">
+<text>Жажда: </text>
+</string>
+<string id="sdata_actor_sleepy">
+<text>Сонливость: </text>
+</string>
+<string id="sdata_actor_money">
+<text>Деньги: </text>
+</string>
+<string id="sdata_actor_psy_health">
+<text>Пси-здоровье: </text>
+</string>
+<string id="sdata_actor_psy_healt">
+<text>Пси-здоровье: </text>
+</string>
+<string id="sdata_actor_morale">
+<text>Мораль: </text>
+</string>
+<string id="sdata_actor_rank">
+<text>Ранг: </text>
+</string>
+<string id="sdata_actor_community">
+<text>Группировка: </text>
+</string>
+<string id="sdata_actor_reputation">
+<text>Репутация: </text>
+</string>
+<string id="sdata_achievement_headshots">
+<text>Хедшотов: </text>
+</string>
+<string id="sdata_achievement_grenade">
+<text>Убито гранатой: </text>
+</string>
+<string id="sdata_achievement_knife">
+<text>Убито ножем: </text>
+</string>
+<string id="sdata_achievement_vodka">
+<text>Выпито пузырей водки: </text>
+</string>
+<string id="sdata_achievement_score">
+<text>Очки(ранг) ГГ: </text>
+</string>
+<!--/ Debug Into -->
+</string_table>

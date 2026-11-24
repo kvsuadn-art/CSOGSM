@@ -1,0 +1,6 @@
+local sName = script_name()
+_log_db = function (sText, ...)
+	if ReadVar(sName,true) then
+		_log(sName..":"..sText, ...)
+	end
+end

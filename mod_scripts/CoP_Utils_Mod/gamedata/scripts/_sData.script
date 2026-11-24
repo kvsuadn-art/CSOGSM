@@ -1,0 +1,454 @@
+-- File:        _sData.SCRIPT
+-- Copyright:   2009 Singapur22
+-- Authors:     Singapur22, Gun12
+-- Last edit:	Xmk (07.03.10)
+-- Description: Отладочная информация
+local actor=db.actor
+local timer=0
+local huds={"cs_debug","cs_debug","prs_debug","gul_debug","zon_debug","act_debug","ach_debug","slots_debug"}
+----------------------------------------------------------------------------
+-- НАСТРОЙКИ
+-- False или nil - выключить, любое другое значение - Включить
+----------------------------------------------------------------------------
+local bPosition		= true  -- включение схемы показа координат
+local bInfos		= true	-- включение схемы показа состояний инфопоршнэй
+local bGulags		= false	-- включение схемы показа численности гулагов
+local bZones		= false	-- включение схемы показа попадания ГГ в зону
+local bActorData	= true  -- включение всей схемы показа данных ГГ.
+local bAchmData		= true	-- включение схемы показа счетчиков новых амчивок
+local bSlotsData	= true	-- включение всей схемы показа состояния предметов в активных слотах
+
+----------------------------------------------------------------------------
+-- ИНФОПОРЦИИ
+----------------------------------------------------------------------------
+-- Проверка состояний инфопоршнэй, с выводом результата на монитор.
+-- Возможна проверка не ограниченного колличества инфопоршнэй, одновременно.
+-- Отключать схему не обязательно. При пустой таблице, схема не показывается.
+-- id инфопоршней, писать в кавычках, через запятую.
+-- Пример: local InfoTbl = {"info1","info2","info3"}
+local InfoTbl = {
+}
+
+----------------------------------------------------------------------------
+-- ГУЛАГИ
+----------------------------------------------------------------------------
+-- Проверка численности гулагов, с выводом результата на монитор.
+-- Возможна проверка не ограниченного колличества гулагов, одновременно.
+-- Результат выводится не зависимо от того, находятся нпс в online или offline.
+-- Но только, если локация, на которой гулаг находится, активна.
+-- Отключать схему не обязательно. При пустой таблице, схема не показывается.
+-- Имена гулагов, писать в кавычках, через запятую.
+-- Пример: local GulagsTbl = {"name1","name2","name3"}
+local GulagsTbl = {	"gulags"
+
+}
+
+----------------------------------------------------------------------------
+-- ЗОНЫ (гулаги, смарт_террейны)
+----------------------------------------------------------------------------
+-- Проверка попадания ГГ в зону, с выводом результата на монитор.
+-- Возможна проверка не ограниченного колличества зон, одновременно.
+-- Отключать схему не обязательно. При пустой таблице, схема не показывается.
+-- Имена зон (гулаги, смарт_террейны) писать в кавычках, через запятую.
+-- Пример: local ZonesTbl = {"name1","name2","name3"}
+local ZonesTbl = {	"zones"
+
+}
+
+----------------------------------------------------------------------------
+-- АКТОР
+----------------------------------------------------------------------------
+local aHealth		= true	-- включение показа здоровья
+local aPower		= true	-- включение показа силы
+local aRadiation 	= true	-- включение показа радиационного облучения
+local aSatiety		= false	-- включение показа сытости
+local aMoney		= true	-- включение показа суммы наличных (денег)
+local aPsyHealth	= true	-- включение показа пси-здоровья
+local aMorale		= true	-- включение показа морали
+local aCommunity	= true	-- включение показа группировки
+local aReputation	= true	-- включение показа репутации
+
+----------------------------------------------------------------------------
+-- ПРЕДМТЫ В СЛОТАХ
+----------------------------------------------------------------------------
+local bSlot1		= true  -- включение показа слота 1 (пистолет)
+local bSlot2		= true  -- включение показа слота 2 (автомат)
+local bSlot7 		= true  -- включение показа слота 7 (броня)
+local bSlot12		= true	-- включение показа слота 12 (шлем)
+----------------------------------------------------------------------------
+-- ВЫВОД СТАТИСТИКИ НА HUD
+----------------------------------------------------------------------------
+local fAllSData
+function DbgUpdate()
+	if timer>time_global() then return end
+	timer=time_global() + 1000
+	
+	local hud = get_hud()
+	local dBg = ReadVar("debug_mode",tDbgVal["debug_mode"]) --включен ли дебаг режим вообще
+	if dBg then
+		UpdateHudTargets()
+		ActSData()
+	else
+		for k,cs in ipairs(huds) do
+			if hud:GetCustomStatic(cs) then hud:RemoveCustomStatic(cs) end
+		end
+		return
+	end
+end
+
+function ActSData()
+	local hud = get_hud()
+
+	if bPosition~=true	and bPosition~=nil	and bPosition~=false	then bPosition=true		end
+	if bInfos~=true		and bInfos~=nil		and bInfos~=false		then bInfos=true		end
+	if bGulags~=true	and bGulags~=nil	and bGulags~=false		then bGulags=true		end
+	if bZones~=true		and bZones~=nil		and bZones~=false		then bZones=true		end
+	if bActorData~=true	and bActorData~=nil	and bActorData~=false	then bActorData=true	end
+	if bAchmData~=true	and bAchmData~=nil	and bAchmData~=false	then bAchmData=true		end
+	if bSlotsData~=true	and bSlotsData~=nil	and bSlotsData~=false	then bSlotsData=true	end
+
+	-- Координаты
+	if bPosition == true then
+		local PosCS = hud:GetCustomStatic("cs_debug")
+		if PosCS == nil then
+			hud:AddCustomStatic("cs_debug",true)
+			PosCS = hud:GetCustomStatic("cs_debug")
+		end
+		local lvid,gvid = actor:level_vertex_id(),actor:game_vertex_id()
+		local pos,cam_dir = actor:position(),device().cam_dir
+		local valid = level.vertex_position(lvid):distance_to(pos)<=0.7
+		local cam_dirH = cam_dir:getH()
+		local PosText = string.format("lvid: %d\\n",lvid)..							-- левел вертекс
+						string.format("gvid: %d\\n",gvid)..							-- гейм вертекс
+						string.format("pos: %f,%f,%f\\n", pos.x, pos.y, pos.z)..	-- позиция ГГ (x,y,z)
+						string.format("cam_dirH: %f\\n", cam_dirH) ..
+						string.format("valid: %s",tostring(valid))					-- наличие AI-сетки в данной координате
+		if PosCS ~= nil then PosCS:wnd():TextControl():SetText(PosText) end
+	end
+	
+	if not ReadVar("sdata_all",tDbgVal["sdata_all"]) then
+		if fAllSData then
+			for k,cs in ipairs(huds) do
+				if cs~="cs_debug" then
+					if hud:GetCustomStatic(cs) then hud:RemoveCustomStatic(cs) end
+				end
+			end
+			fAllSData = false
+		end
+		return 
+	end
+	
+	fAllSData = true
+	-- Инфопорции
+	if bInfos == true then
+		local InfoCS = hud:GetCustomStatic("prs_debug")
+		if InfoCS == nil then
+			hud:AddCustomStatic("prs_debug",true)
+			InfoCS = hud:GetCustomStatic("prs_debug")
+		end
+		local InfoText = "" 
+		for k,id in ipairs(InfoTbl) do
+			if has_alife_info(id) ~= nil  then
+				InfoText = InfoText.. string.format("%s\\n",tostring(id.." = ".. tostring(has_alife_info(id))))
+			end
+		end
+		if InfoCS ~= nil then InfoCS:wnd():TextControl():SetText(InfoText) end
+	end
+
+	-- гулаги
+	if bGulags == true then
+		local GlgCS = hud:GetCustomStatic("gul_debug")
+		if GlgCS == nil then
+			hud:AddCustomStatic("gul_debug",true)
+			GlgCS = hud:GetCustomStatic("gul_debug")
+		end
+		local GlgText =" " 
+		for k,name in ipairs(GulagsTbl) do
+			if getGulagPopulationComed(name) then
+				GlgText = GlgText.. string.format("%s\\n",tostring(name.." = ".. tostring(getGulagPopulationComed(name))))
+			end
+		end
+		if GlgCS ~= nil then GlgCS:wnd():TextControl():SetText(GlgText) end
+	end
+
+	-- зоны
+	if bZones == true then
+		local ZoneCS = hud:GetCustomStatic("zon_debug")
+		if ZoneCS == nil then
+			hud:AddCustomStatic("zon_debug",true)
+			ZoneCS = hud:GetCustomStatic("zon_debug")
+		end
+		local ZonesText="" 
+		for k,name in ipairs(ZonesTbl) do			
+			if utils.npc_in_zone(actor,db.zone_by_name[name]) then
+				ZonesText = ZonesText.. string.format("%s\\n",tostring(name.." = ".. tostring(utils.npc_in_zone(actor,db.zone_by_name[name]))))
+			end
+		end
+		if ZoneCS ~= nil then ZoneCS:wnd():TextControl():SetText(ZonesText) end
+	end
+
+	-- параметры ГГ
+	if bActorData == true then
+		local ActCS = hud:GetCustomStatic("act_debug")
+		if ActCS == nil then
+			hud:AddCustomStatic("act_debug", true)
+			ActCS = hud:GetCustomStatic("act_debug")
+		end
+		local str
+		local ActText = ""
+		local aCommun = actor:character_community()
+		if string.find(aCommun,"actor") then
+			aCommun = GetString("actor")
+		elseif string.find(aCommun,"stalker") then
+			aCommun = GetString("stalker")
+		elseif string.find(aCommun,"dolg") then
+			aCommun = GetString("dolg")
+		elseif string.find(aCommun,"freedom") then
+			aCommun = GetString("freedom")
+		elseif string.find(aCommun,"bandit") then
+			aCommun = GetString("bandit")
+		elseif string.find(aCommun,"killer") then
+			aCommun = GetString("killer")
+		elseif string.find(aCommun,"military") then
+			aCommun = GetString("army")
+		elseif string.find(aCommun,"ecolog") then
+			aCommun = GetString("ecolog")
+		elseif string.find(aCommun,"stranger") then
+			aCommun = GetString("stranger")
+		elseif string.find(aCommun,"monolith") then
+			aCommun = GetString("monolit")
+		elseif string.find(aCommun,"zombied") then
+			aCommun = GetString("zombied")
+		elseif string.find(aCommun,"trader") then
+			aCommun = GetString("trader")
+		elseif string.find(aCommun,"arena_enemy") then
+			aCommun = GetString("arena_enemy")
+		elseif string.find(aCommun,"arena_friend") then
+			aCommun = GetString("arena_friend")	
+		end
+		if aHealth == true then
+			str = string.format(" %1.3f",actor.health)
+			ActText = ActText.. GetString("sdata_actor_health").. tostring(str).."("..math.ceil(tonumber(str)*100).."%)\\n"
+		end
+		if aPower == true then
+			str=string.format(" %1.3f",actor.power)
+			ActText = ActText.. GetString("sdata_actor_power").. tostring(str).." ("..math.ceil(tonumber(str)*100).."%)\\n"
+		end
+		if aRadiation == true then
+			str = string.format(" %1.3f",actor.radiation)
+			ActText = ActText.. GetString("sdata_actor_radiation").. tostring(str).." ("..math.ceil(tonumber(str)*100).."%)\\n"
+		end
+		if aSatiety == true then
+			str = string.format(" %1.3f",actor.satiety)
+			ActText = ActText.. GetString("sdata_actor_satiety").. tostring(str).." ("..math.ceil(tonumber(str)*100).."%)\\n"
+		end
+		if aMoney==true then
+			ActText = ActText.. string.format(GetString("sdata_actor_money").." %d\\n",actor:money())
+		end
+		if aPsyHealth==true then
+			str = string.format(" %1.3f",actor.psy_health)
+			ActText = ActText.. GetString("sdata_actor_psy_health").. tostring(str).." ("..math.ceil(tonumber(str)*100).."%)\\n"
+		end
+		if aMorale == true then
+			ActText = ActText.. string.format(GetString("sdata_actor_morale").." %s\\n",tostring(actor.morale))
+		end
+		if aCommunity == true then
+			ActText = ActText.. string.format(GetString("sdata_actor_community").." %s\\n",tostring(aCommun))
+		end
+		if aReputation == true then
+			ActText = ActText.. string.format(GetString("sdata_actor_reputation").." %d\\n",actor:character_reputation())
+		end
+		if ActCS ~= nil then ActCS:wnd():TextControl():SetText(ActText) end
+	end
+	
+	-- новые амчики
+	if bAchmData == true then
+		local AchCS=hud:GetCustomStatic("ach_debug")
+		if AchCS == nil then
+			hud:AddCustomStatic("ach_debug",true)
+			AchCS=hud:GetCustomStatic("ach_debug")
+		end
+		local AchText = ""
+		--AchText = AchText.. string.format(GetString("sdata_achievement_headshots").." %d\\n",xr_statistic.actor_statistic.kHeadShots) -- пример
+		AchText = "Ачивки"
+		if AchCS ~= nil then AchCS:wnd():TextControl():SetText(AchText) end
+	end
+
+	-- активные слоты
+	if bSlotsData == true then
+		if bSlot1 == true or bSlot2 == true or bSlot7 == true or bSlot12 == true then
+			local SlotCS = hud:GetCustomStatic("slots_debug")
+			if SlotCS == nil then
+				hud:AddCustomStatic("slots_debug", true)
+				SlotCS = hud:GetCustomStatic("slots_debug")
+			end
+			local SlotText = ""
+			for i = 1,12 do
+				local slot
+				local name_str = ""
+				local cond_str = ""
+				if i == 2 or i == 3 or i == 7 or i == 12 then
+					slot = actor:item_in_slot(i)
+					if slot then
+						name_str = string.format("%s\\n", GetString(GetItemName(slot:section())))
+						cond_str = string.format("Состояние: %1.2f\\n", slot:condition())
+					else
+						name_str = "пуст"
+					end
+					SlotText = SlotText.. GetString("Слот "..i..": ").. name_str.."\\n"..cond_str.."\\n\\n"
+				end
+			end
+			if SlotCS ~= nil then SlotCS:wnd():TextControl():SetText(SlotText) end
+		end
+	end
+end
+
+-- Utils
+function getGulagPopulationComed(sName_or_sId)
+	local gulag=xr_gulag.get_gulag(sName_or_sId)
+	return (gulag and gulag:get_population_comed()) or 0
+end
+--/-------------------------------------------------------------------
+--/ Targets HUDs (amk_target © AMK-team)
+--/-------------------------------------------------------------------
+local cparm = {
+	tgt_lock  =   4, --/ количество сопровождаемых целей
+	tgt_view  =   4, --/ количество отображаемых целей
+	tgt_range = 300, --/ дистанция обраружения
+}
+
+--/ Текущее состояние детектора целей
+local targets = {} --/ отображаемые цели и соответствующие hud объекты
+local flg_updated = false
+local show_hud_targets = true
+
+--/ Обновляет прицельные метки
+function UpdateHudTargets() --/ вызов из "on_actor_update"
+	if ReadVar("dbg_targets",tDbgVal["dbg_targets"]) then
+		check_hud_targets()
+		--/ массив targets инициализирован
+		scan_targets() --/ пересканировать всю живность и возможно обновить targets
+		track_targets() --/ переместить метки целей и, возможно, выбрать другую цель
+	elseif show_hud_targets then
+		for i=1,cparm.tgt_view do
+			remove_hud_target(i)
+		end
+		targets = {}
+		show_hud_targets = false
+	end
+end
+
+function threat_comp(i1,i2)
+	return i1.threat > i2.threat --/ возвращает true если i1 опаснее i2
+end
+
+function scan_targets()
+	local actor = db.actor
+	local best_tgts = {}
+	for i=1,cparm.tgt_lock do
+		table.insert(best_tgts,{threat = -1000000})
+	end
+	local cpos = device().cam_pos
+	local cdir = device().cam_dir
+	local aid = actor:id()
+	local id,object,obj
+	for id,object in pairs(db.storage) do
+		obj = db.storage[id].object
+		if obj and (IsStalker(obj) or IsMonster(obj)) and obj:alive() then
+--			printf("scan_targets:obj_name=[%s]:[%s]", obj:name(), "?" ) --/#~#
+			local r = obj:position():sub(cpos) --/ радиус-вектор цели
+			local dp = r:dotproduct(cdir)
+			if r:magnitude() < cparm.tgt_range and id ~= aid then
+				local threat = 1
+				local it = {threat = threat/r:magnitude(),obj=obj,dist=r:magnitude(),id=id}
+				if threat_comp(it,best_tgts[cparm.tgt_lock]) then
+					table.insert(best_tgts,it)
+					table.sort(best_tgts,threat_comp)
+					table.remove(best_tgts)
+					--[[ --/ звук при обнаружении новой цели
+					local snd_obj = sound_object("detectors\contact_9")
+					snd_obj:play_no_feedback(db.actor, sound_object.s2d, 0, vector(), 1.0)
+					--]]
+				end
+			end
+		end
+	end
+	for i=1,cparm.tgt_view do
+		targets[i].obj  = best_tgts[i].obj
+		targets[i].dist = best_tgts[i].dist
+		targets[i].id   = best_tgts[i].id
+	end
+	flg_updated = true
+end
+
+function track_targets()
+	local cpos = device().cam_pos
+	local cdir = device().cam_dir
+	for i,tgt in pairs(targets) do
+		local best_obj = tgt.obj
+		local best_r = best_obj and best_obj:bone_position("bip01_head"):sub(cpos)
+		local best_dp = best_obj and cdir:dotproduct(best_r)
+		if best_obj == nil or best_dp <= 0 then --/TODO: убирать метку
+			tgt.wnd:SetWndPos(vector2():set(-100,-100)) --/STCS|SCOP
+		else
+			--/ Рассчитываем экранные координаты
+			best_r.y = best_r.y+0.25
+			local fov2 = device().fov/180*math.pi/2
+			local fovmul = math.tan(fov2)/device().aspect_ratio
+			local cr,ct = device().cam_right,device().cam_top
+			--/ проецируем на экранную плоскость
+			local x = cr:dotproduct(best_r)
+			local y = ct:dotproduct(best_r)
+			--/ масштабируем по расстоянию и преобразуем в экранные координаты
+			x = 512-32+512/fovmul*x/best_dp
+			y = 768/2-32-512/fovmul*y/best_dp
+			--/ перемещаем метку
+			tgt.wnd:SetWndPos(vector2():set(x,y)) --/STCS|SCOP
+			if flg_updated then
+				local dist = db.storage[tgt.obj:id()] and db.storage[tgt.obj:id()].active_section
+				local txt = string.format("dist:%.1f group:%s\\n%s", tgt.dist, tostring(tgt.obj:group()), tostring(dist) )
+				tgt.wnd:TextControl():SetTextST(txt) --/SCOP
+			end
+		end
+	end
+	flg_updated = false
+end
+
+function check_hud_targets()
+	local hud = get_hud()
+	for i=1,cparm.tgt_view do
+		local cs
+		while true do
+			cs = hud:GetCustomStatic("hud_target"..i)
+			if cs then
+				break
+			else
+				hud:AddCustomStatic("hud_target"..i)
+			end
+		end
+		if not targets[i] then targets[i] = {} end
+		targets[i].wnd = cs:wnd()
+	end
+	show_hud_targets = true
+end
+
+function remove_hud_target(num)
+	local cs = get_hud():GetCustomStatic("hud_target"..num)
+	if cs then
+		get_hud():RemoveCustomStatic("hud_target"..num)
+	end
+end
+
+--/ Коллбэк на уход в оффлайн или уничтожение
+function NetDestroyTarget(obj) --/ вызов из "on_net_destroy"
+	if ReadVar("dbg_targets",tDbgVal["dbg_targets"]) and obj and show_hud_targets then
+		local oid = obj:id()
+		for i=1,cparm.tgt_view do
+			if targets[i] and targets[i].id == oid then
+				remove_hud_target(i)
+				targets[i].obj = nil
+				targets[i].id = 0
+			end
+		end
+	end
+end

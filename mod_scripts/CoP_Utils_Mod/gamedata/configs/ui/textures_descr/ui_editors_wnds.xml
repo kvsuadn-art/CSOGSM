@@ -1,0 +1,25 @@
+<w>
+    <file name="ui\ui_editors_wnds">
+        <texture id="ui_waypoint_editor_wnd" x="0" y="0" width="366" height="203"/>
+        <texture id="ui_allspawn_editor_wnd" x="382" y="0" width="563" height="478"/>
+        <texture id="ui_editor_button_minus_a" x="219" y="298" width="31" height="28"/>
+        <texture id="ui_editor_button_plus_a" x="266" y="298" width="31" height="28"/>
+        <texture id="ui_editor_button_minus_b" x="219" y="330" width="31" height="28"/>
+        <texture id="ui_editor_button_plus_b" x="266" y="330" width="31" height="28"/>
+        <texture id="ui_editor_button_1_e" x="0" y="210" width="61" height="22"/>
+        <texture id="ui_editor_button_1_h" x="0" y="264" width="61" height="22"/>
+        <texture id="ui_editor_button_1_t" x="0" y="237" width="61" height="22"/>
+        <texture id="ui_editor_button_2_e" x="0" y="308" width="135" height="35"/>
+        <texture id="ui_editor_button_2_t" x="0" y="357" width="135" height="35"/>
+        <texture id="ui_editor_button_2_h" x="0" y="407" width="135" height="35"/>
+        <texture id="ui_editor_button_3_e" x="70" y="212" width="126" height="27"/>
+        <texture id="ui_editor_button_3_t" x="70" y="243" width="126" height="27"/>
+        <texture id="ui_editor_button_3_h" x="70" y="275" width="126" height="27"/>
+        <texture id="ui_editor_button_4_e" x="200" y="210" width="116" height="22"/>
+        <texture id="ui_editor_button_4_t" x="200" y="264" width="116" height="22"/>
+        <texture id="ui_editor_button_4_h" x="200" y="237" width="116" height="22"/>
+        <texture id="ui_editor_button_5_e" x="334" y="215" width="27" height="28" />
+        <texture id="ui_editor_button_5_h" x="334" y="247" width="27" height="28" />
+        <texture id="ui_editor_button_5_t" x="334" y="247" width="27" height="28" />
+    </file>
+</w>

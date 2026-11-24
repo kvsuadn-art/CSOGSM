@@ -1,0 +1,35 @@
+----------------------------------------------------------------------------------------------------------------------
+class "actor_binder" (object_binder)
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:__init (obj) super(obj)
+	self.am = ogse_signals.get_mgr()
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:net_spawn(data)
+	self.am:call("on_spawn", data)
+	return true
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:reinit()
+	self.object:set_callback(123, self.on_key, self)
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:net_destroy()
+	self.object:set_callback(123, nil)
+	self.object:set_callback(124, nil)
+	self.object:set_callback(125, nil)
+	self.object:set_callback(126, nil)
+	self.object:set_callback(127, nil)
+	self.object:set_callback(130, nil)
+	self.object:set_callback(131, nil)
+	self.object:set_callback(132, nil)
+	
+	self.am:call("on_destroy")
+end
+function actor_binder:update(delta)
+	self.am:call("on_update", delta)
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:on_key(key)
+	self.am:call("on_key_down", key, dik_to_bind(key))
+end

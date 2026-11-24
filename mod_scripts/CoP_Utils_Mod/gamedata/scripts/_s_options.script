@@ -1,0 +1,267 @@
+--[[ ----------------------------------------------------------------------------------------------- 
+ File       : _s_options.script
+ Copyright  : 2011 © Spectrum project
+ Author     : Viнt@rь
+ 
+ Since: 27.12.2011 01:49
+	-- написана заготовка класса опций мода
+	-- добавлена возможность выбора режима работы дебага
+ Since: 18.09.2011 01:39
+ 	-- добавлена возможность выкл/вкл выдачи логовых функций для скриптов
+  Since: 22.09.2011 23:39
+ 	-- скрипт приведен в читабельное состояние
+ 	-- доработано оформление окна опций
+--]] -----------------------------------------------------------------------------------------------
+class "CSpOptions" (CUIScriptWnd)
+
+function CSpOptions:__init(owner) super()
+	self.owner=owner
+	self:InitControls()
+	self:InitCallBacks()
+	self:OnOpen()
+end
+function CSpOptions:__finalize() end
+
+function CSpOptions:InitControls()
+	self:SetWndRect				(Frect():set(0,0,1024,768))
+	
+	local cXml 					= CScriptXmlInit()
+	cXml:ParseFile				("ui_sp_options.xml")
+	cXml:InitStatic				("background",	self)
+	self.oDialog				= cXml:InitStatic("dialog", self)
+	
+	-- Static
+		cXml:InitStatic				("dialog:caption",		 self.oDialog)
+		cXml:InitFrameLine			("dialog:frameline1",	 self.oDialog)
+		cXml:InitFrameLine			("dialog:frameline2",	 self.oDialog)
+		cXml:InitFrameLine			("dialog:frameline3",	 self.oDialog)
+		cXml:InitFrameLine			("dialog:frameline4",	 self.oDialog)
+		cXml:InitFrameLine			("dialog:frameline5",	 self.oDialog)
+	-- Static
+	
+	local oBtn, oLable
+	
+	-- Отладочный режим
+	cXml:InitStatic("dialog:cap_debug_mod", self.oDialog)
+	
+		oBtn = cXml:InitCheck("dialog:debug_mod", self.oDialog)
+		oBtn:SetCheck(ReadVar("debug_mode",tDbgVal["debug_mode"]))
+		self.oBtnDbg = oBtn
+		self:Register(oBtn, "btn_dbg")
+	
+		-- Логи
+		self.oLabelLog = cXml:InitStatic("dialog:cap_log",self.oDialog)
+		self.oLabelLog:Show(false)
+		
+			-- Лог в файл
+			self.oLabelPrintf = cXml:InitStatic("dialog:cap_file_print", self.oDialog)
+			self.oLabelPrintf:Show(false)
+	
+			oBtn = cXml:InitCheck("dialog:file_print", self.oDialog)
+			oBtn:SetCheck(ReadVar("file_print",tDbgVal["in_con"]))
+			oBtn:Show(false)
+			self.oBtnPrintf = oBtn
+			self:Register(oBtn, "btn_print")
+	
+			-- Лог в новость
+			self.oLabelNews = cXml:InitStatic("dialog:cap_in_news", self.oDialog)
+			self.oLabelNews:Show(false)
+	
+			oBtn = cXml:InitCheck("dialog:in_news", self.oDialog)
+			oBtn:SetCheck(ReadVar("in_news",tDbgVal["in_news"]))
+			oBtn:Show(false)
+			self.oBtnNews = oBtn
+			self:Register(oBtn, "btn_news")
+	
+			-- Лог в консоль
+			self.oLabelCon = cXml:InitStatic("dialog:cap_in_con", self.oDialog)
+			self.oLabelCon:Show(false)
+	
+			oBtn = cXml:InitCheck("dialog:in_con", self.oDialog)
+			oBtn:SetCheck(ReadVar("in_con",tDbgVal["file_print"]))
+			oBtn:Show(false)
+			self.oBtnCon = oBtn
+			self:Register(oBtn, "btn_con")
+	
+		-- Отладка скриптов
+		self.oLabelScript = cXml:InitStatic("dialog:mcap_script", self.oDialog)
+		self.oLabelScript:Show(false)
+		
+			-- Построение списка скриптов для отладки
+			local tIdx = 0
+			for i=1,#tDbgScr do
+				if _G[tDbgScr[i]]._log_db then
+					tIdx = tIdx + 1
+
+					oLable = cXml:InitStatic("dialog:cap_script_"..tIdx, self.oDialog)
+					oLable:TextControl():SetText(tDbgScr[i]..":")
+					oLable:SetWndPos(vector2():set(130,54+(tIdx*20)))
+					oLable:Show(false)
+					self["oLabelScript_"..i] = oLable
+			
+					oBtn = cXml:InitCheck("dialog:btn_script_"..tIdx, self.oDialog)
+					oBtn:SetWndPos(vector2():set(252,50+(tIdx*20)))
+					oBtn:SetCheck(ReadVar(tDbgScr[i],true))
+					oBtn:Show(false)
+					self["oBtnScript_"..i] = oBtn
+			
+					self:Register(oBtn, "oBtnScript_"..i)
+				end
+			end
+		-- Прочее
+		self.oLabelOther = cXml:InitStatic("dialog:cap_other", self.oDialog)
+		self.oLabelOther:Show(false)
+		
+			-- Вся статистика ГГ
+			self.oLabelSdataAll = cXml:InitStatic("dialog:cap_sdata_all", self.oDialog)
+			self.oLabelSdataAll:Show(false)
+	
+			oBtn = cXml:InitCheck("dialog:sdata_all", self.oDialog)
+			oBtn:SetCheck(ReadVar("sdata_all",tDbgVal["sdata_all"]))
+			oBtn:Show(false)
+			self.oBtnSdataAll = oBtn
+			self:Register(oBtn, "btn_sdata_all")
+	
+			-- Инфа о таргете
+			self.oLabelTargets = cXml:InitStatic("dialog:cap_targets", self.oDialog)
+			self.oLabelTargets:Show(false)
+	
+			oBtn = cXml:InitCheck("dialog:dbg_targets", self.oDialog)
+			oBtn:SetCheck(ReadVar("dbg_targets",tDbgVal["dbg_targets"]))
+			oBtn:Show(false)
+			self.oBtnTargets = oBtn
+			self:Register(oBtn, "btn_targets")
+			
+			-- Кнопка закрытия окна
+			oBtn = cXml:Init3tButton("dialog:btn_quit", self.oDialog)
+			self:Register(oBtn, "btn_quit")
+end
+
+function CSpOptions:InitCallBacks()
+	self:AddCallback("btn_dbg",   		ui_events.BUTTON_CLICKED, 			self.OnBtnDbg,   	self)
+	self:AddCallback("btn_print",   	ui_events.BUTTON_CLICKED, 			self.OnBtnPrint,   	self)
+	self:AddCallback("btn_news",   		ui_events.BUTTON_CLICKED, 			self.OnBtnNews,   	self)
+	self:AddCallback("btn_con",   		ui_events.BUTTON_CLICKED, 			self.OnBtnCon,   	self)
+	self:AddCallback("btn_sdata_all", 	ui_events.BUTTON_CLICKED, 			self.OnBtnSDataAll, self)
+	self:AddCallback("btn_targets", 	ui_events.BUTTON_CLICKED, 			self.OnBtnTargets, 	self)
+	for i=1,#tDbgScr do
+		if _G[tDbgScr[i]]._log_db then
+			self["OnBtnScript_"..i] = function() self:OnBtnClick(i) end
+			self:AddCallback("oBtnScript_"..i, ui_events.BUTTON_CLICKED, self["OnBtnScript_"..i], self)
+		end
+	end
+	self:AddCallback("btn_quit", 	ui_events.BUTTON_CLICKED, 			self.OnBtnQuit, 	self)
+end
+
+function CSpOptions:Update()
+	CUIScriptWnd.Update(self)
+end
+
+function CSpOptions:OnBtnQuit()
+	self.owner:ShowDialog(true)
+	self:HideDialog()
+	self.owner:Show(true)
+end
+
+function CSpOptions:OnBtnDbg()
+	WriteVar("debug_mode", self.oBtnDbg:GetCheck())-- дебаг
+	self:OnOpen()
+end
+
+function CSpOptions:OnOpen()
+	if ReadVar("debug_mode",tDbgVal["debug_mode"]) then
+		-- Логи
+		self.oLabelLog:Show(true)
+		
+		self.oLabelPrintf:Show(true)
+		self.oBtnPrintf:Show(true)
+		
+		self.oLabelNews:Show(true)
+		self.oBtnNews:Show(true)
+		
+		self.oLabelCon:Show(true)
+		self.oBtnCon:Show(true)
+		
+		-- Отладка скриптов
+		self.oLabelScript:Show(true)
+		for i=1,#tDbgScr do
+			if _G[tDbgScr[i]]._log_db then
+				self["oLabelScript_"..i]:Show(true)
+				self["oBtnScript_"..i]:Show(true)
+			end
+		end
+		
+		-- Прочее
+		self.oLabelOther:Show(true)
+		
+		self.oLabelSdataAll:Show(true)
+		self.oBtnSdataAll:Show(true)
+		
+		self.oLabelTargets:Show(true)
+		self.oBtnTargets:Show(true)
+	else
+		-- Логи
+		self.oLabelLog:Show(false)
+		
+		self.oLabelPrintf:Show(false)
+		self.oBtnPrintf:Show(false)
+		
+		self.oLabelNews:Show(false)
+		self.oBtnNews:Show(false)
+		
+		self.oLabelCon:Show(false)
+		self.oBtnCon:Show(false)
+		
+		-- Отладка скриптов
+		self.oLabelScript:Show(false)
+		for i=1,#tDbgScr do
+			if _G[tDbgScr[i]]._log_db then
+				self["oLabelScript_"..i]:Show(false)
+				self["oBtnScript_"..i]:Show(false)
+			end
+		end
+		
+		-- Прочее
+		self.oLabelOther:Show(false)
+		
+		self.oLabelSdataAll:Show(false)
+		self.oBtnSdataAll:Show(false)
+		
+		self.oLabelTargets:Show(false)
+		self.oBtnTargets:Show(false)
+	end
+end
+
+function CSpOptions:OnBtnPrint()
+	WriteVar("file_print", self.oBtnPrintf:GetCheck())-- дебаг сохранять ли в файл?
+end
+
+function CSpOptions:OnBtnNews()
+	WriteVar("in_news", self.oBtnNews:GetCheck())-- дебаг выдавать ли в новость?
+end
+
+function CSpOptions:OnBtnCon()
+	WriteVar("in_con", self.oBtnCon:GetCheck())-- дебаг выдавать ли консоль?
+end
+
+function CSpOptions:OnBtnSDataAll()
+	WriteVar("sdata_all", self.oBtnSdataAll:GetCheck())-- Вся статистика ГГ
+end
+
+function CSpOptions:OnBtnTargets()
+	WriteVar("dbg_targets", self.oBtnTargets:GetCheck())-- Targets
+end
+
+function CSpOptions:OnBtnClick(Idx)
+	WriteVar(tDbgScr[Idx], self["oBtnScript_"..Idx]:GetCheck())-- Отладка скриптов
+end
+
+function CSpOptions:OnKeyboard(dik, keyboard_action)
+	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+	if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+		if dik == DIK_keys.DIK_ESCAPE then
+			self:OnBtnQuit()
+		end
+	end
+	return true
+end

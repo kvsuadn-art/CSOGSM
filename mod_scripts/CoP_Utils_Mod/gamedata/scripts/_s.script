@@ -1,0 +1,421 @@
+--[[ ----------------------------------------------------------------------------------------------- 
+ File       : _s.script
+ Description: Main master-functions for Spectrum project
+ Copyright  : 2011 © Spectrum project
+ Author     : Viнt@rь   
+ Last edit  : 25.09.2012 (by Viнt@rь)
+--]] -----------------------------------------------------------------------------------------------
+--/                          		  ***Sets_and_Flags***
+--]] -----------------------------------------------------------------------------------------------
+
+
+---[[*****************************************************************************************
+--/                                      Callback
+---]]*****************************************************************************************
+--/***********************
+--	Actor Binder
+--	Вызов из bind_stalker
+--/***********************
+--[[
+--	OnActorUpdate(tDelta)
+--	Callback на апдейт актора (работает постоянно)
+--]]
+function OnActorUpdate(tDelta)
+	_sData.DbgUpdate()
+end
+
+--/***********************
+--  NPC Binder
+--	вызов из xr_motivator
+--/***********************
+--[[
+--	OnNpcDestroy(objNpc)
+--	Callback на уход НПС в офлайн
+--]]
+function OnNpcDestroy(objNpc)
+	_sData.NetDestroyTarget(objNpc)
+end
+
+--[[
+--	OnNpcDeath(oBinder, oObject, oWho)
+--	Callback смерть НПС 
+--]]
+function OnNpcDeath(oBinder, oObject, oWho)
+	_sData.NetDestroyTarget(oObject)
+end
+
+--/***********************
+--  Monster Binder
+--	вызов из bind_monster
+--/***********************
+--[[
+--	OnMonsterDestroy(objMob)
+--	Callback на уход Моба в офлайн
+--]]
+function OnMonsterDestroy(objMob)
+	_sData.NetDestroyTarget(objMob)
+end
+
+---[[*****************************************************************************************
+--/                                      Utils
+---]]*****************************************************************************************
+--[[---------------------------------------------------------------
+--// Функции обработки перменных
+--]]---------------------------------------------------------------
+--[[
+--	Сохраняем переменную
+--	@param	string	vName	имя переменной
+--	@param	string	vVal	значение переменной
+--]]
+function WriteVariable(vName,vVal)
+	local aId = db.actor:id()
+    if db.storage[aId].pstor == nil then
+		db.storage[aId].pstor = {}
+	end
+	local tVal = type(vVal)
+	if tVal == "table" then
+		vVal = this.PackTbl(vVal)
+		tVal = type(vVal)
+	end
+	if tVal~="nil" then
+		db.storage[aId].pstor[vName] = vVal
+	end
+end
+
+--[[
+--	Загружаем переменную
+--	@param	string		vName	имя переменной
+--	@param	all types	dVal	дефолтовое значение
+--	@return integer
+--]]
+function ReadVariable(vName,dVal,oObj)
+	local aId
+	if oObj then aId = oObj:id() else aId = db.actor:id() end
+	if db.storage[aId].pstor~=nil then
+		local vVal=db.storage[aId].pstor[vName]
+		if vVal~=nil then
+			if type(dVal) == "table" and type(vVal) == "string" then
+				return this.ParseStr(vVal)
+			else
+				return vVal
+			end
+		end
+	end
+	return dVal
+end
+
+--[[
+--	Удаляем переменную
+--	@param	string	vName	имя переменной
+--	@param	string	oObj	обьект
+--]]
+function DelVariable(vName,oObj)
+	local aId
+	if oObj then aId = oObj:id() else aId = db.actor:id() end
+	if db.storage[aId].pstor[vName] then
+		db.storage[aId].pstor[vName] = nil
+	end
+end
+
+--[[
+--	обновляем таблицу
+--	@param	string	tName имя таблици
+--	@param	string	tId   ид таблици
+--	@param	string	tVal  значение таблици
+--	@return string
+--]]
+function UpdateTable(tName,tId,tVal)
+	local vTbl=ReadVar(tName,{})
+	vTbl[tId]=tVal
+	WriteVar(tName,vTbl)
+	return vTbl
+end
+----------------------------------------------------------------------------------------------
+--[[--------------------------------------------------------------- TODO ПЕРЕНЕСТИ
+--// Паковка таблицы в строку (и обратно)
+--]]---------------------------------------------------------------
+--// Внимание! Строки в структуре не должны содержать символов с кодами 0-31.
+--[[---------------------------------------------------------------
+	Формат упаковки:
+	  table     ::= subtable
+	  subtable  ::= keytype key valuetype ( value | subtable 0x5 )
+	  keytype   ::= ( 0x1 | 0x2 | 0x3 | 0x4 )
+	  valuetype ::= ( 0x1 | 0x2 | 0x3 | 0x4 )
+--]]---------------------------------------------------------------
+local tPackType = {
+	num  = 1, --/ 'number'
+	str  = 2, --/ 'string'
+	bool = 3, --/ 'boolean'
+	tbl  = 4, --/ 'table'
+	sub  = 5  --/ subtable
+}
+
+--[[
+--	парсит строку в массив
+--	Внимание! старый формат упаковки (формат упаковки был тэгирован символом c кодом "1")
+--	@param	string	sStr строка
+--	@return table
+--]]
+function UnpackArrayFromString(sStr)
+	if sStr and sStr ~= '' then
+		if sStr:sub(1,1) == string.char(1) and (sStr:sub(2,2) == string.char(tPackType.num) or sStr:sub(2,2) == string.char(tPackType.str)) then
+			sStr = sStr:sub(2,-1)
+		end
+		return ParseStr(sStr) or {}
+	end
+	return {}
+end
+
+--[[
+--	упаковывает таблицу в строку
+--	@param	table	tTbl таблица
+--	@return string
+--]]
+function PackTbl(tTbl)
+	local sStr = ""
+	local key,value,sType = nil,nil,nil
+	for key,value in pairs(tTbl) do
+		sType = type(key)
+		if sType == 'number' then
+			sStr = string.format("%s%s%d", sStr, string.char(tPackType.num), key)
+		elseif sType == 'string' then
+			sStr = string.format("%s%s%s", sStr, string.char(tPackType.str), key)
+		end
+		sType = type(value)
+		if sType == 'number' then
+			sStr = string.format("%s%s%d", sStr, string.char(tPackType.num), value)
+		elseif sType == 'string' then
+			sStr = string.format("%s%s%s", sStr, string.char(tPackType.str), value)
+		elseif sType == 'boolean' then
+			sStr = string.format("%s%s%d", sStr, string.char(tPackType.bool), (value == true and 1) or 0)--/tostring(v) --/#fix#
+		elseif sType == 'table' then
+			sStr = string.format("%s%s%s%s", sStr, string.char(tPackType.tbl), PackTbl(value), string.char(tPackType.sub) ) --/ рекурсивный вызов
+		end
+	end
+	return sStr
+end
+
+--[[
+--	парсит строку в массив
+--	@param	string	sStr строка
+--	@param	string	at (если не nil, то парсинг части от 'at' строки 'sStr')
+--	@return table
+--]]
+function ParseStr(sStr,at)
+	if not at then at = 1 end
+	local tRet,iLen = {},sStr:len()
+	local key,value,sType
+	while true do
+		if at > iLen then return tRet,at end -- строка закончилась
+		sType,at = GetByte(sStr,at)
+		if sType == tPackType.num then
+			key,at = GetNum(sStr,at)
+		elseif sType == tPackType.str then
+			key,at = GetStr(sStr,at)
+		elseif sType == tPackType.sub then
+			return tRet,at -- подстрока субтаблицы закончилась
+		end
+		sType,at = GetByte(sStr,at)
+		if sType == tPackType.num then
+			value,at = GetNum(sStr,at)
+		elseif sType == tPackType.str then
+			value,at = GetStr(sStr,at)
+		elseif sType == tPackType.bool then
+			value,at = GetBool(sStr,at)
+		elseif sType == tPackType.tbl then
+			value,at = ParseStr(sStr,at) --/ рекурсивный вызов для 'табличных' подстрок
+		end
+		tRet[key] = value
+	end
+end
+
+--[[
+--	численное значение символа в строке указанного индексом
+--	@param	string			sStr строка
+--	@param	number(index)	iSym индекс
+--	@return integer
+--]]
+function GetByte(sStr,iSym)
+	return string.byte(sStr:sub(iSym,iSym)), iSym+1
+end
+
+--[[
+--	по-символьный парсер строки до управляющего символа
+--	@param	string			sStr строка
+--	@param	number(index)	at 	 начальный индекс в строке
+--	@return string
+--]]
+function GetStr(sStr,at)
+	local to = sStr:len()
+	for i=at,to do
+		if string.byte(sStr:sub(i,i)) < 32 then --/ управляющий символ?
+			to = i-1
+			break
+		end
+	end
+	--/ начальная часть строки и индекс упр.символа или вся строка
+	return sStr:sub(at,to), to+1
+end
+
+--[[
+--	перевод части строки от индекса в число
+--	@param	string			sStr строка
+--	@param	number(index)	at 	 индекс в строке
+--	@return number
+--]]
+function GetNum(sStr,at)
+	local sStrN,to = GetStr(sStr,at)
+	if sStrN == '' then sStrN = "0" end
+	return tonumber(sStrN), to
+end
+
+--[[
+--	перевод части строки от индекса в булевное значение (true/false)
+--	@param	string			sStr строка
+--	@param	number(index)	at 	 индекс в строке
+--	@return boolen
+--]]
+function GetBool(sStr,at)
+	local sStrN,to = GetStr(sStr,at)
+	return ToBoolean(sStrN), to
+end
+
+--[[
+--	перевод строки в булевное значение (true/false)
+--	@param	string	sStr строка
+--	@return boolen
+--]]
+function ToBoolean(sStr)
+	return (sStr == "1" or string.lower(sStr:match('(%S*)')) == "true")
+end
+----------------------------------------------------------------------------------------------
+--[[---------------------------------------------------------------
+--// Разные функции...
+--]]---------------------------------------------------------------
+--[[
+--	По айди указаной строки транслитит ее
+--	@param	string	sId	айди строки 
+--]]
+function GetString(sId)
+	if not sId then return "" end
+	return game.translate_string(sId)
+end
+--[[---------------------------------------------------------------
+--// Логовые функции, нужны для дебага TODO в релиз не совать
+--]]---------------------------------------------------------------
+function _log(sName,...)
+	local bDbg = ReadVar("debug_mode",tDbgVal["debug_mode"]) 		-- включен ли дебаг-режим вообще
+	if bDbg then
+		local cLog = ReadVar("in_con",tDbgVal["in_con"]) 			-- выдавать ли лог в консоль
+		local sNews = ReadVar("in_news",tDbgVal["in_news"]) 		-- выдавать ли лог в новость
+		local fPrint = ReadVar("file_print",tDbgVal["file_print"]) 	-- сохранять ли лог в файл
+		if not sName then
+			sName = "Nil"
+		end
+		local sText
+		if ... then
+			sText = string.format("_log:->:"..sName, ...)
+		else
+			sText = "_log:->:"..sName
+		end
+		if sNews then
+			if sName~="Nil" then
+				local sFind = string.find(sText,"=")
+				if sFind then
+					sName = string.sub(sText, 1, sFind-1)
+				else
+					sName = string.sub(sText, 1, 250)
+				end
+			end
+			SendTip(sText,sName,nil,10,"pda")
+		end
+		if fPrint then
+			this._lInFile(sText)
+		end
+		if cLog and get_console() then
+			get_console():execute("load ~~~ "..sText)
+		end
+	end
+end
+
+local fLog = true --первый ли лог с начала текущей игры
+function _lInFile(lText)
+	local op = io.open("gamedata\\_log.txt", "a")
+	if op ~= nil then
+		if fLog then
+			lText="\n"..lText
+			fLog=false
+		end
+		op:write(tostring(lText).."\n")
+		op:close()
+	end
+end
+--[[ ----------------------------------------------------------
+--/                           Типсы
+--]] ----------------------------------------------------------
+local tIcons = {
+	default		= "ui_iconsTotal_grouping",
+	pda			= "ui_inGame2_PD_Torgovets_informatsiey"
+}
+--/---------------------------------------------------------------------------
+--/показываем типс
+function SendTip(nText, nHeader, tOut, tShow, iSender, pSnd)
+	if not nText then return end
+	if not nHeader then nHeader = GetString("st_tip") end
+	if not tOut then tOut = 0 end
+	if not tShow then tShow = 5 end
+  
+	local sObj
+	if pSnd=="news" then 
+		sObj=sound_object([[device\pda\pda_news]])
+	elseif pSnd=="task" then 
+		sObj=sound_object([[device\pda\pda_objective]])
+  	else 
+		sObj=sound_object([[device\pda\pda_tip]])
+  	end   
+
+    --' Играем дефолтный звук
+  	sObj:play(db.actor,tOut,sound_object.s2d)
+
+  	if not iSender then
+    	iSender = "default"
+  	end
+  	local UiSender = tIcons[iSender]
+  	local nText = "%c[default]"..nText
+  	
+  	if not UiSender then
+  		UiSender = iSender
+  	end
+
+	if db.actor and UiSender then
+		db.actor:give_game_news(nHeader, GetString(nText), UiSender, tOut*1000, tShow*1000)
+  	end
+	return true
+end
+
+--[[-------------------------------------------------------------------------
+--/ Интеграция синонимов функций из текущего скрипта в _g.script(tnx Artos)
+--]]-------------------------------------------------------------------------
+local bFuncG = false
+
+if not bFuncG then
+	local tFuncG = {
+		["WriteVar"] 		= WriteVariable,
+		["ReadVar"] 		= ReadVariable,
+		["DelVar"] 			= DelVariable,
+		--
+		["GetString"] 		= GetString,
+		--
+		["_log"]			= _log,
+		--
+		["SendTip"] 		= SendTip
+	}
+	local oModule = _G
+	setfenv(1,oModule)
+	for k,v in pairs(tFuncG) do
+		oModule[k] = v
+		setfenv(oModule[k],oModule)
+	end
+	bFuncG = true
+end
+--/--------------------------------------------------------------------------

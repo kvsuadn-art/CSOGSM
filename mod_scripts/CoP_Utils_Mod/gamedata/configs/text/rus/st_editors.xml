@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<string_table>
+        <string id="st_waypoint_editor_close">
+		<text>Закрыть</text>
+	</string>
+        <string id="st_waypoint_editor_mark_point">
+		<text>Вставить точку</text>
+	</string>
+        <string id="st_waypoint_editor_print_waypoint">
+		<text>Завершить путь</text>
+	</string>
+        <string id="st_waypoint_editor_check_way_closed_hint">
+		<text>Если точек много, путь будет замкнут</text>
+	</string>
+        <string id="st_allspawn_editor_title">
+		<text>Редактор «all.spawn»</text>
+	</string>
+        <string id="st_allspawn_editor_switch_panel_1">
+		<text>Основное</text>
+	</string>
+        <string id="st_allspawn_editor_switch_panel_2">
+		<text>Аномалии</text>
+	</string>
+        <string id="st_allspawn_editor_switch_panel_3">
+		<text>Артефакты</text>
+	</string>
+        <string id="st_allspawn_editor_switch_panel_4">
+		<text>Броня</text>
+	</string>
+        <string id="st_allspawn_editor_switch_panel_5">
+		<text>Оружие</text>
+	</string>
+        <string id="st_allspawn_editor_switch_panel_6">
+		<text>Аммуниция</text>
+	</string>
+        <string id="st_allspawn_editor_switch_panel_7">
+		<text>Разное</text>
+	</string>
+        <string id="st_allspawn_editor_close">
+		<text>Закрыть</text>
+	</string>
+        <string id="st_allspawn_editor_create">
+		<text>Создать код</text>
+	</string>
+        <string id="st_allspawn_editor_read_example">
+		<text>Показать код</text>
+	</string>
+        <string id="st_allspawn_editor_radius_minus_hint">
+		<text>Уменьшить радиус объекта</text>
+	</string>
+        <string id="st_allspawn_editor_radius_plus_hint">
+		<text>Увеличить радиус объекта</text>
+	</string>
+        <string id="st_allspawn_editor_counter_minus_hint">
+		<text>Уменьшить значение заголовка секции</text>
+	</string>
+        <string id="st_allspawn_editor_counter_plus_hint">
+		<text>Увеличить значение заголовка секции</text>
+	</string>
+        <string id="st_allspawn_editor_magazine_minus_hint">
+		<text>Уменьшить количество патронов в коробке</text>
+	</string>
+        <string id="st_allspawn_editor_magazine_plus_hint">
+		<text>Увеличить количество патронов в коробке</text>
+	</string>
+        <string id="st_allspawn_auto_print_signal">
+		<text>Создан объект:</text>
+	</string>
+        <string id="st_allspawn_auto_print_error">
+		<text>Ошибка: не выбран тип предмета</text>
+	</string>
+        <string id="st_allspawn_auto_print_activate">
+		<text>Включить авто-отладку</text>
+	</string>
+        <string id="st_allspawn_auto_print_deactivate">
+		<text>Выключить авто-отладку</text>
+	</string>
+        <string id="st_allspawn_auto_print_on">
+		<text>АО Вкл.</text>
+	</string>
+        <string id="st_allspawn_auto_print_off">
+		<text>АО Выкл.</text>
+	</string>
+        <string id="st_allspawn_editor_display_radius_hint">
+		<text>Радиус объекта</text>
+	</string>
+        <string id="st_allspawn_editor_display_counter_hint">
+		<text>Значение заголовка секции</text>
+	</string>
+        <string id="st_allspawn_editor_display_magazine_hint">
+		<text>Количество патронов в коробке</text>
+	</string>
+        <string id="st_allspawn_editor_prefix_field_hint">
+		<text>Элемент имени объекта №1</text>
+	</string>
+        <string id="st_allspawn_editor_suffix_field_hint">
+		<text>Элемент имени объекта №2</text>
+	</string>
+        <string id="st_allspawn_editor_logic_path_field_hint">
+		<text>Путь к файлу логики</text>
+	</string>
+        <string id="st_allspawn_editor_hiding_place_field_hint">
+		<text>Название тайника, к которому относится предмет</text>
+	</string>
+        <string id="st_allspawn_editor_check_with_logic_hint">
+		<text>Объект с логикой</text>
+	</string>
+        <string id="st_allspawn_editor_check_another_mode_hint">
+		<text>Другой метод отладки. Шаблон: alife():create("объект",vector():set(x,y,z),lv,gv)</text>
+	</string>
+</string_table>

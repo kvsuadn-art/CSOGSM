@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="windows-1251" ?>
+<w>
+
+	<background width="1024" height="768">
+		<auto_static x="190" y="250" width="336" height="176">
+			<texture width="336" height="176">ui\video_window</texture>
+		</auto_static>
+		<auto_static width="1024" height="768">
+			<texture>ui_inGame2_opt_background</texture>
+		</auto_static>
+	</background>
+
+	<dialog x="255" y="174" width="560" height="460" stretch="1">
+		<texture>ui_inGame2_main_window_small</texture>
+		
+	    <caption x="0" y="10" width="560" height="30">
+		    <text font="graffiti32" align="c">Настройки отладки</text>
+	    </caption>
+		
+		<frameline1 x="5" y="45" width="549" height="1" vertical="0">
+			<texture>ui_inGame2_pda_line_horizontal</texture>
+		</frameline1>
+		<frameline2 x="5" y="69" width="549" height="1" vertical="0">
+			<texture>ui_inGame2_pda_line_horizontal</texture>
+		</frameline2>
+		<frameline3 x="150" y="10" width="1" height="403" vertical="1">
+			<texture>ui_inGame2_pda_line_vertical</texture>
+		</frameline3>
+		<frameline4 x="410" y="10" width="1" height="403" vertical="1">
+			<texture>ui_inGame2_pda_line_vertical</texture>
+		</frameline4>
+		<frameline5 x="280" y="69" width="1" height="344" vertical="1">
+			<texture>ui_inGame2_pda_line_vertical</texture>
+		</frameline5>
+		
+		<cap_debug_mod x="0" y="23" width="130" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c">Режим отладки:</text>
+		</cap_debug_mod>
+		<debug_mod x="122" y="19" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+		</debug_mod>
+		
+		
+		<cap_log x="16" y="48" width="134" height="24">
+			<text r="170" g="170" b="170" font="letterica18" align="r" vert_align="c">Выдача/Запись лога</text>
+		</cap_log>
+		
+		<cap_in_con x="0" y="74" width="130" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c">в консоль:</text>
+		</cap_in_con>
+		<in_con x="122" y="70" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+		</in_con>
+		
+		<cap_file_print x="0" y="94" width="130" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c">в файл:</text>
+		</cap_file_print>
+		<file_print x="122" y="90" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+		</file_print>
+		
+		<cap_in_news x="0" y="114" width="130" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c">в новости:</text>
+		</cap_in_news>
+		<in_news x="122" y="110" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+		</in_news>
+		
+		<mcap_script x="0" y="48" width="560" height="24">
+			<text r="170" g="170" b="170" font="letterica18" align="c" vert_align="c">Вкл/Выкл отладку скриптов</text>
+		</mcap_script>
+		
+		<cap_script_1 x="0" y="0" width="130" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</cap_script_1>
+		<btn_script_1 x="0" y="0" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+			<text y="3" r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</btn_script_1>
+		
+		
+		<cap_script_2 x="0" y="0" width="130" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</cap_script_2>
+		<btn_script_2 x="0" y="0" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+			<text y="3" r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</btn_script_2>
+		
+		
+		<cap_script_3 x="0" y="0" width="130" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</cap_script_3>
+		<btn_script_3 x="0" y="0" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+			<text y="3" r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</btn_script_3>
+		
+		
+		<cap_script_4 x="0" y="0" width="130" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</cap_script_4>
+		<btn_script_4 x="0" y="0" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+			<text y="3" r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</btn_script_4>
+		
+		<cap_script_5 x="0" y="0" width="130" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</cap_script_5>
+		<btn_script_5 x="0" y="0" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+			<text y="3" r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</btn_script_5>
+		
+		<cap_script_6 x="0" y="0" width="130" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</cap_script_6>
+		<btn_script_6 x="0" y="0" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+			<text y="3" r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</btn_script_6>
+		
+		<cap_script_7 x="0" y="0" width="130" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</cap_script_7>
+		<btn_script_7 x="0" y="0" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+			<text y="3" r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</btn_script_7>
+		
+		<cap_script_8 x="0" y="0" width="130" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</cap_script_8>
+		<btn_script_8 x="0" y="0" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+			<text y="3" r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</btn_script_8>
+		
+		<cap_script_9 x="0" y="0" width="130" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</cap_script_9>
+		<btn_script_9 x="0" y="0" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+			<text y="3" r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</btn_script_9>
+		
+		<cap_script_10 x="0" y="0" width="130" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</cap_script_10>
+		<btn_script_10 x="0" y="0" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+			<text y="3" r="170" g="170" b="170" font="letterica16" align="r" vert_align="c"/>
+		</btn_script_10>
+		
+		
+		<cap_other x="465" y="48" width="148" height="24">
+			<text r="170" g="170" b="170" font="letterica18" align="l" vert_align="c">Прочее</text>
+		</cap_other>
+		
+		<cap_sdata_all x="427" y="74" width="95" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c">Вся статистика ГГ:</text>
+		</cap_sdata_all>
+		<sdata_all x="514" y="70" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+		</sdata_all>
+		
+		<cap_targets x="427" y="94" width="95" height="24">
+			<text r="170" g="170" b="170" font="letterica16" align="r" vert_align="c">Инфа о таргете:</text>
+		</cap_targets>
+		<dbg_targets x="514" y="90" width="35" height="29">
+			<texture>ui_inGame2_checkbox</texture>
+		</dbg_targets>
+
+		<btn_quit x="30" y="424" width="100" height="28">
+			<text font="letterica18" align="c">Закрыть</text>
+			<texture>ui_inGame2_Mp_bigbuttone</texture>
+			<text_color><e r="170" g="170" b="170"/></text_color>
+		</btn_quit>
+	</dialog>
+</w>

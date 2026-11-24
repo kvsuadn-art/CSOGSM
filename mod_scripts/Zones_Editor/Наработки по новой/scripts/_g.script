@@ -1,0 +1,7 @@
+RvP()
+
+function ASSERT(cond, msg)
+	if not cond then
+		abort(msg)
+	end
+end
